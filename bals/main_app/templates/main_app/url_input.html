@@ -1,0 +1,13 @@
+{% extends 'main_app/base.html' %}
+
+{% block content %}
+<h1>Url Input Page</h1>
+<p>Welcome to the url input!</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %}
