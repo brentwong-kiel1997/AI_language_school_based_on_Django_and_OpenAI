@@ -1,5 +1,96 @@
 {% extends 'main_app/base.html' %}
 
+
+{% block title %}
+Transcript
+{% endblock %}
+
+
 {% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p>For the time being, only English and Ukrainian are supported.</p>
+    <button type="submit">Submit to generate learning material</button>
+</form>
+
+
+<div class="floating-window" id="floatingWindow">
+    <div class="window-header" id="windowHeader">
+        <span class="window-title">Youtube Video</span>
+    </div>
+    <div class="window-content">
+        <div align="center">
+            <iframe width="200"
+                    height="150"
+                    src="{{ embedded }}"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+<br>
+
+<h2>{{model.video_title}}</h2>
+
+<div class="window-content">
+    <div class="scrolling-window">
+        {% for key, value in text.items %}
+        <p>{{ key }}:{{ value }}</p>
+        {% endfor %}
+    </div>
+</div>
+<button onclick="downloadText()">Download Transcript</button>
+<br>
+<br>
+
+
+<script>
+
+    function downloadText() {
+        var textContent = "";
+        textContent += "Video Title: {{model.video_title}}\n"; // Add video title to the content
+        {% for key, value in text.items %}
+            textContent += "{{ key }}:{{ value }}\n";
+        {% endfor %}
+
+        var blob = new Blob([textContent], { type: "text/plain" });
+        var url = window.URL.createObjectURL(blob);
+
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = "text.txt";
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    }
+
+
+
+        // Function to disable submit button and show "Please wait..." flag
+    function disableSubmitButton() {
+        // Disable the submit button
+        var submitButton = document.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+
+        // Add "Please wait..." flag
+        var pleaseWaitFlag = document.createElement('div');
+        pleaseWaitFlag.className = "please-wait-flag";
+        pleaseWaitFlag.textContent = "Please wait and do not refresh the page, it will take up to 10 minutes...";
+        submitButton.parentNode.insertBefore(pleaseWaitFlag, submitButton.nextSibling);
+    }
+
+    // Add event listener to form submission
+    document.querySelector('form').addEventListener('submit', function(event) {
+        // Call the function to disable submit button and show flag
+        disableSubmitButton();
+    });
+
+</script>
+
 
 {% endblock %}

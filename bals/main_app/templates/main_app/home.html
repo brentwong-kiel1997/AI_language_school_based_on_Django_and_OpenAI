@@ -1,7 +1,75 @@
 {% extends 'main_app/base.html' %}
 
-{% block content %}
-    <h1>Home</h1>
-    <p>Welcome to the home page!</p>
+{% block title %}
+Home
 {% endblock %}
-```
+
+{% block content %}
+    <h1>Transcribed Videos</h1>
+    <form id="filterForm" method="GET">
+        <label for="language_filter">Filter by Video Language:</label>
+        <select name="language_filter" id="language_filter">
+            <option value="">All</option>
+            <!-- Populate with unique video languages -->
+            {% for language in languages %}
+                {% if language_filter == language %}
+                    <option value="{{ language }}" selected>{{ language }}</option>
+                {% else %}
+                    <option value="{{ language }}">{{ language }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+    <div style="overflow-x:auto;">
+        <table id="videoTable" style="width:100%;">
+            <thead>
+                <tr>
+                    <th style="width:10%;" class="sortable">
+                        <button id="dateButton">Date &#x25B2;</button></th>
+                    <th style="width:70%;">Title</th>
+                    <th style="width:10%;">Language</th>
+                    <th style="width:10%;">Length</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for content in model %}
+                    <tr>
+                        <td>{{ content.uploaded_date|date:"Y-m-d" }}</td>
+                        <td><a href="{% url 'transcript' content.slug %}">{{ content.video_title }}</a></td>
+                        <td>{{ content.video_language|capfirst }}</td>
+                        <td>{{ content.video_length }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var asc = true;
+            $('#dateButton').click(function() {
+                var table = $('#videoTable');
+                var rows = table.find('tr:gt(0)').toArray().sort(comparer(1));
+                if (!asc) {
+                    rows = rows.reverse();
+                    asc = true;
+                    $('#dateButton').html('Date &#x25B2;');
+                } else {
+                    asc = false;
+                    $('#dateButton').html('Date &#x25BC;');
+                }
+                for (var i = 0; i < rows.length; i++) {
+                    table.append(rows[i]);
+                }
+            });
+            function comparer(index) {
+                return function(a, b) {
+                    var valA = getCellValue(a, index), valB = getCellValue(b, index);
+                    return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.localeCompare(valB);
+                };
+            }
+            function getCellValue(row, index) { return $(row).children('td').eq(index).text(); }
+        });
+    </script>
+{% endblock %}
