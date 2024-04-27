@@ -69,6 +69,7 @@ def transcript(request, transcribe_slug):
     model = Transcribed_Video.objects.get(slug=transcribe_slug)
     embedded = f"https://www.youtube.com/embed/{model.video_id}?si=a8LSWwdSKrRParp8"
     text = ast.literal_eval(model.video_text)
+    model2 = Learning_Material.objects.filter(linked_video=model)
     if request.method == 'POST':
         form = MaterialForm(request.POST)
         if form.is_valid():
@@ -85,7 +86,8 @@ def transcript(request, transcribe_slug):
     return render(request, 'main_app/transcript.html', {'text': text,
                                                         'embedded': embedded,
                                                         'model': model,
-                                                        'form': form})
+                                                        'form': form,
+                                                        'model2': model2})
 
 
 def wait_for_chatbot(request, transcribe_slug, native_language):

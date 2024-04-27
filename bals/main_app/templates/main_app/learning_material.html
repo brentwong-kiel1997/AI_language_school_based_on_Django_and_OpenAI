@@ -25,7 +25,7 @@
 </div>
 <br>
 
-<h2>{{model.video_title}}</h2>
+<h2>{{ model.video_language|capfirst }} : {{model.video_title}}</h2>
 <div class="row">
     <div class="window-content" id="window1">
         <div class="scrolling-window">
@@ -76,9 +76,6 @@
     </div>
 </div>
 <button onclick="downloadText()">Download Transcript and Learning Material</button>
-
-<br>
-<br>
 
 
 <script>

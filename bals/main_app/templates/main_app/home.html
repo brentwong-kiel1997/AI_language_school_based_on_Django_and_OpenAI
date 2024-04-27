@@ -5,71 +5,88 @@ Home
 {% endblock %}
 
 {% block content %}
-    <h1>Transcribed Videos</h1>
-    <form id="filterForm" method="GET">
-        <label for="language_filter">Filter by Video Language:</label>
-        <select name="language_filter" id="language_filter">
-            <option value="">All</option>
-            <!-- Populate with unique video languages -->
-            {% for language in languages %}
-                {% if language_filter == language %}
-                    <option value="{{ language }}" selected>{{ language }}</option>
-                {% else %}
-                    <option value="{{ language }}">{{ language }}</option>
-                {% endif %}
-            {% endfor %}
-        </select>
-        <button type="submit">Filter</button>
-    </form>
-    <div style="overflow-x:auto;">
-        <table id="videoTable" style="width:100%;">
-            <thead>
-                <tr>
-                    <th style="width:15%;" class="sortable">
-                        <button id="dateButton">Video Date &#x25B2;</button></th>
-                    <th style="width:70%;">Title</th>
-                    <th style="width:10%;">Language</th>
-                    <th style="width:5%;">Length</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for content in model %}
-                    <tr>
-                        <td>{{ content.uploaded_date|date:"Y-m-d" }}</td>
-                        <td><a href="{% url 'transcript' content.slug %}">{{ content.video_title }}</a></td>
-                        <td>{{ content.video_language|capfirst }}</td>
-                        <td>{{ content.video_length }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            var asc = true;
-            $('#dateButton').click(function() {
-                var table = $('#videoTable');
-                var rows = table.find('tr:gt(0)').toArray().sort(comparer(1));
-                if (!asc) {
-                    rows = rows.reverse();
-                    asc = true;
-                    $('#dateButton').html('Video Date &#x25B2;');
-                } else {
-                    asc = false;
-                    $('#dateButton').html('Video Date &#x25BC;');
-                }
-                for (var i = 0; i < rows.length; i++) {
-                    table.append(rows[i]);
-                }
-            });
-            function comparer(index) {
-                return function(a, b) {
-                    var valA = getCellValue(a, index), valB = getCellValue(b, index);
-                    return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.localeCompare(valB);
-                };
+<h3>Welcome to Brent's AI Language School Project(BALS)</h3>
+<p>This is a project developed <a href="https://profile-page-brentwong.pythonanywhere.com/home">Brent Wong</a>.</p>
+<p>Brent's AI Language School is a project that utilizes AI tools like ChatGPT and Whisper to transform YouTube videos
+    into
+    foreign language learning resources. It automates the process from video download to generating textual learning
+    materials
+    by transcribing audio and creating educational content. This innovative approach aims to enhance language learning
+    accessibility and efficiency.</p>
+<h5>Donation</h5>
+<p>If you find this useful and would like to support my work, you can make some donation via this
+    <a href="https://www.paypal.com/paypalme/brentwmq?country.x=DE&locale.x=en_US">PayPal link</a>.</p>
+<h5>Github</h5>
+<p>Find out more about this on the
+    <a href="https://github.com/brentwong-kiel1997/brents_AI_language_school?tab=readme-ov-file">
+        Github page</a>.</p>
+
+<h5>Transcribed Videos</h5>
+<form id="filterForm" method="GET">
+    <label for="language_filter">Filter by Video Language:</label>
+    <select name="language_filter" id="language_filter">
+        <option value="">All</option>
+        <!-- Populate with unique video languages -->
+        {% for language in languages %}
+        {% if language_filter == language %}
+        <option value="{{ language }}" selected>{{ language }}</option>
+        {% else %}
+        <option value="{{ language }}">{{ language }}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+    <button type="submit">Filter</button>
+</form>
+<div style="overflow-x:auto;">
+    <table id="videoTable" style="width:100%;">
+        <thead>
+        <tr>
+            <th style="width:12%;" class="sortable">
+                <button id="dateButton">Video Date &#x25B2;</button>
+            </th>
+            <th style="width:73%;">Title</th>
+            <th style="width:5%;">Language</th>
+            <th style="width:10%;">Length</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for content in model %}
+        <tr>
+            <td>{{ content.uploaded_date|date:"Y-m-d" }}</td>
+            <td><a href="{% url 'transcript' content.slug %}">{{ content.video_title }}</a></td>
+            <td>{{ content.video_language|capfirst }}</td>
+            <td>{{ content.video_length }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var asc = true;
+        $('#dateButton').click(function() {
+            var table = $('#videoTable');
+            var rows = table.find('tr:gt(0)').toArray().sort(comparer(1));
+            if (!asc) {
+                rows = rows.reverse();
+                asc = true;
+                $('#dateButton').html('Video Date &#x25B2;');
+            } else {
+                asc = false;
+                $('#dateButton').html('Video Date &#x25BC;');
             }
-            function getCellValue(row, index) { return $(row).children('td').eq(index).text(); }
+            for (var i = 0; i < rows.length; i++) {
+                table.append(rows[i]);
+            }
         });
-    </script>
+        function comparer(index) {
+            return function(a, b) {
+                var valA = getCellValue(a, index), valB = getCellValue(b, index);
+                return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.localeCompare(valB);
+            };
+        }
+        function getCellValue(row, index) { return $(row).children('td').eq(index).text(); }
+    });
+</script>
 {% endblock %}

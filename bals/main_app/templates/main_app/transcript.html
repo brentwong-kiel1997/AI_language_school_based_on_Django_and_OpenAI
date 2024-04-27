@@ -8,13 +8,6 @@ Transcript
 
 {% block content %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <p>For the time being, only English and Ukrainian are supported.</p>
-    <button type="submit">Submit to generate learning material</button>
-</form>
-
 
 <div class="floating-window" id="floatingWindow">
     <div class="window-header" id="windowHeader">
@@ -34,7 +27,18 @@ Transcript
 </div>
 <br>
 
-<h2>{{model.video_title}}</h2>
+
+<h2>{{ model.video_language|capfirst }} : {{model.video_title}}</h2>
+
+{% if model2 %}
+<h4>Existing learning material related to this video:</h4>
+{% for content in model2 %}
+<a href="{%url 'learning_material' model.video_id content.native_language%}">
+    <button>{{content.native_language}}</button>
+</a>
+{% endfor %}
+
+{% endif %}
 
 <div class="window-content">
     <div class="scrolling-window">
@@ -46,6 +50,15 @@ Transcript
 <button onclick="downloadText()">Download Transcript</button>
 <br>
 <br>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p>For the time being, only English and Ukrainian are supported.</p>
+    <button type="submit">Submit to generate learning material</button>
+    <p><b>Note</b>: If it keeps failing, it could be that OpenAI API usage is up and please try again next month.
+        My apologises, due to cost I could not provide more resources for free.</p>
+</form>
 
 
 <script>
