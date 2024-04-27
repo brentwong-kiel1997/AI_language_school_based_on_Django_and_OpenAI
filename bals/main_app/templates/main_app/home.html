@@ -25,11 +25,11 @@ Home
         <table id="videoTable" style="width:100%;">
             <thead>
                 <tr>
-                    <th style="width:10%;" class="sortable">
-                        <button id="dateButton">Date &#x25B2;</button></th>
+                    <th style="width:15%;" class="sortable">
+                        <button id="dateButton">Video Date &#x25B2;</button></th>
                     <th style="width:70%;">Title</th>
                     <th style="width:10%;">Language</th>
-                    <th style="width:10%;">Length</th>
+                    <th style="width:5%;">Length</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,10 +54,10 @@ Home
                 if (!asc) {
                     rows = rows.reverse();
                     asc = true;
-                    $('#dateButton').html('Date &#x25B2;');
+                    $('#dateButton').html('Video Date &#x25B2;');
                 } else {
                     asc = false;
-                    $('#dateButton').html('Date &#x25BC;');
+                    $('#dateButton').html('Video Date &#x25BC;');
                 }
                 for (var i = 0; i < rows.length; i++) {
                     table.append(rows[i]);
