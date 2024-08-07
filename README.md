@@ -37,7 +37,8 @@ You can use the website to transcibe news videos from youtube via the url input 
 **Important notes**
 
 The download function is realized via [yt_dlp](https://github.com/yt-dlp/yt-dlp) and it is often likely not working due to YouTube changing their website features. Please check out the third party package website for updates. I will not update this party of code constantly.
-Please find the download function under following path. 'bals/main_app/utils.py'
+You'll need your own OpenAI API key for set up your own website as well.
+Please find the relevant code under following path. 'bals/main_app/utils.py'
 
 ![image](https://github.com/user-attachments/assets/af4854e3-2401-4e94-8170-62278040e868)
 
