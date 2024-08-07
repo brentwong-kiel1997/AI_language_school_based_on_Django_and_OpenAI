@@ -25,7 +25,7 @@ The materials generated from the programming are considered as **commentaries**.
 
 ## Website Guide
 
-You can find the set up home page [Home](https://profile-page-brentwong.pythonanywhere.com/AI_language_school)
+You can find the example of the website hosted on pythonanywhere at following link,[Home](https://profile-page-brentwong.pythonanywhere.com/AI_language_school)
 
 
 ![Screenshot from 2024-08-07 13-30-23](https://github.com/user-attachments/assets/2ec48428-6a14-48f7-a25c-028ffd00b5cf)
