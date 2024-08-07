@@ -30,7 +30,11 @@ def url_input(request):
         if form.is_valid():
             if 'https://www.youtube.com/watch?v=' in form.cleaned_data['url']:
                 video_url = form.cleaned_data['url']
-                video_id = video_url[32:]
+                video_id = video_url[32:43]
+                return redirect('wait', video_id=video_id)
+            elif 'https://youtu.be/' in form.cleaned_data['url']:
+                video_url = form.cleaned_data['url']
+                video_id = video_url[17:28]
                 return redirect('wait', video_id=video_id)
             else:
                 messages.error(request, "Invalid url.")

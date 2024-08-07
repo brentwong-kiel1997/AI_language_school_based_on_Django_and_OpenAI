@@ -1,7 +1,9 @@
-import pytube
+import yt_dlp as youtube_dl
 from datetime import timedelta
 import os
 from openai import OpenAI
+from datetime import datetime
+
 
 os.environ['OPENAI_API_KEY'] = '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'
 client = OpenAI()
@@ -12,16 +14,25 @@ class Transcribe():
         self.url = url
 
     def audio2text(self, output_path='./download', max_duration=300):
-        yt = pytube.YouTube(self.url)
-        self.duration = yt.length
-        if self.duration > max_duration:
-            raise ValueError("Video duration exceeds 5 minutes.")
-        stream = yt.streams.filter(only_audio=True).first()
-        filename = stream.default_filename[:-4] + ".mp3"  # Change file extension to mp4
-        stream.download(output_path=output_path, filename=filename)
-        self.audio_file_path = output_path + '/' + filename
-        self.title = yt.title
-        self.id = self.url[32:]
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
+            'outtmpl': os.path.join(output_path, '%(id)s.%(ext)s'),
+        }
+
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            info_dict = ydl.extract_info(self.url, download=True)
+            self.duration = info_dict['duration']
+            if self.duration > max_duration:
+                raise ValueError("Video duration exceeds 5 minutes.")
+            self.audio_file_path = ydl.prepare_filename(info_dict).replace('.webm', '.mp3').replace('.m4a', '.mp3')
+            self.title = info_dict['title']
+            self.id = info_dict['id']
+
         audio_file = open(self.audio_file_path, "rb")
         self.transcript = client.audio.transcriptions.create(
             file=audio_file,
@@ -30,13 +41,21 @@ class Transcribe():
             timestamp_granularities=["segment"]
         )
         self.text_with_ts = {}
-        for i in range(len(self.transcript.segments)):
-            time = round(self.transcript.segments[i]['start'])
-            timestamp = str(timedelta(seconds=time))
-            text_seg = self.transcript.segments[i]['text']
+
+        for segment in self.transcript.segments:
+            time = segment['start']
+            timestamp = str(timedelta(seconds=time)).split('.')[0]
+            text_seg = segment['text']
             self.text_with_ts[timestamp] = text_seg
+
         self.language = self.transcript.language
-        self.upload_date = yt.publish_date
+
+        # Example of converting upload_date from a different format
+        upload_date_str = info_dict['upload_date']  # Assuming this is in 'YYYYMMDD' format
+        upload_date = datetime.strptime(upload_date_str, '%Y%m%d').date()
+        #######################
+
+        self.upload_date = upload_date.strftime('%Y-%m-%d')
         os.remove(self.audio_file_path)
 
 
@@ -60,9 +79,9 @@ class Generator():
            section 4: give me answers for section 3 in {self.target_language}\n
             section 5 : give me translation of the transcript in {self.native_language}\n
          please give me the reply in json format\n
-            as show in following example from German to English, 
+            as show in following example from German to English,
             please do not change the keys in the first level of the dictionary,
-            please strictly follow the format as python libraries and make sure it also follows string syntax for dot and quotes such as \', \n\n\n
+            please strictly follow the format as python libraries and make sure it strictly follows the parenthesis patterns and return in correct format \', \n\n\n
                   {dic} \n\n\n\n
                   the article:\n
                   """

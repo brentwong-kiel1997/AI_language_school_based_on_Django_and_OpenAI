@@ -1,17 +1,14 @@
 {% extends 'main_app/base.html' %}
 
-
 {% block title %}
 Transcript
 {% endblock %}
 
-
 {% block content %}
-
 
 <div class="floating-window" id="floatingWindow">
     <div class="window-header" id="windowHeader">
-        <span class="window-title">Youtube Video</span>
+        <span class="window-title">YouTube Video</span>
     </div>
     <div class="window-content">
         <div align="center">
@@ -27,47 +24,41 @@ Transcript
 </div>
 <br>
 
-
-<h2>{{ model.video_language|capfirst }} : {{model.video_title}}</h2>
+<h2>{{ model.video_language|capfirst }}: {{ model.video_title }}</h2>
 
 {% if model2 %}
-<h4>Existing learning material related to this video:</h4>
-{% for content in model2 %}
-<a href="{%url 'learning_material' model.video_id content.native_language%}">
-    <button>{{content.native_language}}</button>
-</a>
-{% endfor %}
-
+    <h4>Existing learning material related to this video:</h4>
+    {% for content in model2 %}
+        <a href="{% url 'learning_material' model.video_id content.native_language %}">
+            <button>{{ content.native_language }}</button>
+        </a>
+    {% endfor %}
 {% endif %}
 
 <div class="window-content">
     <div class="scrolling-window">
         {% for key, value in text.items %}
-        <p>{{ key }}:{{ value }}</p>
+            <p>{{ key }}: {{ value }}</p>
         {% endfor %}
     </div>
 </div>
-<button onclick="downloadText()">Download Transcript</button>
-<br>
-<br>
+
+<button onclick="downloadText()">Download Transcript as Text File</button>
+<br><br>
 
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <p>For the time being, only English and Ukrainian are supported.</p>
     <button type="submit">Submit to generate learning material</button>
-    <p><b>Note</b>: If it keeps failing, it could be that OpenAI API usage is up and please try again next month.
-        My apologises, due to cost I could not provide more resources for free.</p>
+    <p><b>Note</b>: If it keeps failing, it could be that OpenAI API usage is up. Please try again next month. My apologies, due to cost, I could not provide more resources for free.</p>
 </form>
 
-
 <script>
-
     function downloadText() {
-        var textContent = "";
-        textContent += "Video Title: {{model.video_title}}\n"; // Add video title to the content
+        var textContent = "Video Title: {{ model.video_title }}\n"; // Add video title to the content
         {% for key, value in text.items %}
-            textContent += "{{ key }}:{{ value }}\n";
+            textContent += "{{ key }}: {{ value }}\n";
         {% endfor %}
 
         var blob = new Blob([textContent], { type: "text/plain" });
@@ -75,16 +66,14 @@ Transcript
 
         var a = document.createElement("a");
         a.href = url;
-        a.download = "text.txt";
+        a.download = "transcript.txt";
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
     }
 
-
-
-        // Function to disable submit button and show "Please wait..." flag
+    // Function to disable submit button and show "Please wait..." flag
     function disableSubmitButton() {
         // Disable the submit button
         var submitButton = document.querySelector('button[type="submit"]');
@@ -102,8 +91,6 @@ Transcript
         // Call the function to disable submit button and show flag
         disableSubmitButton();
     });
-
 </script>
-
 
 {% endblock %}

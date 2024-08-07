@@ -1,11 +1,9 @@
 {% extends 'main_app/base.html' %}
 
 {% block content %}
-
 <style>
-
+    /* Add your custom styles here */
 </style>
-
 
 <div class="floating-window" id="floatingWindow">
     <div class="window-header" id="windowHeader">
@@ -25,12 +23,12 @@
 </div>
 <br>
 
-<h2>{{ model.video_language|capfirst }} : {{model.video_title}}</h2>
+<h2>{{ model.video_language|capfirst }}: {{ model.video_title }}</h2>
 <div class="row">
     <div class="window-content" id="window1">
         <div class="scrolling-window">
             {% for key, value in video_text.items %}
-            <p>{{ key }}:{{ value }}</p>
+            <p>{{ key }}: {{ value }}</p>
             {% endfor %}
         </div>
     </div>
@@ -39,17 +37,17 @@
         <div class="scrolling-window">
             <h4>Important Words:</h4>
             <ul>
-                {% for key , content in reply.import_words.items %}
-                <li>{{key}} : {{content}}</li>
+                {% for key, content in reply.import_words.items %}
+                <li>{{ key }}: {{ content }}</li>
                 {% endfor %}
             </ul>
 
             <h4>Import Grammars</h4>
             {% for key, content in reply.import_grammars.items %}
-            <h6>{{key}}</h6>
+            <h6>{{ key }}</h6>
             <ul>
                 {% for key2, content2 in content.items %}
-                <li>{{key2}} : {{content2}}</li>
+                <li>{{ key2 }}: {{ content2 }}</li>
                 {% endfor %}
             </ul>
             {% endfor %}
@@ -57,47 +55,48 @@
             <h4>Questions</h4>
             <ul>
                 {% for content in reply.questions %}
-                <li>{{content}}</li>
+                <li>{{ content }}</li>
                 {% endfor %}
             </ul>
 
             <h4>Answers</h4>
             <ul>
                 {% for content in reply.answers %}
-                <li>{{content}}</li>
+                <li>{{ content }}</li>
                 {% endfor %}
             </ul>
 
             <h4>Translation</h4>
             {% for key, content in reply.translation.items %}
-            <p>{{key}}: {{content}}</p>
+            <p>{{ key }}: {{ content }}</p>
             {% endfor %}
         </div>
     </div>
 </div>
-<button onclick="downloadText()">Download Transcript and Learning Material</button>
 
+<button onclick="downloadText()">Download Transcript and Learning Material as Text File</button>
+
+<br><br>
 
 <script>
-function downloadText() {
-    // Get text content from both windows
-    var window1Content = document.getElementById('window1').innerText;
-    var window2Content = document.getElementById('window2').innerText;
+    function downloadText() {
+        // Get text content from both windows
+        var window1Content = document.getElementById('window1').innerText;
+        var window2Content = document.getElementById('window2').innerText;
 
-    // Combine both contents
-    var combinedContent = "Video Title: {{model.video_title}}\n\n" + window1Content + '\n\n' + window2Content;
+        // Combine both contents
+        var combinedContent = "Video Title: {{ model.video_title }}\n\n" + window1Content + '\n\n' + window2Content;
 
-    // Create a Blob containing the combined text
-    var blob = new Blob([combinedContent], { type: 'text/plain' });
+        // Create a Blob containing the combined text
+        var blob = new Blob([combinedContent], { type: 'text/plain' });
 
-    // Create a link element
-    var link = document.createElement('a');
-    link.download = 'transcript_and_learning_material.txt'; // Set the file name
-    link.href = window.URL.createObjectURL(blob);
+        // Create a link element
+        var link = document.createElement('a');
+        link.download = 'transcript_and_learning_material.txt'; // Set the file name
+        link.href = window.URL.createObjectURL(blob);
 
-    // Simulate clicking the link to trigger the download
-    link.click();
-}
+        // Simulate clicking the link to trigger the download
+        link.click();
+    }
 </script>
 {% endblock %}
-```

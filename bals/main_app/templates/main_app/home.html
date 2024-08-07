@@ -5,21 +5,17 @@ Home
 {% endblock %}
 
 {% block content %}
-<h3>Welcome to Brent's AI Language School Project(BALS)</h3>
-<p>This is a project developed <a href="https://profile-page-brentwong.pythonanywhere.com/home">Brent Wong</a>.</p>
-<p>Brent's AI Language School is a project that utilizes AI tools like ChatGPT and Whisper to transform YouTube videos
-    into
-    foreign language learning resources. It automates the process from video download to generating textual learning
-    materials
-    by transcribing audio and creating educational content. This innovative approach aims to enhance language learning
-    accessibility and efficiency.</p>
+<h3>Welcome to Brent's AI Language School Project (BALS)</h3>
+<p>This project, developed by <a href="https://profile-page-brentwong.pythonanywhere.com/home" target="_blank">Brent Wong</a>, utilizes AI tools like ChatGPT and Whisper to transform YouTube videos into foreign language learning resources. It automates the process from video download to generating textual learning materials by transcribing audio and creating educational content. This innovative approach aims to enhance language learning accessibility and efficiency.</p>
+
 <h5>Donation</h5>
-<p>If you find this useful and would like to support my work, you can make some donation via this
-    <a href="https://www.paypal.com/paypalme/brentwmq?country.x=DE&locale.x=en_US">PayPal link</a>.</p>
+<p>If you find this useful and would like to support my work, you can make a donation via this <a href="https://www.paypal.com/paypalme/brentwmq?country.x=DE&locale.x=en_US" target="_blank">PayPal link</a>.</p>
+
 <h5>Github</h5>
-<p>Find out more about this on the
-    <a href="https://github.com/brentwong-kiel1997/brents_AI_language_school?tab=readme-ov-file">
-        Github page</a>.</p>
+<p>Find out more about this project on the <a href="https://github.com/brentwong-kiel1997/brents_AI_language_school?tab=readme-ov-file" target="_blank">GitHub page</a>.</p>
+
+<h5>Usage</h5>
+<p>You can transcribe a video via this <a href="{% url 'url_input' %}" target="_blank">link</a>, or browse already transcribed videos below:</p>
 
 <h5>Transcribed Videos</h5>
 <form id="filterForm" method="GET">
@@ -37,56 +33,54 @@ Home
     </select>
     <button type="submit">Filter</button>
 </form>
+
 <div style="overflow-x:auto;">
     <table id="videoTable" style="width:100%;">
         <thead>
-        <tr>
-            <th style="width:12%;" class="sortable">
-                <button id="dateButton">Video Date &#x25B2;</button>
-            </th>
-            <th style="width:73%;">Title</th>
-            <th style="width:5%;">Language</th>
-            <th style="width:10%;">Length</th>
-        </tr>
+            <tr>
+                <th style="width:12%;" class="sortable">
+                    <button id="dateButton">Video Date &#x25B2;</button>
+                </th>
+                <th style="width:73%;">Title</th>
+                <th style="width:5%;">Language</th>
+                <th style="width:10%;">Length</th>
+            </tr>
         </thead>
         <tbody>
-        {% for content in model %}
-        <tr>
-            <td>{{ content.uploaded_date|date:"Y-m-d" }}</td>
-            <td><a href="{% url 'transcript' content.slug %}">{{ content.video_title }}</a></td>
-            <td>{{ content.video_language|capfirst }}</td>
-            <td>{{ content.video_length }}</td>
-        </tr>
-        {% endfor %}
+            {% for content in model %}
+            <tr>
+                <td>{{ content.uploaded_date|date:"Y-m-d" }}</td>
+                <td><a href="{% url 'transcript' content.slug %}" target="_blank">{{ content.video_title }}</a></td>
+                <td>{{ content.video_language|capfirst }}</td>
+                <td>{{ content.video_length }}</td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
         var asc = true;
         $('#dateButton').click(function() {
             var table = $('#videoTable');
-            var rows = table.find('tr:gt(0)').toArray().sort(comparer(1));
+            var rows = table.find('tr:gt(0)').toArray().sort(comparer);
             if (!asc) {
                 rows = rows.reverse();
-                asc = true;
-                $('#dateButton').html('Video Date &#x25B2;');
-            } else {
-                asc = false;
-                $('#dateButton').html('Video Date &#x25BC;');
             }
-            for (var i = 0; i < rows.length; i++) {
-                table.append(rows[i]);
-            }
+            $.each(rows, function(index, row) {
+                table.append(row);
+            });
+            asc = !asc;
+            $('#dateButton').html('Video Date ' + (asc ? '&#x25B2;' : '&#x25BC;'));
         });
-        function comparer(index) {
-            return function(a, b) {
-                var valA = getCellValue(a, index), valB = getCellValue(b, index);
-                return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.localeCompare(valB);
-            };
+
+        function comparer(a, b) {
+            var valA = $(a).find('td:first').text();
+            var valB = $(b).find('td:first').text();
+            return new Date(valA) - new Date(valB);
         }
-        function getCellValue(row, index) { return $(row).children('td').eq(index).text(); }
     });
 </script>
 {% endblock %}
