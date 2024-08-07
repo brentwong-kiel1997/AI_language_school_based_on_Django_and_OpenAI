@@ -29,3 +29,13 @@ You can find the set up home page [Home](https://profile-page-brentwong.pythonan
 
 
 ![Screenshot from 2024-08-07 13-30-23](https://github.com/user-attachments/assets/2ec48428-6a14-48f7-a25c-028ffd00b5cf)
+
+
+## Use case 1
+You can use the website to transcibe news videos from youtube via the url input link.
+
+**Important notes**
+The download function is realized via either [yt_dlp](https://github.com/yt-dlp/yt-dlp) and it is often likely not working due to YouTube changing their website feature. Please check out the third party package website for updates and bugs.
+
+![image](https://github.com/user-attachments/assets/af4854e3-2401-4e94-8170-62278040e868)
+
