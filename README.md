@@ -35,7 +35,19 @@ You can find the set up home page [Home](https://profile-page-brentwong.pythonan
 You can use the website to transcibe news videos from youtube via the url input link.
 
 **Important notes**
-The download function is realized via either [yt_dlp](https://github.com/yt-dlp/yt-dlp) and it is often likely not working due to YouTube changing their website feature. Please check out the third party package website for updates and bugs.
+
+The download function is realized via [yt_dlp](https://github.com/yt-dlp/yt-dlp) and it is often likely not working due to YouTube changing their website features. Please check out the third party package website for updates. I will not update this party of code constantly.
+Please find the download function under following path. 'bals/main_app/utils.py'
 
 ![image](https://github.com/user-attachments/assets/af4854e3-2401-4e94-8170-62278040e868)
+
+## Use case 2 
+You can also just click on the existing materials from the dataset.
+For now only English and Ukrianian are supported as native languages. If you wanna add more, please find the file at following path. 'bals/main_app/forms.py'
+
+![image](https://github.com/user-attachments/assets/93f30bc2-b512-47cc-beef-f0573f9ceb52)
+
+![image](https://github.com/user-attachments/assets/fa0e8ce5-ef91-44ee-bc10-f0825cca9dd3)
+
+
 
