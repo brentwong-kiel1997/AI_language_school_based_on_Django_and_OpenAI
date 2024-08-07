@@ -5,7 +5,7 @@ from openai import OpenAI
 from datetime import datetime
 
 
-os.environ['OPENAI_API_KEY'] = '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'
+os.environ['OPENAI_API_KEY'] = 'please input your own openAI API'
 client = OpenAI()
 
 
