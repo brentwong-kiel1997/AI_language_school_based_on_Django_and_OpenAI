@@ -1,4 +1,6 @@
 # AI language School Project with Django and OpenAI
+You can find the example of the website hosted on pythonanywhere at following link,[Home](https://brentwmq.pythonanywhere.com/)
+
 ## Introduction
 This is a project developed by me, Brent Wong([Linkedin Profile](https://www.linkedin.com/in/mingqianwangbrent987614198/))
 
@@ -25,7 +27,6 @@ The materials generated from the programming are considered as **commentaries**.
 
 ## Website Guide
 
-You can find the example of the website hosted on pythonanywhere at following link,[Home](https://brentwmq.pythonanywhere.com/)
 
 
 ![Screenshot from 2024-08-07 13-30-23](https://github.com/user-attachments/assets/2ec48428-6a14-48f7-a25c-028ffd00b5cf)
