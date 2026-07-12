@@ -18,12 +18,10 @@ httpcore==1.0.5
 httpx==0.27.0
 idna==3.7
 kombu==5.3.7
-openai==1.23.6
 prompt-toolkit==3.0.43
 pydantic==2.7.1
 pydantic_core==2.18.2
 python-dateutil==2.9.0.post0
-pytube==15.0.0
 six==1.16.0
 sniffio==1.3.1
 sqlparse==0.5.0
@@ -32,3 +30,19 @@ typing_extensions==4.11.0
 tzdata==2024.1
 vine==5.1.0
 wcwidth==0.2.13
+yt-dlp>=2026.7.0
+#
+# System requirements (NOT pip-installable):
+#
+# * A JavaScript runtime for yt-dlp >= 2026 (YouTube's n/sig player
+#   challenge solver).  macOS: `brew install deno`.  Linux: install one
+#   of `deno`, `node`, `nodejs`, `quickjs`, `qjs`, `bun` and ensure it
+#   is on PATH. Override the search order with the YTDLP_JS_RUNTIMES
+#   env var (colon-separated, accepts `RUNTIME[:PATH]` tokens).
+#
+# * FFmpeg on PATH – required by yt-dlp's FFmpegExtractAudio
+#   postprocessor for the webm -> mp3 conversion.
+#
+# * Removed: `pytube` (unmaintained, broken against modern YouTube),
+#   `openai` (replaced by the in-house `minimax_cli` package).
+

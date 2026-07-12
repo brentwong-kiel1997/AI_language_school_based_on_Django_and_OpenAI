@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minimax-cli"
+version = "0.1.0"
+description = "A pure-Python, command-line compatible reimplementation of the official MiniMax mmx-cli."
+readme = "MINIMAX_CLI_README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+  { name = "minimax_cli maintainers" },
+]
+keywords = ["minimax", "mmx", "cli", "agent", "llm", "tts", "image", "video", "music"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Environment :: Console",
+]
+dependencies = [
+  "httpx>=0.27",
+]
+
+[project.scripts]
+mmx = "minimax_cli.cli:main"
+
+[project.urls]
+Homepage = "https://platform.minimaxi.com/docs/token-plan/minimax-cli"
+Documentation = "https://platform.minimaxi.com/docs/api-reference/api-overview"
+Repository = "https://github.com/MiniMax-AI/cli"
+
+[tool.setuptools]
+packages = ["minimax_cli"]
