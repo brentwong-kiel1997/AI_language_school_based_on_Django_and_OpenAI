@@ -321,20 +321,22 @@ class Generator:
         self.target_language = target_language
         self.native_language = native_language
         self.text = str(text)
-        self.target_language_level = "b1"
-
         self.prompt = f"""
 You are an experienced CEFR-aligned language teacher and lesson designer.
-Create a practical, learner-centred lesson from the transcript below.
-The learner's native language is {self.native_language}; target language is
-{self.target_language}; level is {self.target_language_level} (B1).
+First assess the transcript's actual CEFR level as exactly one of A1, A2, B1, B2,
+C1, or C2. Base the assessment on the transcript itself, considering vocabulary
+range and sophistication, grammatical complexity, speech rate and information
+density, and degree of abstraction. Do not artificially raise or lower the level.
+Then create a practical, learner-centred lesson whose language and activities match
+the assessed level. The learner's native language is {self.native_language}; target
+language is {self.target_language}.
 Use the action-oriented cycle: prepare -> understand -> study -> practise -> reflect.
 Focus on useful language in context, not isolated difficult words. Do not invent
 facts that are not supported by the transcript. Return one valid JSON object only.
 
 Required JSON keys:
 - lesson_title: a short title in the learner's native language
-- level: "B1"
+- level: the actual assessed CEFR level, exactly "A1", "A2", "B1", "B2", "C1", or "C2"
 - can_do: 2-3 measurable "I can..." learning objectives
 - warm_up: 2 questions to activate prior knowledge before watching
 - import_words: exactly 12 useful words or phrases, each value an object with
@@ -350,8 +352,8 @@ Required JSON keys:
 - writing_task: one short output task with a word limit and success criteria
 - review: 5 short retrieval questions for later review, with answers
 
-Keep the language appropriate for B1, make every activity actionable, and ensure
-all JSON strings are properly escaped. Transcript:
+Keep every part of the material appropriate for the assessed CEFR level, make every
+activity actionable, and ensure all JSON strings are properly escaped. Transcript:
 {self.text}
 """
 
@@ -360,7 +362,7 @@ all JSON strings are properly escaped. Transcript:
         client = _get_client()
         response = client.text_chat(
             messages=[
-                ChatMessage.user(self.prompt + self.text),
+                ChatMessage.user(self.prompt),
             ],
             model=model,
             temperature=0,
@@ -369,7 +371,7 @@ all JSON strings are properly escaped. Transcript:
         self.reply = response.to_json()
         # Keep the same attribute name the views already access.
         self.message_history = [
-            {"role": "user", "content": self.prompt + self.text},
+            {"role": "user", "content": self.prompt},
             {"role": "assistant", "content": self.reply},
         ]
 
