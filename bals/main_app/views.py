@@ -21,7 +21,9 @@ from urllib.parse import parse_qs, urlparse
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods
 
 from .forms import MaterialForm, UrlInputForm
@@ -162,7 +164,7 @@ def url_input(request):
                 video_id = parsed.path.strip("/").split("/")[0]
             if re.fullmatch(r"[A-Za-z0-9_-]{11}", video_id):
                 return redirect("wait", video_id=video_id)
-            messages.error(request, "无法识别这个 YouTube 链接，请检查后重试。")
+            messages.error(request, _("We couldn't recognize this YouTube URL. Please check it and try again."))
     else:
         form = UrlInputForm()
     return render(request, "main_app/url_input.html", {"form": form})
@@ -201,7 +203,7 @@ def wait_view(request, video_id):
         return JsonResponse({
             "status": row.status,
             "error": row.error_message,
-            "redirect_url": f"/transcript/{row.slug}" if row.status == JOB_READY else "",
+            "redirect_url": reverse("transcript", kwargs={"transcribe_slug": row.slug}) if row.status == JOB_READY else "",
         })
 
     if row.status == JOB_READY:
@@ -228,7 +230,7 @@ def wait_view(request, video_id):
             "row": row,
             "poll_target": "wait",
             "poll_args": {"video_id": video_id},
-            "poll_on_ready_redirect": f"/transcript/{row.slug}",
+            "poll_on_ready_redirect": reverse("transcript", kwargs={"transcribe_slug": row.slug}),
         },
     )
 
@@ -292,7 +294,7 @@ def wait_for_chatbot(request, transcribe_slug, native_language):
 
     if request.GET.get("status") == "1":
         redirect_url = (
-            f"/learning_material/{video.video_id}/{native_language}"
+            reverse("learning_material", kwargs={"video_slug": video.video_id, "native_language_slug": native_language})
             if row.status == JOB_READY else ""
         )
         return JsonResponse({"status": row.status, "error": row.error_message,
@@ -321,7 +323,7 @@ def wait_for_chatbot(request, transcribe_slug, native_language):
         request,
         "main_app/wait.html",
         {
-            "video_url": f"/transcript/{transcribe_slug}",
+            "video_url": reverse("transcript", kwargs={"transcribe_slug": transcribe_slug}),
             "video_id": video.video_id,
             "row": row,
             "poll_target": "wait_for_chatbot",
@@ -330,7 +332,7 @@ def wait_for_chatbot(request, transcribe_slug, native_language):
                 "native_language": native_language,
             },
             "poll_on_ready_redirect": (
-                f"/learning_material/{video.video_id}/{native_language}"
+                reverse("learning_material", kwargs={"video_slug": video.video_id, "native_language_slug": native_language})
             ),
         },
     )
@@ -355,6 +357,8 @@ def learning_material(request, video_slug, native_language_slug):
         f"?origin={embed_origin}&rel=0&playsinline=1&enablejsapi=1"
     )
     reply = json.loads(model2.material) if model2.material else {}
+    word_items = _normalise_material_items(reply.get("import_words"))
+    grammar_items = _normalise_material_items(reply.get("import_grammars"), label_key="pattern")
     context = {
         "model2": model2,
         "model": model,
@@ -362,5 +366,24 @@ def learning_material(request, video_slug, native_language_slug):
         "embedded": embedded,
         "youtube_url": f"https://www.youtube.com/watch?v={model.video_id}",
         "reply": reply,
+        "word_items": word_items,
+        "grammar_items": grammar_items,
     }
     return render(request, "main_app/learning_material.html", context=context)
+
+
+def _normalise_material_items(value, label_key="label"):
+    """Return template-friendly lesson items from dict or list LLM output."""
+    if isinstance(value, dict):
+        return [{"label": key, "details": detail} for key, detail in value.items()]
+    if isinstance(value, list):
+        items = []
+        for index, detail in enumerate(value, start=1):
+            if isinstance(detail, dict):
+                label = detail.get(label_key) or detail.get("word") or detail.get("term") or str(index)
+                details = {key: val for key, val in detail.items() if key != label_key}
+                items.append({"label": label, "details": details})
+            else:
+                items.append({"label": str(index), "details": detail})
+        return items
+    return []

@@ -44,5 +44,5 @@ yt-dlp>=2026.7.0
 #   postprocessor for the webm -> mp3 conversion.
 #
 # * Removed: `pytube` (unmaintained, broken against modern YouTube),
-#   `openai` (replaced by the in-house `minimax_cli` package).
+#   `openai` and vendor SDKs (Ark chat uses direct `httpx` requests).
 
