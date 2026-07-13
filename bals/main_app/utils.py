@@ -27,7 +27,7 @@ import yt_dlp as youtube_dl
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_ARK_BASE_URL = "https://ark.cn-beijing.volces.com/api/v3"
+DEFAULT_ARK_BASE_URL = "https://ark.cn-beijing.volces.com/api/plan/v3"
 DEFAULT_ARK_MODEL = "doubao-seed-2.0-lite"
 DEFAULT_ARK_TIMEOUT_SECONDS = 300.0
 MIN_ARK_TIMEOUT_SECONDS = 1.0
