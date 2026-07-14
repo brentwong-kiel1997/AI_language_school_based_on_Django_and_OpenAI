@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-13 02:55+0000\n"
+"POT-Creation-Date: 2026-07-13 10:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: main_app/forms.py:6
 msgid "YouTube video URL"
 msgstr ""
@@ -175,7 +176,31 @@ msgid "Key vocabulary"
 msgstr ""
 
 #: main_app/templates/main_app/learning_material.html:1
+msgid "Meaning"
+msgstr ""
+
+#: main_app/templates/main_app/learning_material.html:1
+msgid "Example"
+msgstr ""
+
+#: main_app/templates/main_app/learning_material.html:1
+msgid "Note"
+msgstr ""
+
+#: main_app/templates/main_app/learning_material.html:1
 msgid "Grammar"
+msgstr ""
+
+#: main_app/templates/main_app/learning_material.html:1
+msgid "Pattern"
+msgstr ""
+
+#: main_app/templates/main_app/learning_material.html:1
+msgid "Explanation"
+msgstr ""
+
+#: main_app/templates/main_app/learning_material.html:1
+msgid "Practice"
 msgstr ""
 
 #: main_app/templates/main_app/learning_material.html:1
@@ -311,11 +336,13 @@ msgid "News, interviews and educational videos work well"
 msgstr ""
 
 #: main_app/templates/main_app/url_input.html:1
-msgid "Has YouTube captions"
+msgid "Captions are preferred"
 msgstr ""
 
 #: main_app/templates/main_app/url_input.html:1
-msgid "Manual or automatic captions are accepted"
+msgid ""
+"We use manual captions first, then automatic captions, and Seed ASR when no "
+"captions are available."
 msgstr ""
 
 #: main_app/templates/main_app/url_input.html:1
@@ -394,6 +421,54 @@ msgstr ""
 msgid "Connecting to the processing service…"
 msgstr ""
 
-#: main_app/views.py:167
+#: main_app/views.py:178
 msgid "We couldn't recognize this YouTube URL. Please check it and try again."
 msgstr ""
+
+msgid "Part of speech"
+msgstr "Part of speech"
+
+msgid "Pronunciation"
+msgstr "Pronunciation"
+
+msgid "Forms"
+msgstr "Forms"
+
+msgid "Register"
+msgstr "Register"
+
+msgid "Sense"
+msgstr "Sense"
+
+msgid "Definition"
+msgstr "Definition"
+
+msgid "Translation"
+msgstr "Translation"
+
+msgid "Collocations"
+msgstr "Collocations"
+
+msgid "Synonyms"
+msgstr "Synonyms"
+
+msgid "Antonyms"
+msgstr "Antonyms"
+
+msgid "Phraseology"
+msgstr "Phraseology"
+
+msgid "Usage note"
+msgstr "Usage note"
+
+msgid "Article"
+msgstr "Article"
+
+msgid "Gender"
+msgstr "Gender"
+
+msgid "Plural/forms"
+msgstr "Plural/forms"
+
+msgid "CEFR"
+msgstr "CEFR"

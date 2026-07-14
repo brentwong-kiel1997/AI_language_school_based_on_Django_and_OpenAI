@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['bals-brentwong.pythonanywhere.com', 'localhost', '127.0.0.1', '[::1]']
 
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
 # Application definition
 
 INSTALLED_APPS = [

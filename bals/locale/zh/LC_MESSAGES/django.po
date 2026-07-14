@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-13 02:55+0000\n"
+"POT-Creation-Date: 2026-07-13 10:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
 #: main_app/forms.py:6
 msgid "YouTube video URL"
 msgstr "YouTube 视频链接"
@@ -175,8 +176,32 @@ msgid "Key vocabulary"
 msgstr "重点词汇"
 
 #: main_app/templates/main_app/learning_material.html:1
+msgid "Meaning"
+msgstr "释义"
+
+#: main_app/templates/main_app/learning_material.html:1
+msgid "Example"
+msgstr "例句"
+
+#: main_app/templates/main_app/learning_material.html:1
+msgid "Note"
+msgstr "备注"
+
+#: main_app/templates/main_app/learning_material.html:1
 msgid "Grammar"
 msgstr "语法讲解"
+
+#: main_app/templates/main_app/learning_material.html:1
+msgid "Pattern"
+msgstr "句型"
+
+#: main_app/templates/main_app/learning_material.html:1
+msgid "Explanation"
+msgstr "解释"
+
+#: main_app/templates/main_app/learning_material.html:1
+msgid "Practice"
+msgstr "练习"
 
 #: main_app/templates/main_app/learning_material.html:1
 msgid "Listening comprehension"
@@ -311,12 +336,15 @@ msgid "News, interviews and educational videos work well"
 msgstr "新闻、访谈和知识视频效果更好"
 
 #: main_app/templates/main_app/url_input.html:1
-msgid "Has YouTube captions"
-msgstr "带有 YouTube 字幕"
+msgid "Captions are preferred"
+msgstr "优先使用 YouTube 字幕"
 
 #: main_app/templates/main_app/url_input.html:1
-msgid "Manual or automatic captions are accepted"
-msgstr "可以是人工字幕或自动字幕"
+msgid ""
+"We use manual captions first, then automatic captions, and Seed ASR when no "
+"captions are available."
+msgstr ""
+"优先使用人工字幕，其次使用自动字幕；没有字幕时通过 Seed ASR 进行语音识别。"
 
 #: main_app/templates/main_app/url_input.html:1
 msgid "Publicly accessible"
@@ -394,6 +422,54 @@ msgstr "暂时无法获取状态，正在自动重试…"
 msgid "Connecting to the processing service…"
 msgstr "正在连接处理服务…"
 
-#: main_app/views.py:167
+#: main_app/views.py:178
 msgid "We couldn't recognize this YouTube URL. Please check it and try again."
 msgstr "无法识别这个 YouTube 链接，请检查后重试。"
+
+msgid "Part of speech"
+msgstr "词性"
+
+msgid "Pronunciation"
+msgstr "发音"
+
+msgid "Forms"
+msgstr "形式"
+
+msgid "Register"
+msgstr "语体"
+
+msgid "Sense"
+msgstr "义项"
+
+msgid "Definition"
+msgstr "定义"
+
+msgid "Translation"
+msgstr "翻译"
+
+msgid "Collocations"
+msgstr "搭配"
+
+msgid "Synonyms"
+msgstr "同义词"
+
+msgid "Antonyms"
+msgstr "反义词"
+
+msgid "Phraseology"
+msgstr "固定表达"
+
+msgid "Usage note"
+msgstr "用法说明"
+
+msgid "Article"
+msgstr "冠词"
+
+msgid "Gender"
+msgstr "性"
+
+msgid "Plural/forms"
+msgstr "复数/形式"
+
+msgid "CEFR"
+msgstr "CEFR等级"

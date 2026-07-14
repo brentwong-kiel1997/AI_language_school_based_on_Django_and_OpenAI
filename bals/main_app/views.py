@@ -16,7 +16,7 @@ import ast
 import json
 import logging
 import re
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlencode, urlparse
 
 from django.contrib import messages
 from django.http import JsonResponse
@@ -38,6 +38,17 @@ from .models import (
 from .utils import Generator, Transcribe, run_in_background
 
 logger = logging.getLogger(__name__)
+
+
+def _youtube_embed_url(request, video_id):
+    """Build a YouTube embed URL with the request's scheme and host."""
+    query = urlencode({
+        "origin": request.build_absolute_uri("/").rstrip("/"),
+        "rel": 0,
+        "playsinline": 1,
+        "enablejsapi": 1,
+    })
+    return f"https://www.youtube.com/embed/{video_id}?{query}"
 
 
 # ---------------------------------------------------------------------------
@@ -242,11 +253,7 @@ def transcript(request, transcribe_slug):
         # Someone bookmarked the transcript URL but the job hasn't finished.
         return redirect("wait", video_id=model.video_id)
 
-    embed_origin = request.build_absolute_uri("/").rstrip("/")
-    embedded = (
-        f"https://www.youtube.com/embed/{model.video_id}"
-        f"?origin={embed_origin}&rel=0&playsinline=1&enablejsapi=1"
-    )
+    embedded = _youtube_embed_url(request, model.video_id)
     text = ast.literal_eval(model.video_text) if model.video_text else {}
     model2 = Learning_Material.objects.filter(linked_video=model)
     if request.method == "POST":
@@ -351,11 +358,7 @@ def learning_material(request, video_slug, native_language_slug):
         )
 
     video_text = ast.literal_eval(model.video_text) if model.video_text else {}
-    embed_origin = request.build_absolute_uri("/").rstrip("/")
-    embedded = (
-        f"https://www.youtube.com/embed/{model.video_id}"
-        f"?origin={embed_origin}&rel=0&playsinline=1&enablejsapi=1"
-    )
+    embedded = _youtube_embed_url(request, model.video_id)
     reply = json.loads(model2.material) if model2.material else {}
     word_items = _normalise_material_items(reply.get("import_words"))
     grammar_items = _normalise_material_items(reply.get("import_grammars"), label_key="pattern")
@@ -373,17 +376,20 @@ def learning_material(request, video_slug, native_language_slug):
 
 
 def _normalise_material_items(value, label_key="label"):
-    """Return template-friendly lesson items from dict or list LLM output."""
+    """Return template-friendly dictionary/grammar items without numeric labels."""
     if isinstance(value, dict):
         return [{"label": key, "details": detail} for key, detail in value.items()]
-    if isinstance(value, list):
-        items = []
-        for index, detail in enumerate(value, start=1):
-            if isinstance(detail, dict):
-                label = detail.get(label_key) or detail.get("word") or detail.get("term") or str(index)
-                details = {key: val for key, val in detail.items() if key != label_key}
-                items.append({"label": label, "details": details})
-            else:
-                items.append({"label": str(index), "details": detail})
-        return items
-    return []
+    if not isinstance(value, list):
+        return []
+    items = []
+    for detail in value:
+        if not isinstance(detail, dict):
+            items.append({"label": "", "details": {"legacy_sense": {"definition": "", "translation": "", "example": str(detail), "collocations": []}, "senses": []}})
+            continue
+        label = detail.get("term") or detail.get("word") or detail.get("label") if label_key == "label" else detail.get(label_key) or detail.get("term") or detail.get("word") or detail.get("label")
+        details = dict(detail)
+        details.pop(label_key, None)
+        if not details.get("senses"):
+            details["senses"] = [{"definition": details.get("meaning", ""), "translation": details.get("meaning", ""), "example": details.get("example", ""), "collocations": []}]
+        items.append({"label": label or "", "details": details})
+    return items

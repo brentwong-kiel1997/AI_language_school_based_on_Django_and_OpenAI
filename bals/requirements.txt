@@ -1,3 +1,4 @@
+aiohttp>=3.10,<4
 amqp==5.2.0
 annotated-types==0.6.0
 anyio==4.3.0
@@ -40,8 +41,7 @@ yt-dlp>=2026.7.0
 #   is on PATH. Override the search order with the YTDLP_JS_RUNTIMES
 #   env var (colon-separated, accepts `RUNTIME[:PATH]` tokens).
 #
-# * FFmpeg on PATH – required by yt-dlp's FFmpegExtractAudio
-#   postprocessor for the webm -> mp3 conversion.
+# * FFmpeg on PATH – required to convert downloaded audio to 16 kHz mono WAV.
 #
 # * Removed: `pytube` (unmaintained, broken against modern YouTube),
 #   `openai` and vendor SDKs (Ark chat uses direct `httpx` requests).

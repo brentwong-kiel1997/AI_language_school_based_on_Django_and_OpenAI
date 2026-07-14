@@ -3,11 +3,16 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "bals-language-school"
+name = "minimax-cli"
 version = "0.1.0"
-description = "Django language-learning app powered by Volcengine Ark."
+description = "MiniMax China Token Plan CLI and HTTP client"
+readme = "README_MINIMAX.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
-dependencies = [
-  "httpx>=0.27",
-]
+dependencies = ["httpx>=0.27"]
+
+[project.scripts]
+mmx = "minimax_cli.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["minimax_cli*"]
