@@ -1,15 +1,8 @@
 """Utility helpers for the YouTube → learning-material pipeline.
 
-Learning materials are generated through Volcengine Ark's OpenAI-compatible chat completions API. Transcription uses YouTube captions first, Seed ASR fallback.
-
-Public surface (unchanged from the OpenAI version so Django views need
-no edits):
-
-* :class:`Transcribe`      – reads a YouTube video's captions, and exposes the same ``text_with_ts``
-                              dict the templates use to render captions.
-* :class:`Generator`       – builds the 5-section learning-material
-                              prompt and calls the chat completion API
-                              in JSON mode.
+Ark chat + Seed ASR live in the standalone ``ark_cli`` package. This module
+keeps Django-facing orchestration: captions/yt-dlp (``Transcribe``), lesson
+generation (``Generator``), and background jobs.
 """
 
 from __future__ import annotations
@@ -26,111 +19,32 @@ from pathlib import Path
 
 import httpx
 import yt_dlp as youtube_dl
-
-from . import asr
+from ark_cli import asr, get_client, reset_client
+from ark_cli.config import (
+    DEFAULT_ARK_MAX_TOKENS,
+    DEFAULT_ARK_MODEL,
+    MAX_ARK_MAX_TOKENS,
+    MIN_ARK_MAX_TOKENS,
+    load_dotenv,
+    env_int as _env_int,
+)
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_ARK_BASE_URL = "https://ark.cn-beijing.volces.com/api/plan/v3"
-DEFAULT_ARK_MODEL = "doubao-seed-2.0-lite"
-DEFAULT_ARK_TIMEOUT_SECONDS = 300.0
-MIN_ARK_TIMEOUT_SECONDS = 1.0
 DEFAULT_ARK_MAX_RETRIES = 2
 MAX_ARK_MAX_RETRIES = 10
-DEFAULT_ARK_MAX_TOKENS = 32768
-MIN_ARK_MAX_TOKENS = 256
-MAX_ARK_MAX_TOKENS = 131072
 
-
-def _load_dotenv() -> None:
-    """Load repository and Django-project .env files without overriding OS env."""
-    project_dir = Path(__file__).resolve().parents[1]
-    repo_root = project_dir.parent
-    for path in (repo_root / ".env", project_dir / ".env"):
-        if not path.is_file():
-            continue
-        for raw_line in path.read_text(encoding="utf-8").splitlines():
-            line = raw_line.strip()
-            if not line or line.startswith("#") or "=" not in line:
-                continue
-            key, value = line.split("=", 1)
-            key = key.strip()
-            value = value.strip()
-            if value and value[0:1] == value[-1:] and value[0] in "\"'":
-                value = value[1:-1]
-            if key:
-                os.environ.setdefault(key, value)
-
-
-_load_dotenv()
-
-
-def _env_float(name: str, default: float, minimum: float) -> float:
-    raw_value = os.environ.get(name)
-    if raw_value is None:
-        return default
-    try:
-        value = float(raw_value)
-    except (TypeError, ValueError):
-        return default
-    if not value >= minimum or value == float("inf"):
-        return default
-    return value
-
-
-def _env_int(name: str, default: int, minimum: int, maximum: int) -> int:
-    raw_value = os.environ.get(name)
-    if raw_value is None:
-        return default
-    try:
-        value = int(raw_value)
-    except (TypeError, ValueError):
-        return default
-    return value if minimum <= value <= maximum else default
-
+load_dotenv(
+    (
+        Path(__file__).resolve().parents[2] / ".env",
+        Path(__file__).resolve().parents[1] / ".env",
+    )
+)
 
 TEXT_MODEL = os.environ.get("ARK_MODEL", DEFAULT_ARK_MODEL)
 
-
-class ArkChatClient:
-    """Minimal client for Ark's OpenAI-compatible chat completions API."""
-
-    def __init__(self, api_key: str, base_url: str, timeout: float):
-        if not api_key:
-            raise ValueError("ARK_API_KEY is required")
-        self.api_key = api_key
-        self.base_url = base_url.rstrip("/")
-        self.timeout = timeout
-
-    def chat(self, messages: list[dict], model: str, temperature: float = 0, max_tokens: int = DEFAULT_ARK_MAX_TOKENS) -> str:
-        if not model:
-            raise ValueError("ARK_MODEL is required")
-        if not MIN_ARK_MAX_TOKENS <= max_tokens <= MAX_ARK_MAX_TOKENS:
-            raise ValueError(f"max_tokens must be between {MIN_ARK_MAX_TOKENS} and {MAX_ARK_MAX_TOKENS}")
-        body = {"model": model, "messages": messages, "temperature": temperature,
-                "max_tokens": max_tokens, "response_format": {"type": "json_object"}}
-        response = self._post(body)
-        if response.status_code == 400 and "response_format" in response.text.lower():
-            body.pop("response_format", None)
-            response = self._post(body)
-        if response.status_code == 400:
-            logger.error("Ark chat request rejected (HTTP 400), including max_tokens=%s: %s", max_tokens, response.text[:1000])
-        response.raise_for_status()
-        payload = response.json()
-        try:
-            content = payload["choices"][0]["message"]["content"]
-        except (KeyError, IndexError, TypeError) as exc:
-            raise ValueError("Ark response did not contain choices[0].message.content") from exc
-        if not isinstance(content, str):
-            raise ValueError("Ark response content was not text")
-        return content
-
-    def _post(self, body: dict) -> httpx.Response:
-        return httpx.post(
-            f"{self.base_url}/chat/completions",
-            headers={"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"},
-            json=dict(body), timeout=self.timeout,
-        )
+# Compat aliases for tests and older callers.
+_get_client = get_client
 
 
 # ---------------------------------------------------------------------------
@@ -675,32 +589,6 @@ class Generator:
         if errors:
             raise LearningMaterialValidationError("Merged learning material invalid: " + "; ".join(errors))
         self.reply = json.dumps(data, ensure_ascii=False)
-
-
-# ---------------------------------------------------------------------------
-# Client helper
-# ---------------------------------------------------------------------------
-
-
-_CLIENT: ArkChatClient | None = None
-
-
-def _get_client() -> ArkChatClient:
-    """Return a lazily constructed process-wide Ark client."""
-    global _CLIENT
-    if _CLIENT is None:
-        _CLIENT = ArkChatClient(
-            api_key=os.environ.get("ARK_API_KEY", ""),
-            base_url=os.environ.get("ARK_BASE_URL", DEFAULT_ARK_BASE_URL),
-            timeout=_env_float("ARK_TIMEOUT_SECONDS", DEFAULT_ARK_TIMEOUT_SECONDS,
-                               minimum=MIN_ARK_TIMEOUT_SECONDS),
-        )
-    return _CLIENT
-
-
-def reset_client() -> None:
-    global _CLIENT
-    _CLIENT = None
 
 
 # ---------------------------------------------------------------------------

@@ -44,5 +44,6 @@ yt-dlp>=2026.7.0
 # * FFmpeg on PATH – required to convert downloaded audio to 16 kHz mono WAV.
 #
 # * Removed: `pytube` (unmaintained, broken against modern YouTube),
-#   `openai` and vendor SDKs (Ark chat uses direct `httpx` requests).
+#   `openai` and vendor SDKs (Ark chat / Seed ASR live in standalone
+#   `ark_cli`; install with `pip install -e ..` from repo root).
 
