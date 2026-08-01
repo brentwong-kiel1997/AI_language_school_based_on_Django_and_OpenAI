@@ -1,1 +1,135 @@
-{% extends 'main_app/base.html' %}{% load i18n %}{% block title %}{% trans "Course library · BALS" %}{% endblock %}{% block content %}<section class="row align-items-center g-5 py-lg-4 mb-5"><div class="col-lg-7"><span class="status-pill mb-3">Volcengine Ark {% trans "smart courses" %}</span><h1 class="section-title display-3 mb-4">{% blocktrans %}Every authentic video<br><span class="text-primary">becomes a language lesson.</span>{% endblocktrans %}</h1><p class="lead muted mb-4">{% trans "Build real language ability through subtitles, vocabulary, grammar, listening and speaking practice." %}</p><a class="btn btn-primary btn-lg px-4" href="{% url 'url_input' %}">{% trans "Create your first course" %}</a></div><div class="col-lg-5"><div class="card p-4 p-lg-5"><p><b>{% trans "1. Paste a video" %}</b><br><span class="muted">{% trans "YouTube videos and Shorts are supported" %}</span></p><p><b>{% trans "2. Get the transcript" %}</b><br><span class="muted">{% trans "Timestamps stay available for study" %}</span></p><p class="mb-0"><b>{% trans "3. Generate a complete course" %}</b><br><span class="muted">{% trans "Goals, vocabulary, exercises and review" %}</span></p></div></div></section><section><div class="d-flex justify-content-between align-items-end mb-4"><h2 class="section-title">{% trans "Course library" %}</h2><form class="d-flex gap-2"><select class="form-select" name="language_filter"><option value="">{% trans "All languages" %}</option>{% for language in languages %}<option value="{{ language }}">{{ language|capfirst }}</option>{% endfor %}</select><button class="btn btn-light">{% trans "Filter" %}</button></form></div><div class="row g-4">{% for content in model %}<div class="col-md-6 col-xl-4"><a class="card course-card h-100 p-4 text-decoration-none" href="{% url 'transcript' content.slug %}"><span class="status-pill align-self-start">{{ content.video_language|capfirst }}</span><h3 class="h5 fw-bold my-4">{{ content.video_title }}</h3><div class="small muted">{{ content.video_length }} {% trans "seconds" %} · {{ content.uploaded_date|date:"Y-m-d" }}</div></a></div>{% empty %}<div class="col-12"><div class="card empty-state"><h3>{% trans "No courses yet" %}</h3><p class="muted">{% trans "Start with a public video under 10 minutes." %}</p><a class="btn btn-primary mx-auto" href="{% url 'url_input' %}">{% trans "Create course" %}</a></div></div>{% endfor %}</div></section>{% endblock %}
+{% extends 'main_app/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Course library · BALS" %}{% endblock %}
+{% block content %}
+<section class="row align-items-center g-4 g-lg-5 mb-5 pb-lg-3">
+  <div class="col-lg-7">
+    <span class="badge text-bg-primary mb-3"><i class="bi bi-stars me-1"></i>MiniMax {% trans "smart courses" %}</span>
+    <h1 class="display-5 fw-bold mb-3">
+      {% blocktrans %}Every authentic video<br><span class="text-primary">becomes a language lesson.</span>{% endblocktrans %}
+    </h1>
+    <p class="lead text-body-secondary mb-4">
+      {% trans "Build real language ability through subtitles, vocabulary, grammar, listening and speaking practice." %}
+    </p>
+    <div class="d-flex flex-wrap align-items-center gap-2">
+      <a class="btn btn-primary btn-lg" href="{% url 'url_input' %}">
+        <i class="bi bi-plus-lg me-1"></i>{% trans "Create your first course" %}
+      </a>
+      <span class="small text-body-secondary"><i class="bi bi-youtube me-1"></i>{% trans "YouTube · under 10 min" %}</span>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold"><i class="bi bi-list-ol me-2 text-primary"></i>{% trans "How it works" %}</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item d-flex gap-3 align-items-start">
+          <span class="badge text-bg-primary rounded-pill mt-1">1</span>
+          <div>
+            <div class="fw-semibold">{% trans "Paste a video" %}</div>
+            <div class="small text-body-secondary">{% trans "YouTube videos and Shorts are supported" %}</div>
+          </div>
+        </li>
+        <li class="list-group-item d-flex gap-3 align-items-start">
+          <span class="badge text-bg-primary rounded-pill mt-1">2</span>
+          <div>
+            <div class="fw-semibold">{% trans "Get the transcript" %}</div>
+            <div class="small text-body-secondary">{% trans "Timestamps stay available for study" %}</div>
+          </div>
+        </li>
+        <li class="list-group-item d-flex gap-3 align-items-start">
+          <span class="badge text-bg-primary rounded-pill mt-1">3</span>
+          <div>
+            <div class="fw-semibold">{% trans "Generate a complete course" %}</div>
+            <div class="small text-body-secondary">{% trans "Goals, vocabulary, exercises and review" %}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
+    <h2 class="h3 mb-0"><i class="bi bi-collection me-2 text-primary"></i>{% trans "Course library" %}</h2>
+    <form class="d-flex flex-wrap gap-2" method="get" role="search">
+        <input type="search" class="form-control w-auto" name="q"
+             value="{{ request.GET.q }}" placeholder="{% trans 'Search courses…' %}" aria-label="{% trans 'Search courses…' %}">
+        <select class="form-select w-auto" name="language_filter" aria-label="{% trans 'All languages' %}">
+        <option value="">{% trans "All languages" %}</option>
+        {% for language in languages %}
+        <option value="{{ language }}" {% if request.GET.language_filter == language %}selected{% endif %}>{{ language|capfirst }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-funnel me-1"></i>{% trans "Filter" %}</button>
+    </form>
+  </div>
+
+  <div class="row g-4">
+    {% for content in model %}
+    <div class="col-md-6 col-xl-4">
+      <a class="card course-card h-100 shadow-sm text-decoration-none" href="{% url 'transcript' content.slug %}" style="transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;">
+        <div class="card-body d-flex flex-column">
+          <span class="badge text-bg-primary align-self-start mb-3">{{ content.video_language|capfirst }}</span>
+          <h3 class="h5 card-title">{{ content.video_title }}</h3>
+          <p class="card-text text-body-secondary small mt-auto mb-0">
+            <i class="bi bi-clock me-1"></i>{{ content.video_length }} {% trans "seconds" %}
+            <span class="mx-1">·</span>
+            <i class="bi bi-calendar3 me-1"></i>{{ content.uploaded_date|date:"Y-m-d" }}
+          </p>
+        </div>
+        <div class="card-footer bg-transparent small text-primary">
+          {% trans "Open transcript" %} <i class="bi bi-arrow-right"></i>
+        </div>
+      </a>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-body text-center py-5">
+          <i class="bi bi-camera-reels display-6 text-body-secondary d-block mb-3"></i>
+          <h3 class="h4">{% trans "No courses yet" %}</h3>
+          <p class="text-body-secondary mb-4">{% trans "Start with a public video under 10 minutes." %}</p>
+          <a class="btn btn-primary" href="{% url 'url_input' %}">{% trans "Create course" %}</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if model.has_other_pages %}
+  <nav class="mt-4" aria-label="{% trans 'Course pagination' %}">
+    <ul class="pagination justify-content-center">
+      {% if model.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.language_filter %}language_filter={{ request.GET.language_filter }}&{% endif %}page={{ model.previous_page_number }}">
+          <i class="bi bi-chevron-left"></i> {% trans "Previous" %}
+        </a>
+      </li>
+      {% else %}
+      <li class="page-item disabled"><span class="page-link"><i class="bi bi-chevron-left"></i> {% trans "Previous" %}</span></li>
+      {% endif %}
+
+      {% for num in model.paginator.page_range %}
+        {% if model.number == num %}
+        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% elif num > model.number|add:'-3' and num < model.number|add:'3' %}
+        <li class="page-item">
+          <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.language_filter %}language_filter={{ request.GET.language_filter }}&{% endif %}page={{ num }}">{{ num }}</a>
+        </li>
+        {% endif %}
+      {% endfor %}
+
+      {% if model.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.language_filter %}language_filter={{ request.GET.language_filter }}&{% endif %}page={{ model.next_page_number }}">
+          {% trans "Next" %} <i class="bi bi-chevron-right"></i>
+        </a>
+      </li>
+      {% else %}
+      <li class="page-item disabled"><span class="page-link">{% trans "Next" %} <i class="bi bi-chevron-right"></i></span></li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+</section>
+{% endblock %}

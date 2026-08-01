@@ -1,3 +1,627 @@
-{% load i18n %}<!doctype html><html lang="{{ LANGUAGE_CODE }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{% block title %}{% trans "BALS AI Language School" %}{% endblock %}</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"><style>
-:root{color-scheme:dark;--ink:#f4f6fb;--muted:#a7afbf;--brand:#8b7cff;--brand-dark:#7665ef;--soft:#101218;--panel:#191c24;--line:#303541;--green:#45c98d}*{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:"PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif}.navbar{background:#151820!important;border-bottom:1px solid var(--line);min-height:72px}.content-shell{max-width:1240px}.brand-mark{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:8px;background:var(--brand);color:#fff;font-weight:900;margin-right:10px}.brand-name,.navbar-brand{color:var(--ink)!important}.nav-link{color:var(--muted)!important}.card,.panel{color:var(--ink);border:1px solid var(--line);border-radius:8px;background:var(--panel);box-shadow:0 10px 30px #0003}.btn-primary{background:var(--brand);border-color:var(--brand)}.btn-primary:hover{background:var(--brand-dark);border-color:var(--brand-dark)}.btn-light,.btn-outline-secondary{background:#252a34;color:var(--ink);border-color:var(--line)}.btn-light:hover,.btn-outline-secondary:hover{background:#303642;color:#fff;border-color:#4a5261}.form-control,.form-select,.input-group-text{background:#12151c!important;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:.78rem 1rem}.form-control::placeholder{color:#747d8d}.form-control:focus,.form-select:focus{background:#12151c;color:var(--ink);border-color:var(--brand);box-shadow:0 0 0 3px #8b7cff25}.eyebrow,.text-primary{color:var(--brand)!important}.section-title{font-weight:850}.muted,.text-muted{color:var(--muted)!important}.video-frame{display:block;aspect-ratio:16/9;width:100%;border:0;border-radius:6px;background:#000}.caption{display:flex;gap:16px;padding:14px 20px;border-bottom:1px solid var(--line);line-height:1.65;background:var(--panel)!important;color:var(--ink)}.caption time{flex:0 0 76px;color:var(--brand);font-weight:750}.transcript-box{max-height:650px;overflow:auto}.material-section{height:100%;padding:26px}.learning-material .lexicon-entry,.learning-material .grammar-entry{min-width:0;padding:18px 0;border-bottom:1px solid var(--line);line-height:1.75;overflow-wrap:anywhere;word-break:break-word}.learning-material .lexicon-entry:first-of-type,.learning-material .grammar-entry:first-of-type{padding-top:4px}.learning-material .lexicon-entry:last-child,.learning-material .grammar-entry:last-child{padding-bottom:4px;border-bottom:0}.learning-material .lexicon-term,.learning-material .grammar-pattern{display:block;margin:0 0 8px;color:var(--ink);font-size:1.08rem;font-weight:800;line-height:1.4;overflow-wrap:anywhere}.learning-material .lexicon-term{color:#d8d2ff;font-size:1.18rem}.learning-material .material-label{display:block;margin-top:8px;color:var(--brand);font-size:.76rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.learning-material .lexicon-meta,.learning-material .lexicon-senses{margin-top:10px}.learning-material .lexicon-senses{padding-left:1.5rem}.learning-material .lexicon-senses>li{padding:10px 0;border-bottom:1px solid #282d37}.learning-material .lexicon-senses>li:last-child{border-bottom:0}.learning-material .lexicon-meaning,.learning-material .material-value{display:block;color:var(--muted);line-height:1.75}.learning-material .lexicon-example,.learning-material .lexicon-note,.learning-material .grammar-field{margin-top:10px}.learning-material .grammar-field{padding-left:12px;border-left:2px solid #363b48}.learning-material .grammar-field .material-value{color:var(--ink)}.material-section h3{font-size:1.05rem;font-weight:800}.list-clean{padding-left:1.2rem}.footer{color:var(--muted);font-size:.82rem}.sticky-tool{position:sticky;top:94px}.page-kicker{color:var(--muted);font-size:.9rem}.lesson-grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:24px}.lesson-side{display:flex;flex-direction:column;gap:16px}.action-card{padding:26px}.toolbar{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}.toolbar strong{margin-right:auto}.status-pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 10px;background:#2d294d;color:#c7c0ff;font-size:.78rem;font-weight:700}.course-card{transition:transform .2s}.course-card:hover{transform:translateY(-3px);border-color:#575f70}.empty-state{padding:64px 24px;text-align:center}.step-dot{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#2a2f39;color:#aab2c0;font-weight:800}.step.is-active .step-dot{background:var(--brand);color:#fff}.step.is-done .step-dot{background:#173d30;color:var(--green)}.step-line{height:2px;flex:1;background:var(--line)}.bg-light{background:#222731!important}.alert-danger{background:#3b2026;color:#ffb8c1}.language-switch a{color:var(--muted);text-decoration:none}.language-switch a.active{color:#fff;font-weight:700}@media(max-width:991px){.lesson-grid{grid-template-columns:1fr}.sticky-tool{position:static}}@media(max-width:600px){.learning-material .lexicon-entry,.learning-material .grammar-entry{padding:15px 0}.learning-material .lexicon-term,.learning-material .grammar-pattern{font-size:1rem}.navbar{min-height:64px}.content-shell{padding-left:16px!important;padding-right:16px!important}.caption{padding:12px 14px;gap:10px}.caption time{flex-basis:62px}.material-section{padding:20px}}
-</style></head><body><nav class="navbar sticky-top"><div class="container content-shell"><a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'home' %}"><span class="brand-mark">B</span><span class="brand-name">BALS <span class="text-muted fw-normal">{% trans "AI Language School" %}</span></span></a><div class="ms-auto d-flex align-items-center gap-3"><span class="language-switch small">{% language 'zh' %}<a href="{% url 'home' %}" class="{% if LANGUAGE_CODE == 'zh' %}active{% endif %}">中文</a>{% endlanguage %} · {% language 'en' %}<a href="{% url 'home' %}" class="{% if LANGUAGE_CODE == 'en' %}active{% endif %}">EN</a>{% endlanguage %}</span><a class="nav-link d-none d-md-block" href="{% url 'home' %}">{% trans "Course library" %}</a><a class="btn btn-primary px-3" href="{% url 'url_input' %}">{% trans "Create course" %}</a></div></div></nav><main class="container content-shell py-4 py-lg-5">{% if messages %}{% for message in messages %}<div class="alert alert-danger">{{ message }}</div>{% endfor %}{% endif %}{% block content %}{% endblock %}</main><footer class="footer container content-shell py-4">{% trans "BALS · Learn languages with authentic videos" %}<span class="float-lg-end">{% trans "Assisted by Volcengine Ark" %}</span></footer><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>{% block scripts %}{% endblock %}</body></html>
+{% load i18n %}
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{% trans 'Turn any YouTube video into a personalized language course — vocabulary, grammar, listening, speaking and writing practice powered by AI.' %}">
+  <meta name="theme-color" content="#272b33">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236b9fd4'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-weight='800' font-size='18' fill='white' text-anchor='middle'%3EB%3C/text%3E%3C/svg%3E">
+  <title>{% block title %}{% trans "BALS AI Language School" %}{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    /* Lifted slate dark + soft sky blue — calm reading, not ultra-black */
+    :root,
+    [data-bs-theme="dark"] {
+      --bs-primary: #6b9fd4;
+      --bs-primary-rgb: 107, 159, 212;
+      --bs-primary-text-emphasis: #c5daf0;
+      --bs-link-color: #8cb6dd;
+      --bs-link-hover-color: #b3d0eb;
+      --bs-body-bg: #272b33;
+      --bs-body-color: #eef1f6;
+      --bs-secondary-color: #a8b0bd;
+      --bs-border-color: #454c5a;
+      --bs-tertiary-bg: #2f3440;
+      --bs-secondary-bg: #373d4a;
+      --bs-success: #6fbf8d;
+      --bs-success-rgb: 111, 191, 141;
+      --bs-body-font-family: "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --bals-card: #323844;
+      --bals-card-soft: #2e3340;
+      --bals-ink-soft: #d5dbe5;
+      --bals-accent-dim: #2f3f52;
+    }
+    html { scroll-behavior: smooth; }
+    ::selection { background: #6b9fd455; color: #fff; }
+    body {
+      background:
+        radial-gradient(900px 420px at 8% -8%, #6b9fd418, transparent 58%),
+        radial-gradient(700px 340px at 96% 4%, #a8b0bd10, transparent 52%),
+        var(--bs-body-bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    :focus-visible {
+      outline: 2px solid #8cb6dd;
+      outline-offset: 2px;
+      border-radius: .35rem;
+    }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-thumb { background: #454c5a; border-radius: 999px; border: 2px solid #272b33; }
+    ::-webkit-scrollbar-thumb:hover { background: #545b6a; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+    .navbar.bg-body-tertiary {
+      background: color-mix(in srgb, #2f3440 92%, transparent) !important;
+      backdrop-filter: blur(12px);
+      border-color: #454c5a !important;
+    }
+    .btn-primary {
+      --bs-btn-bg: #6b9fd4;
+      --bs-btn-border-color: #6b9fd4;
+      --bs-btn-hover-bg: #5a8fc4;
+      --bs-btn-hover-border-color: #5a8fc4;
+      --bs-btn-active-bg: #4f82b8;
+      --bs-btn-active-border-color: #4f82b8;
+      --bs-btn-color: #fff;
+      --bs-btn-hover-color: #fff;
+      --bs-btn-active-color: #fff;
+      font-weight: 700;
+      border-radius: 999px;
+    }
+    .btn-outline-secondary {
+      --bs-btn-color: #d5dbe5;
+      --bs-btn-border-color: #545b6a;
+      --bs-btn-hover-bg: #373d4a;
+      --bs-btn-hover-border-color: #6b7384;
+      --bs-btn-hover-color: #fff;
+      border-radius: 999px;
+    }
+    .badge.text-bg-primary {
+      background: var(--bals-accent-dim) !important;
+      color: #c5daf0 !important;
+    }
+    .badge.text-bg-secondary {
+      background: #3c4352 !important;
+      color: #d5dbe5 !important;
+    }
+    .card {
+      background: var(--bals-card);
+      border-color: #454c5a;
+      color: var(--bs-body-color);
+    }
+    .form-control,
+    .form-select {
+      background-color: #2c313d;
+      border-color: #4a5260;
+      color: #eef1f6;
+    }
+    .form-control::placeholder { color: #7d8694; }
+    .form-control:focus,
+    .form-select:focus {
+      background-color: #2c313d;
+      border-color: #6b9fd4;
+      box-shadow: 0 0 0 .25rem #6b9fd42e;
+      color: #eef1f6;
+    }
+    .form-text { color: #8a93a2 !important; }
+    .navbar-brand .brand-mark {
+      display: inline-grid;
+      place-items: center;
+      width: 2rem;
+      height: 2rem;
+      margin-right: .5rem;
+      border-radius: .65rem;
+      background: linear-gradient(145deg, #8cb6dd, #6b9fd4);
+      color: #fff;
+      font-weight: 800;
+      font-size: .95rem;
+    }
+    .sticky-tool { position: sticky; top: 5.25rem; z-index: 2; }
+    .transcript-scroll { max-height: min(52vh, 520px); overflow: auto; }
+    .learning-material .caption-list { max-height: none; overflow: visible; }
+    .caption-row { display: flex; gap: .75rem; align-items: flex-start; text-align: left; }
+    .caption-row .caption-icon {
+      flex: 0 0 auto;
+      margin-top: .4rem;
+      color: #6b7384;
+      font-size: .55rem;
+      line-height: 1;
+    }
+    .caption-row .time-badge {
+      flex: 0 0 auto;
+      min-width: 4.25rem;
+      font-variant-numeric: tabular-nums;
+      background: transparent !important;
+      color: #8cb6dd !important;
+      border: 1px solid #4a5d72;
+      font-weight: 600;
+    }
+    .caption-row .caption-text { flex: 1 1 auto; line-height: 1.75; color: var(--bals-ink-soft); }
+    .caption-btn { background: transparent; border: 0; width: 100%; color: inherit; }
+    .caption-btn:hover { background: var(--bs-secondary-bg); }
+    .letter-wide { letter-spacing: .06em; }
+    .white-space-pre { white-space: pre-wrap; }
+
+    .learning-material .lesson-kicker {
+      margin: 0;
+      color: #a8b0bd;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .learning-material .lesson-title {
+      margin: 0;
+      font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+      font-weight: 750;
+      line-height: 1.28;
+      color: #eef1f6;
+    }
+    .learning-material .lesson-toc {
+      position: sticky;
+      top: 4.5rem;
+      z-index: 3;
+      margin: 0 0 1.25rem;
+      padding: .7rem 0;
+      background: color-mix(in srgb, #272b33 90%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #454c5a;
+    }
+    .learning-material .lesson-toc-track {
+      display: flex;
+      gap: 1.15rem;
+      overflow-x: auto;
+      padding-bottom: .35rem;
+      scrollbar-width: thin;
+    }
+    .learning-material .lesson-toc-item {
+      display: inline-flex;
+      align-items: center;
+      flex: 0 0 auto;
+      padding: .45rem .2rem;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      border-radius: 0;
+      background: transparent;
+      color: #a8b0bd;
+      text-decoration: none;
+      font-size: .95rem;
+      font-weight: 600;
+      transition: color .18s ease, border-color .18s ease;
+      white-space: nowrap;
+    }
+    .learning-material .lesson-toc-item:hover { color: #eef1f6; }
+    .learning-material .lesson-toc-item.active {
+      color: #8cb6dd;
+      border-bottom-color: #6b9fd4;
+      background: transparent;
+    }
+    .learning-material .lesson-pages { min-height: 18rem; }
+    .learning-material .lesson-card {
+      border: 1px solid #454c5a;
+      border-radius: 1.15rem;
+      background: linear-gradient(180deg, #353b48, #2f3440);
+      box-shadow: 0 10px 28px #00000022;
+      overflow: hidden;
+      animation: lesson-page-in .24s ease;
+    }
+    @keyframes lesson-page-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
+    .learning-material .lesson-card-head {
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+      padding: 1.25rem 1.4rem 1rem;
+      border-bottom: 0;
+      background: transparent;
+    }
+    .learning-material .unit-icon {
+      flex: 0 0 auto;
+      display: inline-grid;
+      place-items: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: var(--bals-accent-dim);
+      color: #8cb6dd;
+      font-size: 1.15rem;
+    }
+    .learning-material .unit-title {
+      margin: 0;
+      font-size: 1.28rem;
+      font-weight: 700;
+      line-height: 1.35;
+      color: #eef1f6;
+    }
+    .learning-material .lesson-card-body { padding: 0 1.5rem 1.6rem; }
+    .learning-material .lesson-card-body.p-0 { padding: 0; }
+    .learning-material .lesson-card-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      padding: 1rem 1.4rem 1.25rem;
+      border-top: 1px solid #454c5a;
+      background: transparent;
+    }
+    .learning-material .lesson-download {
+      margin-top: 2.25rem;
+      padding: 1.35rem 1.4rem 1.5rem;
+      border-top: 1px solid #454c5a;
+    }
+    .learning-material .lesson-download .h5 {
+      margin: 0;
+      color: #eef1f6;
+      font-weight: 700;
+    }
+    .learning-material .lesson-download-actions .btn {
+      border-radius: 999px;
+      font-weight: 700;
+      padding: .55rem 1.1rem;
+    }
+    .learning-material .lesson-card-foot .btn-primary {
+      border-radius: 999px;
+      padding-inline: 1.2rem;
+    }
+    .learning-material .lesson-nav-link {
+      color: #a8b0bd !important;
+      text-decoration: none !important;
+      font-weight: 600;
+      padding-inline: 0;
+    }
+    .learning-material .lesson-nav-link:hover:not(:disabled) { color: #8cb6dd !important; }
+    .learning-material .lesson-nav-link:disabled { opacity: .35; }
+    .learning-material .lesson-progress {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+    }
+    .learning-material .lesson-progress-dot {
+      width: .42rem;
+      height: .42rem;
+      border-radius: 50%;
+      background: #545b6a;
+    }
+    .learning-material .lesson-progress-dot.is-active {
+      width: 1.1rem;
+      border-radius: 999px;
+      background: #6b9fd4;
+    }
+    .learning-material .unit-label {
+      margin-bottom: .55rem;
+      color: #a8b0bd;
+      font-size: .82rem;
+      font-weight: 600;
+      letter-spacing: .01em;
+      text-transform: none;
+    }
+    .learning-material .goal-list,
+    .learning-material .warmup-list,
+    .learning-material .comp-list {
+      margin: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+    .learning-material .goal-list > li,
+    .learning-material .warmup-list > li,
+    .learning-material .comp-list > li {
+      position: relative;
+      margin: 0 0 1rem;
+      padding-left: 1.1rem;
+      line-height: 1.8;
+      color: var(--bals-ink-soft);
+    }
+    .learning-material .goal-list > li::before,
+    .learning-material .warmup-list > li::before,
+    .learning-material .comp-list > li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .7em;
+      width: .35rem;
+      height: .35rem;
+      border-radius: 50%;
+      background: #6b9fd4;
+      opacity: .8;
+    }
+    .learning-material .word-card {
+      height: 100%;
+      padding: 1.05rem 1.1rem;
+      border: 1px solid #454c5a;
+      border-radius: 1rem;
+      background: #2c313d;
+      transition: border-color .18s ease, transform .18s ease, background .18s ease;
+    }
+    .learning-material .word-card:hover {
+      border-color: #6b9fd4;
+      background: #343a48;
+      transform: translateY(-2px);
+    }
+    .learning-material .example-board,
+    .learning-material .answer-panel {
+      padding: .9rem 1rem;
+      border-radius: .9rem;
+      border: 1px solid #454c5a;
+      background: #2c313d;
+    }
+    .learning-material .answer-panel {
+      border-color: #3d6a52;
+      background: #2a4036;
+      color: #bfe8cf;
+    }
+    .learning-material .answer-fold > summary { list-style: none; }
+    .learning-material .answer-fold > summary::-webkit-details-marker { display: none; }
+    .learning-material .answer-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .4rem .85rem;
+      border: 1px solid #545b6a;
+      border-radius: 999px;
+      background: #2c313d;
+      color: #a8b0bd;
+      font-size: .86rem;
+      font-weight: 650;
+      cursor: pointer;
+      user-select: none;
+      transition: background .15s ease, color .15s ease, border-color .15s ease;
+    }
+    .learning-material .answer-toggle:hover {
+      border-color: #6b9fd4;
+      color: #eef1f6;
+      background: var(--bals-accent-dim);
+    }
+    .learning-material .answer-toggle::before { content: "▸"; color: #8cb6dd; }
+    .learning-material .answer-fold[open] .answer-toggle::before { content: "▾"; }
+    .learning-material .chip {
+      display: inline-flex;
+      padding: .35rem .75rem;
+      border: 1px solid #545b6a;
+      border-radius: .65rem;
+      background: #2c313d;
+      color: #eef1f6;
+      font-size: .9rem;
+    }
+    .learning-material .review-table { border: 1px solid #454c5a; border-radius: .9rem; overflow: hidden; }
+    .learning-material .review-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding: .8rem 1rem;
+      border-top: 1px solid #454c5a;
+    }
+    .learning-material .review-row:first-child { border-top: 0; }
+    .learning-material .dict-head {
+      margin: 0 0 .35rem;
+      font-family: "PT Serif", "Noto Serif", "Songti SC", Georgia, serif;
+      line-height: 1.3;
+    }
+    .learning-material .dict-lemma { font-size: 1.15rem; font-weight: 700; color: #eef1f6; }
+    .learning-material .dict-grammar { color: #a8b0bd; font-size: .9rem; font-style: italic; }
+    .learning-material .dict-ipa { color: #a8b0bd; font-size: .84rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .learning-material .dict-senses { margin: 0; padding: 0 0 0 1.15rem; }
+    .learning-material .dict-senses.is-single { list-style: none; padding-left: 0; }
+    .learning-material .dict-gloss { margin-right: .35em; color: #8cb6dd; font-weight: 700; }
+    .learning-material .dict-ex { padding-left: 1em; color: #a8b0bd; font-style: italic; }
+    .learning-material .dict-ex-mark { font-style: normal; }
+    .learning-material .dict-col { padding-left: 1em; color: #a8b0bd; font-size: .9rem; }
+    .learning-material .dict-aside { color: #a8b0bd; font-size: .9rem; }
+    .learning-material .dict-aside i { margin-right: .35em; font-style: italic; }
+    .learning-material .grammar-pattern { font-weight: 700; color: #eef1f6; }
+    .learning-material .gp-phrase { font-weight: 650; color: #c5daf0; }
+    .learning-material .lexicon-entry,
+    .learning-material .grammar-entry { overflow-wrap: anywhere; word-break: break-word; }
+    .learning-material .list-group-item {
+      background: transparent;
+      border-color: #454c5a;
+      color: var(--bals-ink-soft);
+    }
+    /* Always-on floating / resizable lesson video */
+    .learning-material .lesson-player.is-float {
+      position: fixed;
+      z-index: 1080;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid var(--bs-border-color) !important;
+      border-radius: 12px !important;
+      background: #1f2430;
+      box-shadow: 0 18px 48px #00000055;
+    }
+    .learning-material .lesson-player.is-float.is-hidden {
+      display: none !important;
+    }
+    .learning-material .lesson-player.is-float .player-float-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .5rem;
+      flex: 0 0 auto;
+      height: 2.5rem;
+      padding: 0 .45rem 0 .55rem;
+      background: linear-gradient(180deg, #394252 0%, #2c3340 100%);
+      border-bottom: 1px solid #4a5568;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+    .learning-material .lesson-player.is-float .player-float-bar:active { cursor: grabbing; }
+    .learning-material .player-float-title {
+      display: inline-flex;
+      align-items: center;
+      min-width: 0;
+      color: #eef2f7;
+      font-size: .88rem;
+      font-weight: 700;
+    }
+    .learning-material .player-drag-icon {
+      flex: 0 0 auto;
+      margin-right: .15rem;
+      font-size: 1.15rem;
+      color: #8cb6dd;
+    }
+    .learning-material .player-float-actions { display: flex; gap: .2rem; }
+    .learning-material .player-float-btn {
+      display: inline-grid;
+      place-items: center;
+      width: 2rem;
+      height: 2rem;
+      border: 0;
+      border-radius: .5rem;
+      background: #3a4354;
+      color: #e8eef6;
+    }
+    .learning-material .player-float-btn:hover {
+      background: #4a5568;
+      color: #fff;
+    }
+    .learning-material .lesson-player.is-float .player-frame {
+      position: relative;
+      flex: 1 1 auto;
+      width: 100%;
+      min-height: 0;
+      --bs-aspect-ratio: 0;
+    }
+    .learning-material .lesson-player.is-float .player-frame::before {
+      display: none;
+      padding-top: 0 !important;
+    }
+    .learning-material .lesson-player.is-float .player-frame > iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .learning-material .lesson-player.is-float .player-resize-handle {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+      width: 1.6rem;
+      height: 1.6rem;
+      padding: 0;
+      border: 0;
+      border-radius: 0 0 12px 0;
+      background:
+        linear-gradient(135deg, transparent 42%, #a9c6e4 42%, #a9c6e4 48%, transparent 48%),
+        linear-gradient(135deg, transparent 58%, #a9c6e4 58%, #a9c6e4 64%, transparent 64%),
+        linear-gradient(135deg, transparent 74%, #a9c6e4 74%, #a9c6e4 80%, transparent 80%);
+      cursor: nwse-resize;
+      touch-action: none;
+      opacity: .85;
+    }
+    .learning-material .lesson-player.is-float .player-resize-handle:hover {
+      opacity: 1;
+      background:
+        linear-gradient(135deg, transparent 42%, #c5dbf0 42%, #c5dbf0 48%, transparent 48%),
+        linear-gradient(135deg, transparent 58%, #c5dbf0 58%, #c5dbf0 64%, transparent 64%),
+        linear-gradient(135deg, transparent 74%, #c5dbf0 74%, #c5dbf0 80%, transparent 80%);
+    }
+    .learning-material .player-show-btn {
+      position: fixed;
+      right: 1.1rem;
+      bottom: 1.1rem;
+      z-index: 1080;
+      display: inline-flex;
+      align-items: center;
+      padding: .65rem 1rem;
+      border: 1px solid var(--bs-border-color);
+      border-radius: 999px;
+      background: #2f3440;
+      color: #eef1f6;
+      font-weight: 700;
+      box-shadow: 0 10px 28px #00000040;
+    }
+    .learning-material .player-show-btn:hover {
+      background: #373d4a;
+      color: #fff;
+    }
+    @media (max-width: 991.98px) {
+      .sticky-tool { position: static; }
+      .learning-material .lesson-toc { top: 3.75rem; }
+      .learning-material .lesson-player.is-float {
+        max-width: calc(100vw - 16px);
+      }
+    }
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'home' %}">
+        <span class="brand-mark">B</span>
+        <span>BALS <span class="fw-normal text-body-secondary d-none d-sm-inline">{% trans "AI Language School" %}</span></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}"><i class="bi bi-collection me-1"></i>{% trans "Course library" %}</a>
+          </li>
+        </ul>
+        <div class="d-flex align-items-center gap-3">
+          <div class="btn-group btn-group-sm" role="group" aria-label="Language">
+            {% language 'zh' %}
+            <a href="{% url 'home' %}" class="btn {% if LANGUAGE_CODE == 'zh' %}btn-primary{% else %}btn-outline-secondary{% endif %}">中文</a>
+            {% endlanguage %}
+            {% language 'en' %}
+            <a href="{% url 'home' %}" class="btn {% if LANGUAGE_CODE == 'en' %}btn-primary{% else %}btn-outline-secondary{% endif %}">EN</a>
+            {% endlanguage %}
+          </div>
+          {% if user.is_authenticated %}
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle me-1"></i>{{ user.get_short_name }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="{% url 'my_courses' %}"><i class="bi bi-book me-2"></i>{% trans "My courses" %}</a></li>
+              <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="bi bi-gear me-2"></i>{% trans "Profile" %}</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right me-2"></i>{% trans "Sign out" %}</a></li>
+            </ul>
+          </div>
+          {% else %}
+          <a class="btn btn-outline-secondary btn-sm" href="{% url 'login' %}">{% trans "Sign in" %}</a>
+          <a class="btn btn-primary btn-sm" href="{% url 'register' %}">{% trans "Sign up" %}</a>
+          {% endif %}
+          <a class="btn btn-primary" href="{% url 'url_input' %}"><i class="bi bi-play-btn me-1"></i>{% trans "Create course" %}</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4 py-lg-5 flex-grow-1">
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% elif message.tags == 'warning' %}alert-warning{% elif message.tags == 'info' %}alert-info{% else %}alert-secondary{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="border-top py-4 mt-auto">
+    <div class="container d-flex flex-column flex-md-row justify-content-between gap-2 text-body-secondary small">
+      <span>&copy; {% now "Y" %} BALS &middot; {% trans "Learn languages with authentic videos" %}</span>
+      <span>{% trans "AI-powered by MiniMax" %}</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

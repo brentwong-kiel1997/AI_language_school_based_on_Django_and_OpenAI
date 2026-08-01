@@ -1,6 +1,6 @@
 # Ark CLI
 
-独立的火山方舟（Volcengine Ark）Token Plan 客户端：OpenAI 兼容 chat completions + Seed ASR 2.0。不依赖 Django；Django 通过 `ark_cli` 调用。
+独立的火山方舟（Volcengine Ark）客户端包。当前 Django 应用**仅用其中的 Seed ASR**（无字幕时的 STT）；课件文本生成已切到 `minimax_cli`。本包仍提供独立的 `ark` CLI 供 Chat/ASR 冒烟。
 
 ## 安装
 

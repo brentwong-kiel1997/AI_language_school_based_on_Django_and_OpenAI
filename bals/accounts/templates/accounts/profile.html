@@ -1,0 +1,65 @@
+{% extends 'main_app/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Profile" %} · BALS{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="row g-4">
+      <div class="col-md-7">
+        <div class="card shadow-sm">
+          <div class="card-header fw-semibold"><i class="bi bi-person me-2 text-primary"></i>{% trans "Profile settings" %}</div>
+          <div class="card-body">
+            <form method="post" novalidate>
+              {% csrf_token %}
+              {% for field in form %}
+              <div class="mb-3">
+                <label class="form-label fw-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}<div class="invalid-feedback d-block">{{ field.errors|striptags }}</div>{% endif %}
+                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+              </div>
+              {% endfor %}
+              <button type="submit" class="btn btn-primary">{% trans "Save changes" %}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="vstack gap-4">
+          <div class="card shadow-sm">
+            <div class="card-header fw-semibold"><i class="bi bi-shield-lock me-2 text-primary"></i>{% trans "Security" %}</div>
+            <div class="card-body">
+              <p class="text-body-secondary small mb-3">{% trans "Change your password to keep your account secure." %}</p>
+              <a class="btn btn-outline-secondary w-100" href="{% url 'password_change' %}">{% trans "Change password" %}</a>
+            </div>
+          </div>
+          <div class="card shadow-sm">
+            <div class="card-header fw-semibold"><i class="bi bi-book me-2 text-primary"></i>{% trans "My courses" %}</div>
+            <div class="card-body">
+              <p class="text-body-secondary small mb-3">{% trans "View all courses you have created." %}</p>
+              <a class="btn btn-outline-secondary w-100" href="{% url 'my_courses' %}">{% trans "View my courses" %}</a>
+            </div>
+          </div>
+          <div class="card shadow-sm">
+            <div class="card-header fw-semibold"><i class="bi bi-info-circle me-2 text-primary"></i>{% trans "Account info" %}</div>
+            <div class="card-body small">
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-body-secondary">{% trans "Email" %}</span>
+                <span>{{ user.email }}</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-body-secondary">{% trans "Member since" %}</span>
+                <span>{{ user.created_at|date:"Y-m-d" }}</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span class="text-body-secondary">{% trans "Status" %}</span>
+                <span>{% if user.is_verified %}<span class="text-success">{% trans "Verified" %}</span>{% else %}<span class="text-warning">{% trans "Unverified" %}</span>{% endif %}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

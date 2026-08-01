@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-13 10:07+0000\n"
+"POT-Creation-Date: 2026-08-01 04:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,458 +18,934 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: main_app/forms.py:6
-msgid "YouTube video URL"
-msgstr "YouTube 视频链接"
-
-#: main_app/forms.py:11
-msgid "Chinese"
-msgstr "中文"
-
-#: main_app/forms.py:12
-msgid "English"
-msgstr "英语"
-
-#: main_app/forms.py:13
-msgid "Ukrainian"
-msgstr "乌克兰语"
-
-#: main_app/forms.py:15
-msgid "Your native language"
-msgstr "你的母语"
-
-#: main_app/templates/main_app/base.html:1
-msgid "BALS AI Language School"
-msgstr "BALS AI 语言学校"
-
-#: main_app/templates/main_app/base.html:3
-msgid "AI Language School"
-msgstr "AI 语言学校"
-
-#: main_app/templates/main_app/base.html:3
-#: main_app/templates/main_app/home.html:1
-msgid "Course library"
-msgstr "课程库"
-
-#: main_app/templates/main_app/base.html:3
-#: main_app/templates/main_app/home.html:1
-msgid "Create course"
-msgstr "创建课程"
-
-#: main_app/templates/main_app/base.html:3
-msgid "BALS · Learn languages with authentic videos"
-msgstr "BALS · 用真实视频学习外语"
-
-#: main_app/templates/main_app/base.html:3
-msgid "Assisted by Volcengine Ark"
-msgstr "由火山方舟辅助生成"
-
-#: main_app/templates/main_app/home.html:1
-msgid "Course library · BALS"
-msgstr "课程库 · BALS"
-
-#: main_app/templates/main_app/home.html:1
-msgid "smart courses"
-msgstr "智能课程"
-
-#: main_app/templates/main_app/home.html:1
-msgid ""
-"Every authentic video<br><span class=\"text-primary\">becomes a language "
-"lesson.</span>"
+#: accounts/admin.py:16 accounts/admin.py:19
+msgid "Extra"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid ""
-"Build real language ability through subtitles, vocabulary, grammar, "
-"listening and speaking practice."
-msgstr "从字幕理解到词汇、语法、听力和表达练习，建立真实语言能力。"
+#: accounts/forms.py:11 accounts/forms.py:77
+msgid "Password"
+msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "Create your first course"
-msgstr "创建第一节课"
+#: accounts/forms.py:14
+msgid "At least 8 characters"
+msgstr "至少 8 个字符"
 
-#: main_app/templates/main_app/home.html:1
-msgid "1. Paste a video"
-msgstr "1. 粘贴视频"
+#: accounts/forms.py:19
+msgid "Confirm password"
+msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "YouTube videos and Shorts are supported"
-msgstr "支持 YouTube 视频和 Shorts"
+#: accounts/forms.py:22
+msgid "Re-enter your password"
+msgstr "再次输入密码"
 
-#: main_app/templates/main_app/home.html:1
-msgid "2. Get the transcript"
-msgstr "2. 获取原始字幕"
+#: accounts/forms.py:38
+msgid "How should we call you?"
+msgstr "我们该怎么称呼你？"
 
-#: main_app/templates/main_app/home.html:1
-msgid "Timestamps stay available for study"
-msgstr "保留时间戳，方便对照学习"
+#: accounts/forms.py:46
+msgid "This email is already registered."
+msgstr "该邮箱已注册。"
 
-#: main_app/templates/main_app/home.html:1
-msgid "3. Generate a complete course"
-msgstr "3. 生成完整课程"
+#: accounts/forms.py:54
+msgid "Passwords do not match."
+msgstr "两次密码不一致。"
 
-#: main_app/templates/main_app/home.html:1
-msgid "Goals, vocabulary, exercises and review"
-msgstr "目标、词汇、练习和复习"
+#: accounts/forms.py:68 accounts/forms.py:102
+#: accounts/templates/accounts/profile.html:47
+msgid "Email"
+msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "All languages"
-msgstr "全部语言"
+#: accounts/forms.py:80
+msgid "Your password"
+msgstr "你的密码"
 
-#: main_app/templates/main_app/home.html:1
-msgid "Filter"
-msgstr "筛选"
+#: accounts/forms.py:113
+msgid "New password"
+msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-#: main_app/templates/main_app/transcript.html:1
+#: accounts/forms.py:120
+msgid "Confirm new password"
+msgstr ""
+
+#: accounts/models.py:9
+msgid "email address"
+msgstr ""
+
+#: accounts/models.py:10
+msgid "display name"
+msgstr ""
+
+#: accounts/models.py:12
+msgid "preferred interface language"
+msgstr ""
+
+#: accounts/models.py:17
+msgid "avatar URL"
+msgstr ""
+
+#: accounts/models.py:18
+msgid "email verified"
+msgstr ""
+
+#: accounts/models.py:26
+msgid "user"
+msgstr ""
+
+#: accounts/models.py:27
+msgid "users"
+msgstr ""
+
+#: accounts/templates/accounts/login.html:3
+#: accounts/templates/accounts/login.html:30
+#: accounts/templates/accounts/register.html:42
+#: main_app/templates/main_app/base.html:596
+msgid "Sign in"
+msgstr "登录"
+
+#: accounts/templates/accounts/login.html:11
+msgid "Welcome back"
+msgstr "欢迎回来"
+
+#: accounts/templates/accounts/login.html:12
+msgid "Sign in to continue learning"
+msgstr "登录后继续学习"
+
+#: accounts/templates/accounts/login.html:33
+msgid "Don't have an account?"
+msgstr "还没有账号？"
+
+#: accounts/templates/accounts/login.html:33
+#, fuzzy
+#| msgid "Create course"
+msgid "Create one"
+msgstr "创建课程"
+
+#: accounts/templates/accounts/my_courses.html:3
+#: accounts/templates/accounts/my_courses.html:6
+#: accounts/templates/accounts/profile.html:37
+#: main_app/templates/main_app/base.html:589
+#, fuzzy
+#| msgid "smart courses"
+msgid "My courses"
+msgstr "智能课程"
+
+#: accounts/templates/accounts/my_courses.html:7
+msgid "All courses you have created and generated."
+msgstr "你创建和生成的所有课程。"
+
+#: accounts/templates/accounts/my_courses.html:24
+#: main_app/templates/main_app/home.html:75
+#: main_app/templates/main_app/transcript.html:11
 msgid "seconds"
 msgstr "秒"
 
-#: main_app/templates/main_app/home.html:1
+#: accounts/templates/accounts/my_courses.html:28
+#, fuzzy
+#| msgid "Create course"
+msgid "Open course"
+msgstr "创建课程"
+
+#: accounts/templates/accounts/my_courses.html:38
+#: main_app/templates/main_app/home.html:90
 msgid "No courses yet"
 msgstr "还没有课程"
 
-#: main_app/templates/main_app/home.html:1
+#: accounts/templates/accounts/my_courses.html:39
+#, fuzzy
+#| msgid "Create your first course"
+msgid "Create your first course from a YouTube video."
+msgstr "创建第一节课"
+
+#: accounts/templates/accounts/my_courses.html:40
+#: main_app/templates/main_app/base.html:599
+#: main_app/templates/main_app/home.html:92
+msgid "Create course"
+msgstr "创建课程"
+
+#: accounts/templates/accounts/password_change.html:3
+#: accounts/templates/accounts/password_change.html:9
+#: accounts/templates/accounts/profile.html:33
+msgid "Change password"
+msgstr "修改密码"
+
+#: accounts/templates/accounts/password_change.html:23
+msgid "Update password"
+msgstr "更新密码"
+
+#: accounts/templates/accounts/password_change.html:25
+msgid "Back to profile"
+msgstr "返回个人资料"
+
+#: accounts/templates/accounts/profile.html:3
+#: main_app/templates/main_app/base.html:590
+msgid "Profile"
+msgstr "个人资料"
+
+#: accounts/templates/accounts/profile.html:10
+msgid "Profile settings"
+msgstr "个人设置"
+
+#: accounts/templates/accounts/profile.html:22
+msgid "Save changes"
+msgstr "保存更改"
+
+#: accounts/templates/accounts/profile.html:30
+msgid "Security"
+msgstr "安全"
+
+#: accounts/templates/accounts/profile.html:32
+msgid "Change your password to keep your account secure."
+msgstr "修改密码以保护账号安全。"
+
+#: accounts/templates/accounts/profile.html:39
+msgid "View all courses you have created."
+msgstr "查看你创建的所有课程。"
+
+#: accounts/templates/accounts/profile.html:40
+#, fuzzy
+#| msgid "Generate my course"
+msgid "View my courses"
+msgstr "生成我的课程"
+
+#: accounts/templates/accounts/profile.html:44
+msgid "Account info"
+msgstr "账号信息"
+
+#: accounts/templates/accounts/profile.html:51
+msgid "Member since"
+msgstr "注册时间"
+
+#: accounts/templates/accounts/profile.html:55
+msgid "Status"
+msgstr "状态"
+
+#: accounts/templates/accounts/profile.html:56
+msgid "Verified"
+msgstr "已验证"
+
+#: accounts/templates/accounts/profile.html:56
+msgid "Unverified"
+msgstr "未验证"
+
+#: accounts/templates/accounts/register.html:3
+#: accounts/templates/accounts/register.html:39
+#, fuzzy
+#| msgid "Create course"
+msgid "Create account"
+msgstr "创建课程"
+
+#: accounts/templates/accounts/register.html:11
+#, fuzzy
+#| msgid "Create your first course"
+msgid "Create your account"
+msgstr "创建第一节课"
+
+#: accounts/templates/accounts/register.html:12
+#, fuzzy
+#| msgid "Your personalized learning course"
+msgid "Start your language learning journey"
+msgstr "你的专属学习课程"
+
+#: accounts/templates/accounts/register.html:42
+msgid "Already have an account?"
+msgstr "已有账号？"
+
+#: accounts/views.py:26
+msgid "Welcome! Your account has been created."
+msgstr "欢迎！你的账号已创建。"
+
+#: accounts/views.py:46
+msgid "Welcome back!"
+msgstr "欢迎回来！"
+
+#: accounts/views.py:49
+msgid "Invalid email or password."
+msgstr "邮箱或密码错误。"
+
+#: accounts/views.py:57
+msgid "You have been logged out."
+msgstr "你已退出登录。"
+
+#: accounts/views.py:68
+msgid "Profile updated."
+msgstr "个人资料已更新。"
+
+#: accounts/views.py:83
+msgid "Password changed successfully."
+msgstr "密码修改成功。"
+
+#: main_app/forms.py:7
+msgid "YouTube video URL"
+msgstr "YouTube 视频链接"
+
+#: main_app/forms.py:21
+msgid "Chinese"
+msgstr "中文"
+
+#: main_app/forms.py:22
+msgid "English"
+msgstr "英语"
+
+#: main_app/forms.py:23
+msgid "Ukrainian"
+msgstr "乌克兰语"
+
+#: main_app/forms.py:27
+msgid "Your native language"
+msgstr "你的母语"
+
+#: main_app/templates/main_app/base.html:7
+msgid "Turn any YouTube video into a personalized language course — vocabulary, grammar, listening, speaking and writing practice powered by AI."
+msgstr "将任意 YouTube 视频转化为个性化语言课程——词汇、语法、听力、口语和写作练习，由 AI 驱动。"
+
+#: main_app/templates/main_app/base.html:10
+msgid "BALS AI Language School"
+msgstr "BALS AI 语言学校"
+
+#: main_app/templates/main_app/base.html:563
+msgid "AI Language School"
+msgstr "AI 语言学校"
+
+#: main_app/templates/main_app/base.html:571
+#: main_app/templates/main_app/home.html:53
+msgid "Course library"
+msgstr "课程库"
+
+#: main_app/templates/main_app/base.html:592
+msgid "Sign out"
+msgstr "退出登录"
+
+#: main_app/templates/main_app/base.html:597
+msgid "Sign up"
+msgstr "注册"
+
+#: main_app/templates/main_app/base.html:619
+#, fuzzy
+#| msgid "BALS · Learn languages with authentic videos"
+msgid "Learn languages with authentic videos"
+msgstr "BALS · 用真实视频学习外语"
+
+#: main_app/templates/main_app/base.html:620
+#, fuzzy
+#| msgid "Assisted by MiniMax"
+msgid "AI-powered by MiniMax"
+msgstr "由 MiniMax 辅助生成"
+
+#: main_app/templates/main_app/home.html:3
+msgid "Course library · BALS"
+msgstr "课程库 · BALS"
+
+#: main_app/templates/main_app/home.html:7
+msgid "smart courses"
+msgstr "智能课程"
+
+#: main_app/templates/main_app/home.html:9
+msgid "Every authentic video<br><span class=\"text-primary\">becomes a language lesson.</span>"
+msgstr "每一段真实视频<br><span class=\"text-primary\">都变成一堂语言课。</span>"
+
+#: main_app/templates/main_app/home.html:12
+msgid "Build real language ability through subtitles, vocabulary, grammar, listening and speaking practice."
+msgstr "从字幕理解到词汇、语法、听力和表达练习，建立真实语言能力。"
+
+#: main_app/templates/main_app/home.html:16
+msgid "Create your first course"
+msgstr "创建第一节课"
+
+#: main_app/templates/main_app/home.html:18
+msgid "YouTube · under 10 min"
+msgstr "YouTube · 10 分钟以内"
+
+#: main_app/templates/main_app/home.html:23
+msgid "How it works"
+msgstr "使用流程"
+
+#: main_app/templates/main_app/home.html:28
+#, fuzzy
+#| msgid "1. Paste a video"
+msgid "Paste a video"
+msgstr "1. 粘贴视频"
+
+#: main_app/templates/main_app/home.html:29
+msgid "YouTube videos and Shorts are supported"
+msgstr "支持 YouTube 视频和 Shorts"
+
+#: main_app/templates/main_app/home.html:35
+#, fuzzy
+#| msgid "2. Get the transcript"
+msgid "Get the transcript"
+msgstr "2. 获取原始字幕"
+
+#: main_app/templates/main_app/home.html:36
+msgid "Timestamps stay available for study"
+msgstr "保留时间戳，方便对照学习"
+
+#: main_app/templates/main_app/home.html:42
+#, fuzzy
+#| msgid "3. Generate a complete course"
+msgid "Generate a complete course"
+msgstr "3. 生成完整课程"
+
+#: main_app/templates/main_app/home.html:43
+msgid "Goals, vocabulary, exercises and review"
+msgstr "目标、词汇、练习和复习"
+
+#: main_app/templates/main_app/home.html:56
+#, fuzzy
+#| msgid "smart courses"
+msgid "Search courses…"
+msgstr "智能课程"
+
+#: main_app/templates/main_app/home.html:57
+#: main_app/templates/main_app/home.html:58
+msgid "All languages"
+msgstr "全部语言"
+
+#: main_app/templates/main_app/home.html:63
+msgid "Filter"
+msgstr "筛选"
+
+#: main_app/templates/main_app/home.html:81
+#, fuzzy
+#| msgid "Video transcript"
+msgid "Open transcript"
+msgstr "视频字幕"
+
+#: main_app/templates/main_app/home.html:91
 msgid "Start with a public video under 10 minutes."
 msgstr "从一段不超过 10 分钟的公开视频开始。"
 
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/home.html:100
+#, fuzzy
+#| msgid "Course outline"
+msgid "Course pagination"
+msgstr "课程大纲"
+
+#: main_app/templates/main_app/home.html:105
+#: main_app/templates/main_app/home.html:109
+#: main_app/templates/main_app/learning_material.html:6
+msgid "Previous"
+msgstr "返回"
+
+#: main_app/templates/main_app/home.html:125
+#: main_app/templates/main_app/home.html:129
+#: main_app/templates/main_app/learning_material.html:7
+msgid "Next"
+msgstr "继续阅读"
+
+#: main_app/templates/main_app/learning_material.html:3
 msgid "Learning course · BALS"
 msgstr "学习课程 · BALS"
 
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:9
+#: main_app/templates/main_app/learning_material.html:11 main_app/views.py:493
 msgid "Your personalized learning course"
 msgstr "你的专属学习课程"
 
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:9
+#: main_app/templates/main_app/learning_material.html:14 main_app/views.py:494
 msgid "Target language"
 msgstr "目标语言"
 
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:9
+#: main_app/templates/main_app/learning_material.html:15 main_app/views.py:495
 msgid "Native language"
 msgstr "母语"
 
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Download course"
-msgstr "下载课程"
+#: main_app/templates/main_app/learning_material.html:9 main_app/views.py:498
+msgid "Contents"
+msgstr "目录"
 
-#: main_app/templates/main_app/learning_material.html:1
-#: main_app/templates/main_app/transcript.html:1
-msgid "YouTube video player"
-msgstr "YouTube 视频播放器"
-
-#: main_app/templates/main_app/learning_material.html:1
-#: main_app/templates/main_app/transcript.html:1
-msgid "Video transcript"
-msgstr "视频字幕"
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Lesson goals"
-msgstr "本节目标"
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Warm-up"
-msgstr "课前热身"
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Key vocabulary"
-msgstr "重点词汇"
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Meaning"
-msgstr "释义"
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Example"
-msgstr "例句"
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Note"
-msgstr "备注"
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Grammar"
-msgstr "语法讲解"
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Pattern"
-msgstr "句型"
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Explanation"
-msgstr "解释"
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Practice"
-msgstr "练习"
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Listening comprehension"
-msgstr "听力理解"
-
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:9
+#: main_app/templates/main_app/learning_material.html:234
+#: main_app/templates/main_app/learning_material.html:276
+#: main_app/templates/main_app/learning_material.html:306 main_app/views.py:499
 msgid "Answer"
 msgstr "答案"
 
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:9 main_app/views.py:500
+msgid "Sample answer"
+msgstr "范文"
+
+#: main_app/templates/main_app/learning_material.html:9 main_app/views.py:501
+msgid "Exported from BALS for personal study"
+msgstr "由 BALS 导出 · 仅供个人学习使用"
+
+#: main_app/templates/main_app/learning_material.html:9
+msgid "Generating PDF…"
+msgstr "正在生成 PDF…"
+
+#: main_app/templates/main_app/learning_material.html:9
+msgid "Could not open the PDF preview. Please allow pop-ups, or use Download TXT."
+msgstr "无法打开 PDF 预览，请允许弹窗，或改用下载 TXT。"
+
+#: main_app/templates/main_app/learning_material.html:9
+msgid "Could not load lesson data for export."
+msgstr "无法加载导出用课程数据。"
+
+#: main_app/templates/main_app/learning_material.html:9
+msgid "In the print dialog, choose Save as PDF and turn off headers/footers if characters look cut off."
+msgstr "在打印对话框中选择「存储为 PDF」；若页眉页脚遮挡文字，请关闭页眉和页脚。"
+
+#: main_app/templates/main_app/learning_material.html:9
+msgid "Practice edition · no answers"
+msgstr "练习版 · 无答案"
+
+#: main_app/templates/main_app/learning_material.html:20
+msgid "Drag to move"
+msgstr "拖动移动"
+
+#: main_app/templates/main_app/learning_material.html:23
+#: main_app/templates/main_app/learning_material.html:37
+msgid "Video"
+msgstr "视频"
+
+#: main_app/templates/main_app/learning_material.html:26
+msgid "Close"
+msgstr "关闭"
+
+#: main_app/templates/main_app/learning_material.html:32
+#: main_app/templates/main_app/transcript.html:21
+msgid "YouTube video player"
+msgstr "YouTube 视频播放器"
+
+#: main_app/templates/main_app/learning_material.html:34
+msgid "Drag to resize"
+msgstr "拖动缩放"
+
+#: main_app/templates/main_app/learning_material.html:40
+msgid "Course outline"
+msgstr "课程大纲"
+
+#: main_app/templates/main_app/learning_material.html:42
+#: main_app/templates/main_app/learning_material.html:69
+#: main_app/templates/main_app/transcript.html:7 main_app/views.py:476
+msgid "Video transcript"
+msgstr "视频字幕"
+
+#: main_app/templates/main_app/learning_material.html:44
+#: main_app/templates/main_app/learning_material.html:91 main_app/views.py:434
+msgid "Lesson goals"
+msgstr "本节目标"
+
+#: main_app/templates/main_app/learning_material.html:47
+#: main_app/templates/main_app/learning_material.html:108 main_app/views.py:439
+msgid "Warm-up"
+msgstr "课前热身"
+
+#: main_app/templates/main_app/learning_material.html:49
+#: main_app/templates/main_app/learning_material.html:124 main_app/views.py:442
+msgid "Key vocabulary"
+msgstr "重点词汇"
+
+#: main_app/templates/main_app/learning_material.html:50
+#: main_app/templates/main_app/learning_material.html:164 main_app/views.py:445
+msgid "Grammar"
+msgstr "语法讲解"
+
+#: main_app/templates/main_app/learning_material.html:52
+#: main_app/templates/main_app/learning_material.html:258 main_app/views.py:450
+msgid "Listening comprehension"
+msgstr "听力理解"
+
+#: main_app/templates/main_app/learning_material.html:55
+#: main_app/templates/main_app/learning_material.html:296 main_app/views.py:458
 msgid "Comprehension questions"
 msgstr "理解问题"
 
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Suggested answers"
-msgstr "参考答案"
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Show answers after finishing"
-msgstr "完成后查看答案"
-
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:58
+#: main_app/templates/main_app/learning_material.html:323 main_app/views.py:466
 msgid "Expression practice"
 msgstr "表达练习"
 
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Speaking task"
-msgstr "口语任务"
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Writing task"
-msgstr "写作任务"
-
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:60
+#: main_app/templates/main_app/learning_material.html:413 main_app/views.py:484
 msgid "Full translation"
 msgstr "全文翻译"
 
-#: main_app/templates/main_app/transcript.html:1
+#: main_app/templates/main_app/learning_material.html:179 main_app/views.py:509
+msgid "Typical collocations"
+msgstr "典型搭配"
+
+#: main_app/templates/main_app/learning_material.html:190 main_app/views.py:510
+msgid "Forms"
+msgstr "形态速查"
+
+#: main_app/templates/main_app/learning_material.html:199 main_app/views.py:511
+msgid "Example sentence"
+msgstr "例句"
+
+#: main_app/templates/main_app/learning_material.html:207 main_app/views.py:512
+msgid "Note"
+msgstr "备注"
+
+#: main_app/templates/main_app/learning_material.html:214 main_app/views.py:513
+msgid "More phrases"
+msgstr "更多短语"
+
+#: main_app/templates/main_app/learning_material.html:225 main_app/views.py:514
+msgid "Practice"
+msgstr "练习"
+
+#: main_app/templates/main_app/learning_material.html:233
+#: main_app/templates/main_app/learning_material.html:275
+#: main_app/templates/main_app/learning_material.html:305
+msgid "Show answer"
+msgstr "查看参考"
+
+#: main_app/templates/main_app/learning_material.html:329 main_app/views.py:503
+msgid "Speaking task"
+msgstr "口语任务"
+
+#: main_app/templates/main_app/learning_material.html:333
+#: main_app/templates/main_app/learning_material.html:360 main_app/views.py:506
+msgid "Useful language"
+msgstr "可用表达"
+
+#: main_app/templates/main_app/learning_material.html:341
+#: main_app/templates/main_app/learning_material.html:376 main_app/views.py:507
+msgid "Checklist"
+msgstr "完成要求"
+
+#: main_app/templates/main_app/learning_material.html:347
+#: main_app/templates/main_app/learning_material.html:382
+msgid "Show sample answer"
+msgstr "查看范文"
+
+#: main_app/templates/main_app/learning_material.html:356 main_app/views.py:504
+msgid "Writing task"
+msgstr "写作任务"
+
+#: main_app/templates/main_app/learning_material.html:368 main_app/views.py:508
+msgid "Support phrases"
+msgstr "常用句式"
+
+#: main_app/templates/main_app/learning_material.html:391 main_app/views.py:505
+msgid "Review"
+msgstr "复习清单"
+
+#: main_app/templates/main_app/learning_material.html:432
+msgid "Download course"
+msgstr "下载课程"
+
+#: main_app/templates/main_app/learning_material.html:433
+msgid "Export a clean study handout in your browser. For PDF, choose “Save as PDF” in the print dialog."
+msgstr "浏览器内生成浅色学习讲义。导出 PDF 时，请在打印对话框选择「存储为 PDF」。"
+
+#: main_app/templates/main_app/learning_material.html:436
+msgid "Download TXT"
+msgstr "下载 TXT"
+
+#: main_app/templates/main_app/learning_material.html:439
+msgid "Export PDF (no answers)"
+msgstr "导出 PDF（无答案）"
+
+#: main_app/templates/main_app/learning_material.html:442
+msgid "Export PDF"
+msgstr "导出 PDF"
+
+#: main_app/templates/main_app/transcript.html:3
 msgid "Transcript · BALS"
 msgstr "字幕 · BALS"
 
-#: main_app/templates/main_app/transcript.html:1
+#: main_app/templates/main_app/transcript.html:13
 msgid "Choose your native language to generate a personalized course"
 msgstr "选择母语后生成专属课程"
 
-#: main_app/templates/main_app/transcript.html:1
+#: main_app/templates/main_app/transcript.html:25
 msgid "Open on YouTube"
 msgstr "在 YouTube 打开"
 
-#: main_app/templates/main_app/transcript.html:1
+#: main_app/templates/main_app/transcript.html:32
 msgid "Transcript"
 msgstr "字幕内容"
 
-#: main_app/templates/main_app/transcript.html:1
+#: main_app/templates/main_app/transcript.html:35
 msgid "Search transcript…"
 msgstr "搜索字幕…"
 
-#: main_app/templates/main_app/transcript.html:1
+#: main_app/templates/main_app/transcript.html:38
+#: main_app/templates/main_app/transcript.html:104
 msgid "Copy"
 msgstr "复制"
 
-#: main_app/templates/main_app/transcript.html:1
+#: main_app/templates/main_app/transcript.html:50
+msgid "No matching captions."
+msgstr "没有匹配的字幕。"
+
+#: main_app/templates/main_app/transcript.html:59
 msgid "Next step"
 msgstr "下一步"
 
-#: main_app/templates/main_app/transcript.html:1
+#: main_app/templates/main_app/transcript.html:62
 msgid "Generate learning course"
 msgstr "生成学习课程"
 
-#: main_app/templates/main_app/transcript.html:1
-msgid ""
-"Generate vocabulary, grammar, listening and expression exercises from this "
-"video."
+#: main_app/templates/main_app/transcript.html:64
+msgid "Generate vocabulary, grammar, listening and expression exercises from this video."
 msgstr "根据这段视频，生成词汇、语法、听力和表达练习。"
 
-#: main_app/templates/main_app/transcript.html:1
+#: main_app/templates/main_app/transcript.html:76
 msgid "Generate my course"
 msgstr "生成我的课程"
 
-#: main_app/templates/main_app/transcript.html:1
+#: main_app/templates/main_app/transcript.html:84
 msgid "Generated courses"
 msgstr "已生成的课程"
 
-#: main_app/templates/main_app/transcript.html:1
+#: main_app/templates/main_app/transcript.html:103
 msgid "Copied"
 msgstr "已复制"
 
-#: main_app/templates/main_app/url_input.html:1
+#: main_app/templates/main_app/url_input.html:3
 msgid "Create course · BALS"
 msgstr "创建课程 · BALS"
 
-#: main_app/templates/main_app/url_input.html:1
+#: main_app/templates/main_app/url_input.html:11
 msgid "Create a new course"
 msgstr "创建新课程"
 
-#: main_app/templates/main_app/url_input.html:1
+#: main_app/templates/main_app/url_input.html:12
 msgid "Which video would you like to start with?"
 msgstr "你想从哪个视频开始？"
 
-#: main_app/templates/main_app/url_input.html:1
-msgid ""
-"Paste a YouTube URL. We will check it, fetch the transcript and open your "
-"course workspace."
+#: main_app/templates/main_app/url_input.html:14
+msgid "Paste a YouTube URL. We will check it, fetch the transcript and open your course workspace."
 msgstr "粘贴 YouTube 链接，系统会检查视频、获取字幕，然后带你进入课程工作台。"
 
-#: main_app/templates/main_app/url_input.html:1
+#: main_app/templates/main_app/url_input.html:27
 msgid "Supports youtube.com, youtu.be, Shorts and URLs with parameters"
 msgstr "支持 youtube.com、youtu.be、Shorts 和带参数的链接"
 
-#: main_app/templates/main_app/url_input.html:1
+#: main_app/templates/main_app/url_input.html:30
 msgid "Check and create course"
 msgstr "检查并创建课程"
 
-#: main_app/templates/main_app/url_input.html:1
+#: main_app/templates/main_app/url_input.html:33
 msgid "Submitting…"
 msgstr "正在提交…"
 
-#: main_app/templates/main_app/url_input.html:1
+#: main_app/templates/main_app/url_input.html:43
 msgid "Before you begin"
 msgstr "开始之前"
 
-#: main_app/templates/main_app/url_input.html:1
+#: main_app/templates/main_app/url_input.html:46
 msgid "What videos work best?"
 msgstr "适合什么视频？"
 
-#: main_app/templates/main_app/url_input.html:1
+#: main_app/templates/main_app/url_input.html:51
 msgid "Under 10 minutes"
 msgstr "10 分钟以内"
 
-#: main_app/templates/main_app/url_input.html:1
+#: main_app/templates/main_app/url_input.html:52
 msgid "News, interviews and educational videos work well"
 msgstr "新闻、访谈和知识视频效果更好"
 
-#: main_app/templates/main_app/url_input.html:1
+#: main_app/templates/main_app/url_input.html:58
 msgid "Captions are preferred"
 msgstr "优先使用 YouTube 字幕"
 
-#: main_app/templates/main_app/url_input.html:1
-msgid ""
-"We use manual captions first, then automatic captions, and Seed ASR when no "
-"captions are available."
-msgstr ""
-"优先使用人工字幕，其次使用自动字幕；没有字幕时通过 Seed ASR 进行语音识别。"
+#: main_app/templates/main_app/url_input.html:59
+msgid "We use manual captions first, then automatic captions. Videos without any captions are not supported."
+msgstr "优先使用人工字幕，其次使用自动字幕；没有字幕的视频暂不支持。"
 
-#: main_app/templates/main_app/url_input.html:1
+#: main_app/templates/main_app/url_input.html:65
 msgid "Publicly accessible"
 msgstr "公开可访问"
 
-#: main_app/templates/main_app/url_input.html:1
+#: main_app/templates/main_app/url_input.html:66
 msgid "No login, age or regional restrictions"
 msgstr "不能有登录、年龄或地区限制"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:3
 msgid "Processing course · BALS"
 msgstr "课程处理中 · BALS"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:11
 msgid "Task incomplete"
 msgstr "任务未完成"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:12
 msgid "Something went wrong while processing"
 msgstr "这次处理遇到了问题"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:13
 msgid "Your course was not lost. You can retry or choose another video."
 msgstr "你的课程没有丢失，可以重新尝试或更换视频。"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:15
 msgid "Error details"
 msgstr "错误信息"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:16
 msgid "No error details were returned."
 msgstr "没有返回错误详情。"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:19
 msgid "Try again"
 msgstr "重新尝试"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:20
 msgid "Choose another video"
 msgstr "换一个视频"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:27
+#: main_app/templates/main_app/wait.html:37
 msgid "Processing"
 msgstr "正在处理"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:28
 msgid "Preparing your course"
 msgstr "正在准备你的学习课程"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:29
 msgid "You may leave this page; the task will continue."
 msgstr "现在可以离开这个页面，任务会继续运行。"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:33
 msgid "Fetching and organizing content"
 msgstr "正在获取和整理内容"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:36
 msgid "This usually takes 1–3 minutes."
 msgstr "通常需要 1–3 分钟。"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:41
+msgid "Video validated"
+msgstr "视频已验证"
+
+#: main_app/templates/main_app/wait.html:42
+msgid "Fetching subtitles"
+msgstr "正在获取字幕"
+
+#: main_app/templates/main_app/wait.html:43
+msgid "Generating vocabulary & grammar"
+msgstr "正在生成词汇和语法"
+
+#: main_app/templates/main_app/wait.html:44
+#, fuzzy
+#| msgid "Goals, vocabulary, exercises and review"
+msgid "Building exercises & review"
+msgstr "目标、词汇、练习和复习"
+
+#: main_app/templates/main_app/wait.html:45
+#, fuzzy
+#| msgid "Generate learning course"
+msgid "Finalizing course"
+msgstr "生成学习课程"
+
+#: main_app/templates/main_app/wait.html:49
 msgid "Back to course library"
 msgstr "返回课程库"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:60
 msgid "Course ready. Opening…"
 msgstr "课程已准备好，正在进入…"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:61
 msgid "Status unavailable. Retrying automatically…"
 msgstr "暂时无法获取状态，正在自动重试…"
 
-#: main_app/templates/main_app/wait.html:1
+#: main_app/templates/main_app/wait.html:62
 msgid "Connecting to the processing service…"
 msgstr "正在连接处理服务…"
 
-#: main_app/views.py:178
+#: main_app/templates/main_app/wait.html:63
+msgid "Still working — video transcription can take a few minutes."
+msgstr "仍在处理中——视频转写可能需要几分钟。"
+
+#: main_app/views.py:209
 msgid "We couldn't recognize this YouTube URL. Please check it and try again."
 msgstr "无法识别这个 YouTube 链接，请检查后重试。"
 
-msgid "Part of speech"
-msgstr "词性"
+#: main_app/views.py:998
+msgid "True / False"
+msgstr "判断正误"
 
-msgid "Pronunciation"
-msgstr "发音"
+#: main_app/views.py:999
+msgid "Multiple choice"
+msgstr "选择题"
 
-msgid "Forms"
-msgstr "形式"
+#: main_app/views.py:1000
+msgid "Fill in the blank"
+msgstr "填空"
 
-msgid "Register"
-msgstr "语体"
+#~ msgid "Export this lesson locally as text or PDF. Processing happens in your browser."
+#~ msgstr "可在本地导出本课文本或 PDF，处理均在浏览器完成。"
 
-msgid "Sense"
-msgstr "义项"
+#~ msgid "Download PDF"
+#~ msgstr "下载 PDF"
 
-msgid "Definition"
-msgstr "定义"
+#~ msgid "Could not generate PDF in this browser. Try Download TXT instead."
+#~ msgstr "当前浏览器无法生成 PDF，请改用下载 TXT。"
 
-msgid "Translation"
-msgstr "翻译"
+#~ msgid "Meaning"
+#~ msgstr "释义"
 
-msgid "Collocations"
-msgstr "搭配"
+#~ msgid "Example"
+#~ msgstr "例句"
 
-msgid "Synonyms"
-msgstr "同义词"
+#~ msgid "Pattern"
+#~ msgstr "句型"
 
-msgid "Antonyms"
-msgstr "反义词"
+#~ msgid "Explanation"
+#~ msgstr "解释"
 
-msgid "Phraseology"
-msgstr "固定表达"
+#~ msgid "Suggested answers"
+#~ msgstr "参考答案"
 
-msgid "Usage note"
-msgstr "用法说明"
+#~ msgid "Show answers after finishing"
+#~ msgstr "完成后查看答案"
 
-msgid "Article"
-msgstr "冠词"
+#~ msgid "Part of speech"
+#~ msgstr "词性"
 
-msgid "Gender"
-msgstr "性"
+#~ msgid "Pronunciation"
+#~ msgstr "发音"
 
-msgid "Plural/forms"
-msgstr "复数/形式"
+#~ msgid "Register"
+#~ msgstr "语体"
 
-msgid "CEFR"
-msgstr "CEFR等级"
+#~ msgid "Sense"
+#~ msgstr "义项"
+
+#~ msgid "Definition"
+#~ msgstr "定义"
+
+#~ msgid "Translation"
+#~ msgstr "翻译"
+
+#~ msgid "Collocations"
+#~ msgstr "搭配"
+
+#~ msgid "Synonyms"
+#~ msgstr "同义词"
+
+#~ msgid "Antonyms"
+#~ msgstr "反义词"
+
+#~ msgid "Phraseology"
+#~ msgstr "固定表达"
+
+#~ msgid "Usage note"
+#~ msgstr "用法说明"
+
+#~ msgid "Article"
+#~ msgstr "冠词"
+
+#~ msgid "Gender"
+#~ msgstr "性"
+
+#~ msgid "Plural/forms"
+#~ msgstr "复数/形式"
+
+#~ msgid "CEFR"
+#~ msgstr "CEFR等级"
+
+#~ msgid "Collapse"
+#~ msgstr "收起"
+
+#~ msgid "Expand"
+#~ msgstr "展开"
+
+#~ msgid "Restore"
+#~ msgstr "恢复"

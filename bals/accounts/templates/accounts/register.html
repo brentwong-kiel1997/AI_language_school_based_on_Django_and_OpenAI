@@ -1,0 +1,48 @@
+{% extends 'main_app/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Create account" %} · BALS{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4 p-lg-5">
+        <div class="text-center mb-4">
+          <span class="brand-mark mx-auto mb-3" style="display:inline-grid;width:3rem;height:3rem;font-size:1.2rem;">B</span>
+          <h1 class="h3 fw-bold">{% trans "Create your account" %}</h1>
+          <p class="text-body-secondary small mb-0">{% trans "Start your language learning journey" %}</p>
+        </div>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+          <div class="alert alert-danger py-2">{{ form.non_field_errors|striptags }}</div>
+          {% endif %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+            {{ form.email }}
+            {% if form.email.errors %}<div class="invalid-feedback d-block">{{ form.email.errors|striptags }}</div>{% endif %}
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="{{ form.display_name.id_for_label }}">{{ form.display_name.label }}</label>
+            {{ form.display_name }}
+            {% if form.display_name.errors %}<div class="invalid-feedback d-block">{{ form.display_name.errors|striptags }}</div>{% endif %}
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}<div class="invalid-feedback d-block">{{ form.password1.errors|striptags }}</div>{% endif %}
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}<div class="invalid-feedback d-block">{{ form.password2.errors|striptags }}</div>{% endif %}
+          </div>
+          <button type="submit" class="btn btn-primary w-100 mb-3">{% trans "Create account" %}</button>
+        </form>
+        <p class="text-center text-body-secondary small mb-0">
+          {% trans "Already have an account?" %} <a href="{% url 'login' %}">{% trans "Sign in" %}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -23,6 +23,7 @@ urlpatterns = [
 ]
 
 urlpatterns += i18n_patterns(
+    path('', include('accounts.urls')),
     path('', include('main_app.urls')),
     prefix_default_language=True,
 )

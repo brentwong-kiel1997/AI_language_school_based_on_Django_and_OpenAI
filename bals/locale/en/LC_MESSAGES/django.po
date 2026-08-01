@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-13 10:07+0000\n"
+"POT-Creation-Date: 2026-08-01 04:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,457 +18,906 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: main_app/forms.py:6
-msgid "YouTube video URL"
+#: accounts/admin.py:16 accounts/admin.py:19
+msgid "Extra"
 msgstr ""
 
-#: main_app/forms.py:11
-msgid "Chinese"
+#: accounts/forms.py:11 accounts/forms.py:77
+msgid "Password"
 msgstr ""
 
-#: main_app/forms.py:12
-msgid "English"
+#: accounts/forms.py:14
+msgid "At least 8 characters"
 msgstr ""
 
-#: main_app/forms.py:13
-msgid "Ukrainian"
+#: accounts/forms.py:19
+msgid "Confirm password"
 msgstr ""
 
-#: main_app/forms.py:15
-msgid "Your native language"
+#: accounts/forms.py:22
+msgid "Re-enter your password"
 msgstr ""
 
-#: main_app/templates/main_app/base.html:1
-msgid "BALS AI Language School"
+#: accounts/forms.py:38
+msgid "How should we call you?"
 msgstr ""
 
-#: main_app/templates/main_app/base.html:3
-msgid "AI Language School"
+#: accounts/forms.py:46
+msgid "This email is already registered."
 msgstr ""
 
-#: main_app/templates/main_app/base.html:3
-#: main_app/templates/main_app/home.html:1
-msgid "Course library"
+#: accounts/forms.py:54
+msgid "Passwords do not match."
 msgstr ""
 
-#: main_app/templates/main_app/base.html:3
-#: main_app/templates/main_app/home.html:1
-msgid "Create course"
+#: accounts/forms.py:68 accounts/forms.py:102
+#: accounts/templates/accounts/profile.html:47
+msgid "Email"
 msgstr ""
 
-#: main_app/templates/main_app/base.html:3
-msgid "BALS · Learn languages with authentic videos"
+#: accounts/forms.py:80
+msgid "Your password"
 msgstr ""
 
-#: main_app/templates/main_app/base.html:3
-msgid "Assisted by Volcengine Ark"
+#: accounts/forms.py:113
+msgid "New password"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "Course library · BALS"
+#: accounts/forms.py:120
+msgid "Confirm new password"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "smart courses"
+#: accounts/models.py:9
+msgid "email address"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid ""
-"Every authentic video<br><span class=\"text-primary\">becomes a language "
-"lesson.</span>"
+#: accounts/models.py:10
+msgid "display name"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid ""
-"Build real language ability through subtitles, vocabulary, grammar, "
-"listening and speaking practice."
+#: accounts/models.py:12
+msgid "preferred interface language"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "Create your first course"
+#: accounts/models.py:17
+msgid "avatar URL"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "1. Paste a video"
+#: accounts/models.py:18
+msgid "email verified"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "YouTube videos and Shorts are supported"
+#: accounts/models.py:26
+msgid "user"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "2. Get the transcript"
+#: accounts/models.py:27
+msgid "users"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "Timestamps stay available for study"
+#: accounts/templates/accounts/login.html:3
+#: accounts/templates/accounts/login.html:30
+#: accounts/templates/accounts/register.html:42
+#: main_app/templates/main_app/base.html:596
+msgid "Sign in"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "3. Generate a complete course"
+#: accounts/templates/accounts/login.html:11
+msgid "Welcome back"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "Goals, vocabulary, exercises and review"
+#: accounts/templates/accounts/login.html:12
+msgid "Sign in to continue learning"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "All languages"
+#: accounts/templates/accounts/login.html:33
+msgid "Don't have an account?"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-msgid "Filter"
+#: accounts/templates/accounts/login.html:33
+#, fuzzy
+#| msgid "Create course"
+msgid "Create one"
+msgstr "Create course"
+
+#: accounts/templates/accounts/my_courses.html:3
+#: accounts/templates/accounts/my_courses.html:6
+#: accounts/templates/accounts/profile.html:37
+#: main_app/templates/main_app/base.html:589
+#, fuzzy
+#| msgid "smart courses"
+msgid "My courses"
+msgstr "smart courses"
+
+#: accounts/templates/accounts/my_courses.html:7
+msgid "All courses you have created and generated."
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
-#: main_app/templates/main_app/transcript.html:1
+#: accounts/templates/accounts/my_courses.html:24
+#: main_app/templates/main_app/home.html:75
+#: main_app/templates/main_app/transcript.html:11
 msgid "seconds"
-msgstr ""
+msgstr "seconds"
 
-#: main_app/templates/main_app/home.html:1
+#: accounts/templates/accounts/my_courses.html:28
+#, fuzzy
+#| msgid "Create course"
+msgid "Open course"
+msgstr "Create course"
+
+#: accounts/templates/accounts/my_courses.html:38
+#: main_app/templates/main_app/home.html:90
 msgid "No courses yet"
+msgstr "No courses yet"
+
+#: accounts/templates/accounts/my_courses.html:39
+#, fuzzy
+#| msgid "Create your first course"
+msgid "Create your first course from a YouTube video."
+msgstr "Create your first course"
+
+#: accounts/templates/accounts/my_courses.html:40
+#: main_app/templates/main_app/base.html:599
+#: main_app/templates/main_app/home.html:92
+msgid "Create course"
+msgstr "Create course"
+
+#: accounts/templates/accounts/password_change.html:3
+#: accounts/templates/accounts/password_change.html:9
+#: accounts/templates/accounts/profile.html:33
+msgid "Change password"
 msgstr ""
 
-#: main_app/templates/main_app/home.html:1
+#: accounts/templates/accounts/password_change.html:23
+msgid "Update password"
+msgstr ""
+
+#: accounts/templates/accounts/password_change.html:25
+msgid "Back to profile"
+msgstr ""
+
+#: accounts/templates/accounts/profile.html:3
+#: main_app/templates/main_app/base.html:590
+msgid "Profile"
+msgstr ""
+
+#: accounts/templates/accounts/profile.html:10
+msgid "Profile settings"
+msgstr ""
+
+#: accounts/templates/accounts/profile.html:22
+msgid "Save changes"
+msgstr ""
+
+#: accounts/templates/accounts/profile.html:30
+msgid "Security"
+msgstr ""
+
+#: accounts/templates/accounts/profile.html:32
+msgid "Change your password to keep your account secure."
+msgstr ""
+
+#: accounts/templates/accounts/profile.html:39
+msgid "View all courses you have created."
+msgstr ""
+
+#: accounts/templates/accounts/profile.html:40
+#, fuzzy
+#| msgid "Generate my course"
+msgid "View my courses"
+msgstr "Generate my course"
+
+#: accounts/templates/accounts/profile.html:44
+msgid "Account info"
+msgstr ""
+
+#: accounts/templates/accounts/profile.html:51
+msgid "Member since"
+msgstr ""
+
+#: accounts/templates/accounts/profile.html:55
+msgid "Status"
+msgstr ""
+
+#: accounts/templates/accounts/profile.html:56
+msgid "Verified"
+msgstr ""
+
+#: accounts/templates/accounts/profile.html:56
+msgid "Unverified"
+msgstr ""
+
+#: accounts/templates/accounts/register.html:3
+#: accounts/templates/accounts/register.html:39
+#, fuzzy
+#| msgid "Create course"
+msgid "Create account"
+msgstr "Create course"
+
+#: accounts/templates/accounts/register.html:11
+#, fuzzy
+#| msgid "Create your first course"
+msgid "Create your account"
+msgstr "Create your first course"
+
+#: accounts/templates/accounts/register.html:12
+#, fuzzy
+#| msgid "Your personalized learning course"
+msgid "Start your language learning journey"
+msgstr "Your personalized learning course"
+
+#: accounts/templates/accounts/register.html:42
+msgid "Already have an account?"
+msgstr ""
+
+#: accounts/views.py:26
+msgid "Welcome! Your account has been created."
+msgstr ""
+
+#: accounts/views.py:46
+msgid "Welcome back!"
+msgstr ""
+
+#: accounts/views.py:49
+msgid "Invalid email or password."
+msgstr ""
+
+#: accounts/views.py:57
+msgid "You have been logged out."
+msgstr ""
+
+#: accounts/views.py:68
+msgid "Profile updated."
+msgstr ""
+
+#: accounts/views.py:83
+msgid "Password changed successfully."
+msgstr ""
+
+#: main_app/forms.py:7
+msgid "YouTube video URL"
+msgstr "YouTube video URL"
+
+#: main_app/forms.py:21
+msgid "Chinese"
+msgstr "Chinese"
+
+#: main_app/forms.py:22
+msgid "English"
+msgstr "English"
+
+#: main_app/forms.py:23
+msgid "Ukrainian"
+msgstr "Ukrainian"
+
+#: main_app/forms.py:27
+msgid "Your native language"
+msgstr "Your native language"
+
+#: main_app/templates/main_app/base.html:7
+msgid "Turn any YouTube video into a personalized language course — vocabulary, grammar, listening, speaking and writing practice powered by AI."
+msgstr ""
+
+#: main_app/templates/main_app/base.html:10
+msgid "BALS AI Language School"
+msgstr "BALS AI Language School"
+
+#: main_app/templates/main_app/base.html:563
+msgid "AI Language School"
+msgstr "AI Language School"
+
+#: main_app/templates/main_app/base.html:571
+#: main_app/templates/main_app/home.html:53
+msgid "Course library"
+msgstr "Course library"
+
+#: main_app/templates/main_app/base.html:592
+msgid "Sign out"
+msgstr ""
+
+#: main_app/templates/main_app/base.html:597
+msgid "Sign up"
+msgstr ""
+
+#: main_app/templates/main_app/base.html:619
+#, fuzzy
+#| msgid "BALS · Learn languages with authentic videos"
+msgid "Learn languages with authentic videos"
+msgstr "BALS · Learn languages with authentic videos"
+
+#: main_app/templates/main_app/base.html:620
+#, fuzzy
+#| msgid "Assisted by MiniMax"
+msgid "AI-powered by MiniMax"
+msgstr "Assisted by MiniMax"
+
+#: main_app/templates/main_app/home.html:3
+msgid "Course library · BALS"
+msgstr "Course library · BALS"
+
+#: main_app/templates/main_app/home.html:7
+msgid "smart courses"
+msgstr "smart courses"
+
+#: main_app/templates/main_app/home.html:9
+msgid "Every authentic video<br><span class=\"text-primary\">becomes a language lesson.</span>"
+msgstr "Every authentic video<br><span class=\"text-primary\">becomes a language lesson.</span>"
+
+#: main_app/templates/main_app/home.html:12
+msgid "Build real language ability through subtitles, vocabulary, grammar, listening and speaking practice."
+msgstr "Build real language ability through subtitles, vocabulary, grammar, listening and speaking practice."
+
+#: main_app/templates/main_app/home.html:16
+msgid "Create your first course"
+msgstr "Create your first course"
+
+#: main_app/templates/main_app/home.html:18
+msgid "YouTube · under 10 min"
+msgstr "YouTube · under 10 min"
+
+#: main_app/templates/main_app/home.html:23
+msgid "How it works"
+msgstr "How it works"
+
+#: main_app/templates/main_app/home.html:28
+msgid "Paste a video"
+msgstr "Paste a video"
+
+#: main_app/templates/main_app/home.html:29
+msgid "YouTube videos and Shorts are supported"
+msgstr "YouTube videos and Shorts are supported"
+
+#: main_app/templates/main_app/home.html:35
+msgid "Get the transcript"
+msgstr "Get the transcript"
+
+#: main_app/templates/main_app/home.html:36
+msgid "Timestamps stay available for study"
+msgstr "Timestamps stay available for study"
+
+#: main_app/templates/main_app/home.html:42
+msgid "Generate a complete course"
+msgstr "Generate a complete course"
+
+#: main_app/templates/main_app/home.html:43
+msgid "Goals, vocabulary, exercises and review"
+msgstr "Goals, vocabulary, exercises and review"
+
+#: main_app/templates/main_app/home.html:56
+msgid "Search courses…"
+msgstr "Search courses…"
+
+#: main_app/templates/main_app/home.html:57
+#: main_app/templates/main_app/home.html:58
+msgid "All languages"
+msgstr "All languages"
+
+#: main_app/templates/main_app/home.html:63
+msgid "Filter"
+msgstr "Filter"
+
+#: main_app/templates/main_app/home.html:81
+msgid "Open transcript"
+msgstr "Open transcript"
+
+#: main_app/templates/main_app/home.html:91
 msgid "Start with a public video under 10 minutes."
-msgstr ""
+msgstr "Start with a public video under 10 minutes."
 
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/home.html:100
+#, fuzzy
+#| msgid "Course outline"
+msgid "Course pagination"
+msgstr "Course outline"
+
+#: main_app/templates/main_app/home.html:105
+#: main_app/templates/main_app/home.html:109
+#: main_app/templates/main_app/learning_material.html:6
+msgid "Previous"
+msgstr "Back"
+
+#: main_app/templates/main_app/home.html:125
+#: main_app/templates/main_app/home.html:129
+#: main_app/templates/main_app/learning_material.html:7
+msgid "Next"
+msgstr "Keep reading"
+
+#: main_app/templates/main_app/learning_material.html:3
 msgid "Learning course · BALS"
-msgstr ""
+msgstr "Learning course · BALS"
 
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:9
+#: main_app/templates/main_app/learning_material.html:11 main_app/views.py:493
 msgid "Your personalized learning course"
-msgstr ""
+msgstr "Your personalized learning course"
 
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:9
+#: main_app/templates/main_app/learning_material.html:14 main_app/views.py:494
 msgid "Target language"
-msgstr ""
+msgstr "Target language"
 
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:9
+#: main_app/templates/main_app/learning_material.html:15 main_app/views.py:495
 msgid "Native language"
-msgstr ""
+msgstr "Native language"
 
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Download course"
-msgstr ""
+#: main_app/templates/main_app/learning_material.html:9 main_app/views.py:498
+msgid "Contents"
+msgstr "Contents"
 
-#: main_app/templates/main_app/learning_material.html:1
-#: main_app/templates/main_app/transcript.html:1
-msgid "YouTube video player"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-#: main_app/templates/main_app/transcript.html:1
-msgid "Video transcript"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Lesson goals"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Warm-up"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Key vocabulary"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Meaning"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Example"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Note"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Grammar"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Pattern"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Explanation"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Practice"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Listening comprehension"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:9
+#: main_app/templates/main_app/learning_material.html:234
+#: main_app/templates/main_app/learning_material.html:276
+#: main_app/templates/main_app/learning_material.html:306 main_app/views.py:499
 msgid "Answer"
-msgstr ""
+msgstr "Answer"
 
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:9 main_app/views.py:500
+msgid "Sample answer"
+msgstr "Sample answer"
+
+#: main_app/templates/main_app/learning_material.html:9 main_app/views.py:501
+msgid "Exported from BALS for personal study"
+msgstr "Exported from BALS for personal study"
+
+#: main_app/templates/main_app/learning_material.html:9
+msgid "Generating PDF…"
+msgstr "Generating PDF…"
+
+#: main_app/templates/main_app/learning_material.html:9
+msgid "Could not open the PDF preview. Please allow pop-ups, or use Download TXT."
+msgstr "Could not open the PDF preview. Please allow pop-ups, or use Download TXT."
+
+#: main_app/templates/main_app/learning_material.html:9
+msgid "Could not load lesson data for export."
+msgstr "Could not load lesson data for export."
+
+#: main_app/templates/main_app/learning_material.html:9
+msgid "In the print dialog, choose Save as PDF and turn off headers/footers if characters look cut off."
+msgstr "In the print dialog, choose Save as PDF and turn off headers/footers if characters look cut off."
+
+#: main_app/templates/main_app/learning_material.html:9
+msgid "Practice edition · no answers"
+msgstr "Practice edition · no answers"
+
+#: main_app/templates/main_app/learning_material.html:20
+msgid "Drag to move"
+msgstr "Drag to move"
+
+#: main_app/templates/main_app/learning_material.html:23
+#: main_app/templates/main_app/learning_material.html:37
+msgid "Video"
+msgstr "Video"
+
+#: main_app/templates/main_app/learning_material.html:26
+msgid "Close"
+msgstr "Close"
+
+#: main_app/templates/main_app/learning_material.html:32
+#: main_app/templates/main_app/transcript.html:21
+msgid "YouTube video player"
+msgstr "YouTube video player"
+
+#: main_app/templates/main_app/learning_material.html:34
+msgid "Drag to resize"
+msgstr "Drag to resize"
+
+#: main_app/templates/main_app/learning_material.html:40
+msgid "Course outline"
+msgstr "Course outline"
+
+#: main_app/templates/main_app/learning_material.html:42
+#: main_app/templates/main_app/learning_material.html:69
+#: main_app/templates/main_app/transcript.html:7 main_app/views.py:476
+msgid "Video transcript"
+msgstr "Video transcript"
+
+#: main_app/templates/main_app/learning_material.html:44
+#: main_app/templates/main_app/learning_material.html:91 main_app/views.py:434
+msgid "Lesson goals"
+msgstr "Lesson goals"
+
+#: main_app/templates/main_app/learning_material.html:47
+#: main_app/templates/main_app/learning_material.html:108 main_app/views.py:439
+msgid "Warm-up"
+msgstr "Warm-up"
+
+#: main_app/templates/main_app/learning_material.html:49
+#: main_app/templates/main_app/learning_material.html:124 main_app/views.py:442
+msgid "Key vocabulary"
+msgstr "Key vocabulary"
+
+#: main_app/templates/main_app/learning_material.html:50
+#: main_app/templates/main_app/learning_material.html:164 main_app/views.py:445
+msgid "Grammar"
+msgstr "Grammar"
+
+#: main_app/templates/main_app/learning_material.html:52
+#: main_app/templates/main_app/learning_material.html:258 main_app/views.py:450
+msgid "Listening comprehension"
+msgstr "Listening comprehension"
+
+#: main_app/templates/main_app/learning_material.html:55
+#: main_app/templates/main_app/learning_material.html:296 main_app/views.py:458
 msgid "Comprehension questions"
-msgstr ""
+msgstr "Comprehension questions"
 
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Suggested answers"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Show answers after finishing"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:58
+#: main_app/templates/main_app/learning_material.html:323 main_app/views.py:466
 msgid "Expression practice"
-msgstr ""
+msgstr "Expression practice"
 
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Speaking task"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
-msgid "Writing task"
-msgstr ""
-
-#: main_app/templates/main_app/learning_material.html:1
+#: main_app/templates/main_app/learning_material.html:60
+#: main_app/templates/main_app/learning_material.html:413 main_app/views.py:484
 msgid "Full translation"
-msgstr ""
+msgstr "Full translation"
 
-#: main_app/templates/main_app/transcript.html:1
-msgid "Transcript · BALS"
-msgstr ""
+#: main_app/templates/main_app/learning_material.html:179 main_app/views.py:509
+msgid "Typical collocations"
+msgstr "Typical collocations"
 
-#: main_app/templates/main_app/transcript.html:1
-msgid "Choose your native language to generate a personalized course"
-msgstr ""
-
-#: main_app/templates/main_app/transcript.html:1
-msgid "Open on YouTube"
-msgstr ""
-
-#: main_app/templates/main_app/transcript.html:1
-msgid "Transcript"
-msgstr ""
-
-#: main_app/templates/main_app/transcript.html:1
-msgid "Search transcript…"
-msgstr ""
-
-#: main_app/templates/main_app/transcript.html:1
-msgid "Copy"
-msgstr ""
-
-#: main_app/templates/main_app/transcript.html:1
-msgid "Next step"
-msgstr ""
-
-#: main_app/templates/main_app/transcript.html:1
-msgid "Generate learning course"
-msgstr ""
-
-#: main_app/templates/main_app/transcript.html:1
-msgid ""
-"Generate vocabulary, grammar, listening and expression exercises from this "
-"video."
-msgstr ""
-
-#: main_app/templates/main_app/transcript.html:1
-msgid "Generate my course"
-msgstr ""
-
-#: main_app/templates/main_app/transcript.html:1
-msgid "Generated courses"
-msgstr ""
-
-#: main_app/templates/main_app/transcript.html:1
-msgid "Copied"
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid "Create course · BALS"
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid "Create a new course"
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid "Which video would you like to start with?"
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid ""
-"Paste a YouTube URL. We will check it, fetch the transcript and open your "
-"course workspace."
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid "Supports youtube.com, youtu.be, Shorts and URLs with parameters"
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid "Check and create course"
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid "Submitting…"
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid "Before you begin"
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid "What videos work best?"
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid "Under 10 minutes"
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid "News, interviews and educational videos work well"
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid "Captions are preferred"
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid ""
-"We use manual captions first, then automatic captions, and Seed ASR when no "
-"captions are available."
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid "Publicly accessible"
-msgstr ""
-
-#: main_app/templates/main_app/url_input.html:1
-msgid "No login, age or regional restrictions"
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Processing course · BALS"
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Task incomplete"
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Something went wrong while processing"
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Your course was not lost. You can retry or choose another video."
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Error details"
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "No error details were returned."
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Try again"
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Choose another video"
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Processing"
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Preparing your course"
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "You may leave this page; the task will continue."
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Fetching and organizing content"
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "This usually takes 1–3 minutes."
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Back to course library"
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Course ready. Opening…"
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Status unavailable. Retrying automatically…"
-msgstr ""
-
-#: main_app/templates/main_app/wait.html:1
-msgid "Connecting to the processing service…"
-msgstr ""
-
-#: main_app/views.py:178
-msgid "We couldn't recognize this YouTube URL. Please check it and try again."
-msgstr ""
-
-msgid "Part of speech"
-msgstr "Part of speech"
-
-msgid "Pronunciation"
-msgstr "Pronunciation"
-
+#: main_app/templates/main_app/learning_material.html:190 main_app/views.py:510
 msgid "Forms"
 msgstr "Forms"
 
-msgid "Register"
-msgstr "Register"
+#: main_app/templates/main_app/learning_material.html:199 main_app/views.py:511
+msgid "Example sentence"
+msgstr "Example sentence"
 
-msgid "Sense"
-msgstr "Sense"
+#: main_app/templates/main_app/learning_material.html:207 main_app/views.py:512
+msgid "Note"
+msgstr "Note"
 
-msgid "Definition"
-msgstr "Definition"
+#: main_app/templates/main_app/learning_material.html:214 main_app/views.py:513
+msgid "More phrases"
+msgstr "More phrases"
 
-msgid "Translation"
-msgstr "Translation"
+#: main_app/templates/main_app/learning_material.html:225 main_app/views.py:514
+msgid "Practice"
+msgstr "Practice"
 
-msgid "Collocations"
-msgstr "Collocations"
+#: main_app/templates/main_app/learning_material.html:233
+#: main_app/templates/main_app/learning_material.html:275
+#: main_app/templates/main_app/learning_material.html:305
+msgid "Show answer"
+msgstr "Show answer"
 
-msgid "Synonyms"
-msgstr "Synonyms"
+#: main_app/templates/main_app/learning_material.html:329 main_app/views.py:503
+msgid "Speaking task"
+msgstr "Speaking task"
 
-msgid "Antonyms"
-msgstr "Antonyms"
+#: main_app/templates/main_app/learning_material.html:333
+#: main_app/templates/main_app/learning_material.html:360 main_app/views.py:506
+msgid "Useful language"
+msgstr "Useful language"
 
-msgid "Phraseology"
-msgstr "Phraseology"
+#: main_app/templates/main_app/learning_material.html:341
+#: main_app/templates/main_app/learning_material.html:376 main_app/views.py:507
+msgid "Checklist"
+msgstr "Checklist"
 
-msgid "Usage note"
-msgstr "Usage note"
+#: main_app/templates/main_app/learning_material.html:347
+#: main_app/templates/main_app/learning_material.html:382
+msgid "Show sample answer"
+msgstr "Show sample answer"
 
-msgid "Article"
-msgstr "Article"
+#: main_app/templates/main_app/learning_material.html:356 main_app/views.py:504
+msgid "Writing task"
+msgstr "Writing task"
 
-msgid "Gender"
-msgstr "Gender"
+#: main_app/templates/main_app/learning_material.html:368 main_app/views.py:508
+msgid "Support phrases"
+msgstr "Support phrases"
 
-msgid "Plural/forms"
-msgstr "Plural/forms"
+#: main_app/templates/main_app/learning_material.html:391 main_app/views.py:505
+msgid "Review"
+msgstr "Review"
 
-msgid "CEFR"
-msgstr "CEFR"
+#: main_app/templates/main_app/learning_material.html:432
+msgid "Download course"
+msgstr "Download course"
+
+#: main_app/templates/main_app/learning_material.html:433
+msgid "Export a clean study handout in your browser. For PDF, choose “Save as PDF” in the print dialog."
+msgstr "Export a clean study handout in your browser. For PDF, choose “Save as PDF” in the print dialog."
+
+#: main_app/templates/main_app/learning_material.html:436
+msgid "Download TXT"
+msgstr "Download TXT"
+
+#: main_app/templates/main_app/learning_material.html:439
+msgid "Export PDF (no answers)"
+msgstr "Export PDF (no answers)"
+
+#: main_app/templates/main_app/learning_material.html:442
+msgid "Export PDF"
+msgstr "Export PDF"
+
+#: main_app/templates/main_app/transcript.html:3
+msgid "Transcript · BALS"
+msgstr "Transcript · BALS"
+
+#: main_app/templates/main_app/transcript.html:13
+msgid "Choose your native language to generate a personalized course"
+msgstr "Choose your native language to generate a personalized course"
+
+#: main_app/templates/main_app/transcript.html:25
+msgid "Open on YouTube"
+msgstr "Open on YouTube"
+
+#: main_app/templates/main_app/transcript.html:32
+msgid "Transcript"
+msgstr "Transcript"
+
+#: main_app/templates/main_app/transcript.html:35
+msgid "Search transcript…"
+msgstr "Search transcript…"
+
+#: main_app/templates/main_app/transcript.html:38
+#: main_app/templates/main_app/transcript.html:104
+msgid "Copy"
+msgstr "Copy"
+
+#: main_app/templates/main_app/transcript.html:50
+msgid "No matching captions."
+msgstr "No matching captions."
+
+#: main_app/templates/main_app/transcript.html:59
+msgid "Next step"
+msgstr "Next step"
+
+#: main_app/templates/main_app/transcript.html:62
+msgid "Generate learning course"
+msgstr "Generate learning course"
+
+#: main_app/templates/main_app/transcript.html:64
+msgid "Generate vocabulary, grammar, listening and expression exercises from this video."
+msgstr "Generate vocabulary, grammar, listening and expression exercises from this video."
+
+#: main_app/templates/main_app/transcript.html:76
+msgid "Generate my course"
+msgstr "Generate my course"
+
+#: main_app/templates/main_app/transcript.html:84
+msgid "Generated courses"
+msgstr "Generated courses"
+
+#: main_app/templates/main_app/transcript.html:103
+msgid "Copied"
+msgstr "Copied"
+
+#: main_app/templates/main_app/url_input.html:3
+msgid "Create course · BALS"
+msgstr "Create course · BALS"
+
+#: main_app/templates/main_app/url_input.html:11
+msgid "Create a new course"
+msgstr "Create a new course"
+
+#: main_app/templates/main_app/url_input.html:12
+msgid "Which video would you like to start with?"
+msgstr "Which video would you like to start with?"
+
+#: main_app/templates/main_app/url_input.html:14
+msgid "Paste a YouTube URL. We will check it, fetch the transcript and open your course workspace."
+msgstr "Paste a YouTube URL. We will check it, fetch the transcript and open your course workspace."
+
+#: main_app/templates/main_app/url_input.html:27
+msgid "Supports youtube.com, youtu.be, Shorts and URLs with parameters"
+msgstr "Supports youtube.com, youtu.be, Shorts and URLs with parameters"
+
+#: main_app/templates/main_app/url_input.html:30
+msgid "Check and create course"
+msgstr "Check and create course"
+
+#: main_app/templates/main_app/url_input.html:33
+msgid "Submitting…"
+msgstr "Submitting…"
+
+#: main_app/templates/main_app/url_input.html:43
+msgid "Before you begin"
+msgstr "Before you begin"
+
+#: main_app/templates/main_app/url_input.html:46
+msgid "What videos work best?"
+msgstr "What videos work best?"
+
+#: main_app/templates/main_app/url_input.html:51
+msgid "Under 10 minutes"
+msgstr "Under 10 minutes"
+
+#: main_app/templates/main_app/url_input.html:52
+msgid "News, interviews and educational videos work well"
+msgstr "News, interviews and educational videos work well"
+
+#: main_app/templates/main_app/url_input.html:58
+msgid "Captions are preferred"
+msgstr "Captions are preferred"
+
+#: main_app/templates/main_app/url_input.html:59
+msgid "We use manual captions first, then automatic captions. Videos without any captions are not supported."
+msgstr "We use manual captions first, then automatic captions. Videos without any captions are not supported."
+
+#: main_app/templates/main_app/url_input.html:65
+msgid "Publicly accessible"
+msgstr "Publicly accessible"
+
+#: main_app/templates/main_app/url_input.html:66
+msgid "No login, age or regional restrictions"
+msgstr "No login, age or regional restrictions"
+
+#: main_app/templates/main_app/wait.html:3
+msgid "Processing course · BALS"
+msgstr "Processing course · BALS"
+
+#: main_app/templates/main_app/wait.html:11
+msgid "Task incomplete"
+msgstr "Task incomplete"
+
+#: main_app/templates/main_app/wait.html:12
+msgid "Something went wrong while processing"
+msgstr "Something went wrong while processing"
+
+#: main_app/templates/main_app/wait.html:13
+msgid "Your course was not lost. You can retry or choose another video."
+msgstr "Your course was not lost. You can retry or choose another video."
+
+#: main_app/templates/main_app/wait.html:15
+msgid "Error details"
+msgstr "Error details"
+
+#: main_app/templates/main_app/wait.html:16
+msgid "No error details were returned."
+msgstr "No error details were returned."
+
+#: main_app/templates/main_app/wait.html:19
+msgid "Try again"
+msgstr "Try again"
+
+#: main_app/templates/main_app/wait.html:20
+msgid "Choose another video"
+msgstr "Choose another video"
+
+#: main_app/templates/main_app/wait.html:27
+#: main_app/templates/main_app/wait.html:37
+msgid "Processing"
+msgstr "Processing"
+
+#: main_app/templates/main_app/wait.html:28
+msgid "Preparing your course"
+msgstr "Preparing your course"
+
+#: main_app/templates/main_app/wait.html:29
+msgid "You may leave this page; the task will continue."
+msgstr "You may leave this page; the task will continue."
+
+#: main_app/templates/main_app/wait.html:33
+msgid "Fetching and organizing content"
+msgstr "Fetching and organizing content"
+
+#: main_app/templates/main_app/wait.html:36
+msgid "This usually takes 1–3 minutes."
+msgstr "This usually takes 1–3 minutes."
+
+#: main_app/templates/main_app/wait.html:41
+msgid "Video validated"
+msgstr ""
+
+#: main_app/templates/main_app/wait.html:42
+msgid "Fetching subtitles"
+msgstr ""
+
+#: main_app/templates/main_app/wait.html:43
+msgid "Generating vocabulary & grammar"
+msgstr ""
+
+#: main_app/templates/main_app/wait.html:44
+#, fuzzy
+#| msgid "Goals, vocabulary, exercises and review"
+msgid "Building exercises & review"
+msgstr "Goals, vocabulary, exercises and review"
+
+#: main_app/templates/main_app/wait.html:45
+#, fuzzy
+#| msgid "Generate learning course"
+msgid "Finalizing course"
+msgstr "Generate learning course"
+
+#: main_app/templates/main_app/wait.html:49
+msgid "Back to course library"
+msgstr "Back to course library"
+
+#: main_app/templates/main_app/wait.html:60
+msgid "Course ready. Opening…"
+msgstr "Course ready. Opening…"
+
+#: main_app/templates/main_app/wait.html:61
+msgid "Status unavailable. Retrying automatically…"
+msgstr "Status unavailable. Retrying automatically…"
+
+#: main_app/templates/main_app/wait.html:62
+msgid "Connecting to the processing service…"
+msgstr "Connecting to the processing service…"
+
+#: main_app/templates/main_app/wait.html:63
+msgid "Still working — video transcription can take a few minutes."
+msgstr "Still working — video transcription can take a few minutes."
+
+#: main_app/views.py:209
+msgid "We couldn't recognize this YouTube URL. Please check it and try again."
+msgstr "We couldn't recognize this YouTube URL. Please check it and try again."
+
+#: main_app/views.py:998
+msgid "True / False"
+msgstr "True / False"
+
+#: main_app/views.py:999
+msgid "Multiple choice"
+msgstr "Multiple choice"
+
+#: main_app/views.py:1000
+msgid "Fill in the blank"
+msgstr "Fill in the blank"
+
+#~ msgid "Export this lesson locally as text or PDF. Processing happens in your browser."
+#~ msgstr "Export this lesson locally as text or PDF. Processing happens in your browser."
+
+#~ msgid "Download PDF"
+#~ msgstr "Download PDF"
+
+#~ msgid "Could not generate PDF in this browser. Try Download TXT instead."
+#~ msgstr "Could not generate PDF in this browser. Try Download TXT instead."
+
+#~ msgid "Part of speech"
+#~ msgstr "Part of speech"
+
+#~ msgid "Pronunciation"
+#~ msgstr "Pronunciation"
+
+#~ msgid "Register"
+#~ msgstr "Register"
+
+#~ msgid "Sense"
+#~ msgstr "Sense"
+
+#~ msgid "Definition"
+#~ msgstr "Definition"
+
+#~ msgid "Translation"
+#~ msgstr "Translation"
+
+#~ msgid "Collocations"
+#~ msgstr "Collocations"
+
+#~ msgid "Synonyms"
+#~ msgstr "Synonyms"
+
+#~ msgid "Antonyms"
+#~ msgstr "Antonyms"
+
+#~ msgid "Phraseology"
+#~ msgstr "Phraseology"
+
+#~ msgid "Usage note"
+#~ msgstr "Usage note"
+
+#~ msgid "Article"
+#~ msgstr "Article"
+
+#~ msgid "Gender"
+#~ msgstr "Gender"
+
+#~ msgid "Plural/forms"
+#~ msgstr "Plural/forms"
+
+#~ msgid "CEFR"
+#~ msgstr "CEFR"
+
+#~ msgid "Collapse"
+#~ msgstr "Collapse"
+
+#~ msgid "Expand"
+#~ msgstr "Expand"
+
+#~ msgid "Restore"
+#~ msgstr "Restore"

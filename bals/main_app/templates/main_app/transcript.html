@@ -1,1 +1,134 @@
-{% extends 'main_app/base.html' %}{% load i18n %}{% block title %}{% trans "Transcript · BALS" %}{% endblock %}{% block content %}<div class="mb-4"><div class="page-kicker">{% trans "Video transcript" %} · {{ model.video_language|capfirst }}</div><h1 class="section-title display-6">{{ model.video_title }}</h1><div class="muted">{{ model.video_length }} {% trans "seconds" %} · {% trans "Choose your native language to generate a personalized course" %}</div></div><div class="lesson-grid"><section><div class="card p-3 mb-4"><iframe id="ytPlayer" class="video-frame" src="{{ embedded }}" title="{% trans 'YouTube video player' %}" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><div class="pt-3"><a class="btn btn-sm btn-outline-secondary" href="{{ youtube_url }}" target="_blank" rel="noopener">{% trans "Open on YouTube" %}</a></div></div><div class="card overflow-hidden"><div class="toolbar"><strong>{% trans "Transcript" %}</strong><input id="captionSearch" class="form-control form-control-sm" style="max-width:240px" placeholder="{% trans 'Search transcript…' %}"><button id="copyBtn" class="btn btn-sm btn-light" onclick="copyTranscript()"><span>{% trans "Copy" %}</span></button></div><div class="transcript-box">{% for key,value in text.items %}<button type="button" class="caption w-100 text-start border-0" data-time="{{ key }}" onclick="seekCaption(this)"><time>{{ key }}</time><span>{{ value }}</span></button>{% endfor %}</div></div></section><aside class="lesson-side"><div class="card action-card sticky-tool"><div class="eyebrow">{% trans "Next step" %}</div><h2>{% trans "Generate learning course" %}</h2><p class="muted">{% trans "Generate vocabulary, grammar, listening and expression exercises from this video." %}</p><form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary w-100" type="submit">{% trans "Generate my course" %}</button></form></div>{% if model2 %}<div class="card action-card"><b>{% trans "Generated courses" %}</b>{% for content in model2 %}{% if content.status == 'ready' %}<a class="d-flex justify-content-between py-2" href="{% url 'learning_material' model.video_id content.native_language %}">{{ content.native_language|capfirst }} <span>→</span></a>{% endif %}{% endfor %}</div>{% endif %}</aside></div>{% endblock %}{% block scripts %}<script>const copied="{% trans 'Copied' %}",copy="{% trans 'Copy' %}";const search=document.getElementById('captionSearch');search?.addEventListener('input',()=>{const q=search.value.toLowerCase();document.querySelectorAll('.caption').forEach(el=>el.hidden=q&&!el.innerText.toLowerCase().includes(q))});function seekCaption(el){const sec=Math.floor(el.dataset.time.split(':').map(Number).reduce((a,v)=>a*60+v,0));const f=document.getElementById('ytPlayer');f.src=f.src.split('&start=')[0]+'&start='+sec+'&autoplay=1'}function copyTranscript(){navigator.clipboard?.writeText(document.querySelector('.transcript-box').innerText);const b=document.getElementById('copyBtn');b.textContent=copied;setTimeout(()=>b.textContent=copy,1500)}</script>{% endblock %}
+{% extends 'main_app/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Transcript · BALS" %}{% endblock %}
+{% block content %}
+<div class="mb-4">
+  <p class="text-uppercase small text-body-secondary fw-semibold letter-wide mb-2">
+    {% trans "Video transcript" %} · {{ model.video_language|capfirst }}
+  </p>
+  <h1 class="display-6 fw-bold mb-2">{{ model.video_title }}</h1>
+  <p class="text-body-secondary mb-0">
+    <i class="bi bi-clock me-1"></i>{{ model.video_length }} {% trans "seconds" %}
+    <span class="mx-1">·</span>
+    {% trans "Choose your native language to generate a personalized course" %}
+  </p>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card shadow-sm mb-4 overflow-hidden">
+      <div class="ratio ratio-16x9">
+        <iframe id="ytPlayer" src="{{ embedded }}" title="{% trans 'YouTube video player' %}" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="card-footer bg-transparent">
+        <a class="btn btn-sm btn-outline-secondary" href="{{ youtube_url }}" target="_blank" rel="noopener">
+          <i class="bi bi-youtube me-1"></i>{% trans "Open on YouTube" %}
+        </a>
+      </div>
+    </div>
+
+    <div class="card shadow-sm overflow-hidden">
+      <div class="card-header d-flex flex-wrap align-items-center gap-2">
+        <strong class="me-auto"><i class="bi bi-captions me-2"></i>{% trans "Transcript" %}</strong>
+        <div class="input-group input-group-sm" style="max-width:260px">
+          <span class="input-group-text bg-transparent"><i class="bi bi-search"></i></span>
+          <input id="captionSearch" class="form-control" placeholder="{% trans 'Search transcript…' %}" aria-label="{% trans 'Search transcript…' %}">
+        </div>
+        <button id="copyBtn" class="btn btn-sm btn-outline-secondary" type="button" onclick="copyTranscript()">
+          <i class="bi bi-clipboard me-1"></i><span>{% trans "Copy" %}</span>
+        </button>
+      </div>
+      <div class="list-group list-group-flush transcript-scroll" id="transcriptBox">
+        {% for key,value in text.items %}
+        <button type="button" class="list-group-item list-group-item-action caption-btn caption-row caption" data-time="{{ key }}" onclick="seekCaption(this)">
+          <span class="badge text-bg-primary time-badge">{{ key }}</span>
+          <span>{{ value }}</span>
+        </button>
+        {% endfor %}
+      </div>
+      <div class="card-footer small text-body-secondary d-none" id="noMatches">
+        <i class="bi bi-emoji-frown me-1"></i>{% trans "No matching captions." %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="vstack gap-4">
+      <div class="card shadow-sm sticky-tool">
+        <div class="card-header fw-semibold">
+          <i class="bi bi-magic me-2 text-primary"></i>{% trans "Next step" %}
+        </div>
+        <div class="card-body">
+          <h2 class="h5 mb-2">{% trans "Generate learning course" %}</h2>
+          <p class="text-body-secondary small mb-3">
+            {% trans "Generate vocabulary, grammar, listening and expression exercises from this video." %}
+          </p>
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label" for="{{ form.native_language.id_for_label }}">{{ form.native_language.label }}</label>
+              {{ form.native_language }}
+              {% if form.native_language.errors %}
+              <div class="invalid-feedback d-block">{{ form.native_language.errors|striptags }}</div>
+              {% endif %}
+            </div>
+            <button class="btn btn-primary w-100" type="submit">
+              <i class="bi bi-lightning-charge me-1"></i>{% trans "Generate my course" %}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {% if model2 %}
+      <div class="card shadow-sm">
+        <div class="card-header fw-semibold">{% trans "Generated courses" %}</div>
+        <div class="list-group list-group-flush">
+          {% for content in model2 %}
+          {% if content.status == 'ready' %}
+          <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="{% url 'learning_material' model.video_id content.native_language %}">
+            <span>{{ content.native_language|capfirst }}</span>
+            <i class="bi bi-chevron-right"></i>
+          </a>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+const copied = "{% trans 'Copied' %}";
+const copy = "{% trans 'Copy' %}";
+const search = document.getElementById("captionSearch");
+const noMatches = document.getElementById("noMatches");
+search?.addEventListener("input", () => {
+  const q = search.value.toLowerCase();
+  let visible = 0;
+  document.querySelectorAll(".caption").forEach((el) => {
+    const show = !q || el.innerText.toLowerCase().includes(q);
+    el.hidden = !show;
+    if (show) visible++;
+  });
+  noMatches?.classList.toggle("d-none", visible > 0);
+});
+function seekCaption(el) {
+  const sec = Math.floor(el.dataset.time.split(":").map(Number).reduce((a, v) => a * 60 + v, 0));
+  const f = document.getElementById("ytPlayer");
+  f.src = f.src.split("&start=")[0] + "&start=" + sec + "&autoplay=1";
+}
+function copyTranscript() {
+  navigator.clipboard?.writeText(document.getElementById("transcriptBox").innerText);
+  const b = document.getElementById("copyBtn");
+  const label = b.querySelector("span");
+  if (label) label.textContent = copied;
+  else b.textContent = copied;
+  setTimeout(() => {
+    if (label) label.textContent = copy;
+    else b.textContent = copy;
+  }, 1500);
+}
+</script>
+{% endblock %}

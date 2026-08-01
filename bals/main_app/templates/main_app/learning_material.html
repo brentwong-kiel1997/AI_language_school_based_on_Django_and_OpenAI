@@ -1,1 +1,451 @@
-{% extends 'main_app/base.html' %}{% load i18n %}{% block title %}{% trans "Learning course · BALS" %}{% endblock %}{% block content %}<div class="learning-material"><div class="d-flex justify-content-between align-items-end mb-4"><div><div class="page-kicker">{% trans "Your personalized learning course" %}</div><h1>{{ model.video_title }}</h1><div class="muted">{% trans "Target language" %}: {{ model.video_language|capfirst }} · {% trans "Native language" %}: {{ model2.native_language|capfirst }}</div></div><button class="btn btn-light" onclick="downloadText()">{% trans "Download course" %}</button></div><div class="card p-3 mb-4"><iframe class="video-frame" src="{{ embedded }}" title="{% trans 'YouTube video player' %}" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><div id="lesson" class="row g-4"><div class="col-lg-5"><div class="card overflow-hidden sticky-tool"><div class="toolbar"><strong>{% trans "Video transcript" %}</strong></div><div class="transcript-box">{% for key,value in video_text.items %}<div class="caption"><time>{{ key }}</time><span>{{ value }}</span></div>{% endfor %}</div></div></div><div class="col-lg-7"><div class="row g-4">{% if reply.can_do %}<div class="col-12"><section class="card material-section"><h3>{% trans "Lesson goals" %}</h3><ul>{% for item in reply.can_do %}<li>{{ item }}</li>{% endfor %}</ul></section></div>{% endif %}{% if reply.warm_up %}<div class="col-12"><section class="card material-section"><h3>{% trans "Warm-up" %}</h3><ol>{% for item in reply.warm_up %}<li>{{ item }}</li>{% endfor %}</ol></section></div>{% endif %}<div class="col-12"><section class="card material-section"><h3>{% trans "Key vocabulary" %}</h3><div class="lexicon-list">{% for item in word_items %}<article class="lexicon-entry">{% if item.label %}<h4 class="lexicon-term">{{ item.label }}</h4>{% endif %}{% for key,value in item.details.items %}{% if key == "pronunciation" or key == "ipa" or key == "part_of_speech" or key == "grammatical_info" or key == "forms" or key == "register" or key == "article" or key == "gender" or key == "plural_or_forms" or key == "cefr" %}<div class="lexicon-meta"><span class="material-label">{{ key|capfirst }}</span><span class="material-value">{{ value }}</span></div>{% endif %}{% endfor %}{% if item.details.meaning %}<div class="lexicon-meta"><span class="material-label">{% trans "Meaning" %}</span><span class="material-value">{{ item.details.meaning }}</span></div>{% endif %}{% if item.details.senses %}<ol class="lexicon-senses">{% for sense in item.details.senses %}<li><span class="material-label">{% trans "Sense" %}</span>{% if sense.definition %}<div><span class="material-label">{% trans "Definition" %}</span>{{ sense.definition }}</div>{% endif %}{% if sense.translation %}<div><span class="material-label">{% trans "Translation" %}</span>{{ sense.translation }}</div>{% endif %}{% if sense.example %}<div><span class="material-label">{% trans "Example" %}</span>{{ sense.example }}</div>{% endif %}{% if sense.collocations %}<div><span class="material-label">{% trans "Collocations" %}</span>{{ sense.collocations|join:", " }}</div>{% endif %}</li>{% endfor %}</ol>{% endif %}{% for key,value in item.details.items %}{% if key == "synonyms" or key == "antonyms" or key == "phraseology" or key == "usage_note" or key == "note" %}{% if value %}<div class="lexicon-meta"><span class="material-label">{{ key|capfirst }}</span><span class="material-value">{{ value }}</span></div>{% endif %}{% endif %}{% endfor %}</article>{% endfor %}</div></section></div><div class="col-12"><section class="card material-section"><h3>{% trans "Grammar" %}</h3><div class="grammar-list">{% for item in grammar_items %}<article class="grammar-entry">{% if item.label %}<h4 class="grammar-pattern"><span class="material-label">{% trans "Pattern" %}</span>{{ item.label }}</h4>{% endif %}{% if item.details.pattern %}<div class="grammar-field"><span class="material-label">{% trans "Pattern" %}</span><span class="material-value">{{ item.details.pattern }}</span></div>{% endif %}{% if item.details.example %}<div class="grammar-field"><span class="material-label">{% trans "Example" %}</span><span class="material-value">{{ item.details.example }}</span></div>{% endif %}{% if item.details.explanation %}<div class="grammar-field"><span class="material-label">{% trans "Explanation" %}</span><span class="material-value">{{ item.details.explanation }}</span></div>{% endif %}{% if item.details.practice %}<div class="grammar-field"><span class="material-label">{% trans "Practice" %}</span><span class="material-value">{{ item.details.practice }}</span></div>{% endif %}</article>{% endfor %}</div></section></div>{% if reply.listening_tasks %}<div class="col-12"><section class="card material-section"><h3>{% trans "Listening comprehension" %}</h3>{% for task in reply.listening_tasks %}<p><b>{{ forloop.counter }}. {{ task.question }}</b><br><span class="text-success">{% trans "Answer" %}: {{ task.answer }}</span></p>{% endfor %}</section></div>{% endif %}<div class="col-md-6"><section class="card material-section"><h3>{% trans "Comprehension questions" %}</h3><ol>{% for item in reply.questions %}<li>{{ item }}</li>{% endfor %}</ol></section></div><div class="col-md-6"><section class="card material-section"><h3>{% trans "Suggested answers" %}</h3><details><summary class="btn btn-light">{% trans "Show answers after finishing" %}</summary><ol>{% for item in reply.answers %}<li>{{ item }}</li>{% endfor %}</ol></details></section></div>{% if reply.speaking_task or reply.writing_task %}<div class="col-12"><section class="card material-section"><h3>{% trans "Expression practice" %}</h3>{% if reply.speaking_task %}<p><b>{% trans "Speaking task" %}:</b> {{ reply.speaking_task }}</p>{% endif %}{% if reply.writing_task %}<p><b>{% trans "Writing task" %}:</b> {{ reply.writing_task }}</p>{% endif %}</section></div>{% endif %}<div class="col-12"><section class="card material-section"><h3>{% trans "Full translation" %}</h3>{% for key,value in reply.translation.items %}<div class="caption px-0"><time>{{ key }}</time><span>{{ value }}</span></div>{% endfor %}</section></div></div></div></div></div>{% endblock %}{% block scripts %}<script>function downloadText(){const t='{{ model.video_title|escapejs }}\n\n'+document.getElementById('lesson').innerText,u=URL.createObjectURL(new Blob([t],{type:'text/plain'})),a=document.createElement('a');a.href=u;a.download='bals-lesson.txt';a.click();URL.revokeObjectURL(u)}</script>{% endblock %}
+{% extends 'main_app/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Learning course · BALS" %}{% endblock %}
+{% block content %}
+<div class="learning-material" data-export-url="{{ export_url }}"
+     data-prev-label="{% trans 'Previous' %}"
+     data-next-label="{% trans 'Next' %}"
+     data-lesson-title="{{ model.video_title|escapejs }}"
+     data-export-meta='{"brand":"BALS","kicker":"{% trans "Your personalized learning course"|escapejs %}","targetLabel":"{% trans "Target language"|escapejs %}","nativeLabel":"{% trans "Native language"|escapejs %}","target":"{{ model.video_language|capfirst|escapejs }}","native":"{{ model2.native_language|capfirst|escapejs }}","contents":"{% trans "Contents"|escapejs %}","answer":"{% trans "Answer"|escapejs %}","sample":"{% trans "Sample answer"|escapejs %}","footer":"{% trans "Exported from BALS for personal study"|escapejs %}","generating":"{% trans "Generating PDF…"|escapejs %}","pdfError":"{% trans "Could not open the PDF preview. Please allow pop-ups, or use Download TXT."|escapejs %}","txtError":"{% trans "Could not load lesson data for export."|escapejs %}","printTip":"{% trans "In the print dialog, choose Save as PDF and turn off headers/footers if characters look cut off."|escapejs %}","practiceEdition":"{% trans "Practice edition · no answers"|escapejs %}","lang":"{{ LANGUAGE_CODE }}"}'>
+  <div class="lesson-hero mb-4">
+    <p class="lesson-kicker mb-2">{% trans "Your personalized learning course" %}</p>
+    <h1 class="lesson-title mb-3">{{ model.video_title }}</h1>
+    <div class="d-flex flex-wrap gap-2">
+      <span class="badge rounded-pill text-bg-primary">{% trans "Target language" %} · {{ model.video_language|capfirst }}</span>
+      <span class="badge rounded-pill text-bg-secondary">{% trans "Native language" %} · {{ model2.native_language|capfirst }}</span>
+    </div>
+  </div>
+
+  <div class="lesson-player is-float card border-0 shadow-sm overflow-hidden" id="lessonPlayer">
+    <div class="player-float-bar" title="{% trans 'Drag to move' %}">
+      <span class="player-float-title text-truncate">
+        <i class="bi bi-grip-vertical player-drag-icon" aria-hidden="true"></i>
+        <i class="bi bi-play-btn-fill me-1" aria-hidden="true"></i>{% trans "Video" %}
+      </span>
+      <div class="player-float-actions">
+        <button type="button" class="player-float-btn" id="playerCloseFloatBtn" title="{% trans 'Close' %}" aria-label="{% trans 'Close' %}">
+          <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div class="ratio ratio-16x9 player-frame">
+      <iframe src="{{ embedded }}" title="{% trans 'YouTube video player' %}" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <button type="button" class="player-resize-handle" title="{% trans 'Drag to resize' %}" aria-label="{% trans 'Drag to resize' %}"></button>
+  </div>
+  <button type="button" class="player-show-btn d-none" id="playerShowBtn">
+    <i class="bi bi-play-btn-fill me-1"></i>{% trans "Video" %}
+  </button>
+
+  <nav class="lesson-toc" aria-label="{% trans 'Course outline' %}">
+    <div class="nav lesson-toc-track" id="lessonTabs" role="tablist">
+      <button class="lesson-toc-item" id="tab-transcript" data-export-title="{% trans 'Video transcript' %}" data-bs-toggle="tab" data-bs-target="#pane-transcript" type="button" role="tab" aria-controls="pane-transcript" aria-selected="false">{% trans "Video transcript" %}</button>
+      {% if reply.can_do %}
+      <button class="lesson-toc-item active" id="tab-goals" data-export-title="{% trans 'Lesson goals' %}" data-bs-toggle="tab" data-bs-target="#pane-goals" type="button" role="tab" aria-controls="pane-goals" aria-selected="true">{% trans "Lesson goals" %}</button>
+      {% endif %}
+      {% if reply.warm_up %}
+      <button class="lesson-toc-item{% if not reply.can_do %} active{% endif %}" id="tab-warmup" data-export-title="{% trans 'Warm-up' %}" data-bs-toggle="tab" data-bs-target="#pane-warmup" type="button" role="tab" aria-controls="pane-warmup" aria-selected="{% if not reply.can_do %}true{% else %}false{% endif %}">{% trans "Warm-up" %}</button>
+      {% endif %}
+      <button class="lesson-toc-item{% if not reply.can_do and not reply.warm_up %} active{% endif %}" id="tab-vocab" data-export-title="{% trans 'Key vocabulary' %}" data-bs-toggle="tab" data-bs-target="#pane-vocab" type="button" role="tab" aria-controls="pane-vocab" aria-selected="{% if not reply.can_do and not reply.warm_up %}true{% else %}false{% endif %}">{% trans "Key vocabulary" %}</button>
+      <button class="lesson-toc-item" id="tab-grammar" data-export-title="{% trans 'Grammar' %}" data-bs-toggle="tab" data-bs-target="#pane-grammar" type="button" role="tab" aria-controls="pane-grammar" aria-selected="false">{% trans "Grammar" %}</button>
+      {% if listening_items %}
+      <button class="lesson-toc-item" id="tab-listening" data-export-title="{% trans 'Listening comprehension' %}" data-bs-toggle="tab" data-bs-target="#pane-listening" type="button" role="tab" aria-controls="pane-listening" aria-selected="false">{% trans "Listening comprehension" %}</button>
+      {% endif %}
+      {% if comprehension_items %}
+      <button class="lesson-toc-item" id="tab-comprehension" data-export-title="{% trans 'Comprehension questions' %}" data-bs-toggle="tab" data-bs-target="#pane-comprehension" type="button" role="tab" aria-controls="pane-comprehension" aria-selected="false">{% trans "Comprehension questions" %}</button>
+      {% endif %}
+      {% if expression.has_content %}
+      <button class="lesson-toc-item" id="tab-expression" data-export-title="{% trans 'Expression practice' %}" data-bs-toggle="tab" data-bs-target="#pane-expression" type="button" role="tab" aria-controls="pane-expression" aria-selected="false">{% trans "Expression practice" %}</button>
+      {% endif %}
+      <button class="lesson-toc-item" id="tab-translation" data-export-title="{% trans 'Full translation' %}" data-bs-toggle="tab" data-bs-target="#pane-translation" type="button" role="tab" aria-controls="pane-translation" aria-selected="false">{% trans "Full translation" %}</button>
+    </div>
+  </nav>
+
+  <div id="lesson" class="tab-content lesson-pages">
+    <div class="tab-pane fade" id="pane-transcript" role="tabpanel" aria-labelledby="tab-transcript" tabindex="0">
+      <article class="lesson-card">
+        <header class="lesson-card-head">
+          <span class="unit-icon" aria-hidden="true"><i class="bi bi-badge-cc-fill"></i></span>
+          <h2 class="unit-title">{% trans "Video transcript" %}</h2>
+        </header>
+        <div class="lesson-card-body p-0">
+          <div class="list-group list-group-flush caption-list">
+            {% for key,value in video_text.items %}
+            <div class="list-group-item caption-row">
+              <i class="bi bi-circle-fill caption-icon" aria-hidden="true"></i>
+              <span class="badge text-bg-primary time-badge">{{ key }}</span>
+              <span class="caption-text">{{ value }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <footer class="lesson-card-foot" data-pane="pane-transcript"></footer>
+      </article>
+    </div>
+
+    {% if reply.can_do %}
+    <div class="tab-pane fade show active" id="pane-goals" role="tabpanel" aria-labelledby="tab-goals" tabindex="0">
+      <article class="lesson-card">
+        <header class="lesson-card-head">
+          <span class="unit-icon" aria-hidden="true"><i class="bi bi-flag-fill"></i></span>
+          <h2 class="unit-title">{% trans "Lesson goals" %}</h2>
+        </header>
+        <div class="lesson-card-body">
+          <ol class="goal-list">
+            {% for item in reply.can_do %}<li>{{ item }}</li>{% endfor %}
+          </ol>
+        </div>
+        <footer class="lesson-card-foot" data-pane="pane-goals"></footer>
+      </article>
+    </div>
+    {% endif %}
+
+    {% if reply.warm_up %}
+    <div class="tab-pane fade{% if not reply.can_do %} show active{% endif %}" id="pane-warmup" role="tabpanel" aria-labelledby="tab-warmup" tabindex="0">
+      <article class="lesson-card">
+        <header class="lesson-card-head">
+          <span class="unit-icon" aria-hidden="true"><i class="bi bi-chat-dots-fill"></i></span>
+          <h2 class="unit-title">{% trans "Warm-up" %}</h2>
+        </header>
+        <div class="lesson-card-body">
+          <ol class="warmup-list">
+            {% for item in reply.warm_up %}<li>{{ item }}</li>{% endfor %}
+          </ol>
+        </div>
+        <footer class="lesson-card-foot" data-pane="pane-warmup"></footer>
+      </article>
+    </div>
+    {% endif %}
+
+    <div class="tab-pane fade{% if not reply.can_do and not reply.warm_up %} show active{% endif %}" id="pane-vocab" role="tabpanel" aria-labelledby="tab-vocab" tabindex="0">
+      <article class="lesson-card">
+        <header class="lesson-card-head">
+          <span class="unit-icon" aria-hidden="true"><i class="bi bi-journal-bookmark-fill"></i></span>
+          <h2 class="unit-title">{% trans "Key vocabulary" %}</h2>
+        </header>
+        <div class="lesson-card-body">
+          <div class="row g-3 lexicon-list">
+            {% for item in word_items %}
+            <div class="col-md-6">
+              <article class="word-card lexicon-entry{% if item.multi_sense %} is-multi{% endif %}">
+                <div class="dict-head">
+                  {% if item.headword %}<span class="dict-lemma">{{ item.headword }}</span>{% endif %}{% if item.grammar %}<span class="dict-grammar">, {{ item.grammar }}</span>{% endif %}{% if item.ipa %} <span class="dict-ipa">{{ item.ipa }}</span>{% endif %}
+                </div>
+                {% if item.senses %}
+                <ol class="dict-senses{% if not item.multi_sense %} is-single{% endif %} mb-0">
+                  {% for sense in item.senses %}
+                  <li>
+                    <p class="dict-sense-body mb-1">
+                      {% if sense.translation %}<span class="dict-gloss">【{{ sense.translation }}】</span>{% endif %}{% if sense.definition %}<span class="dict-def">{{ sense.definition }}</span>{% endif %}
+                    </p>
+                    {% if sense.example %}<p class="dict-ex mb-1"><span class="dict-ex-mark">~</span> {{ sense.example }}</p>{% endif %}
+                    {% if sense.collocations %}<p class="dict-col mb-0">◇ {{ sense.collocations|join:" · " }}</p>{% endif %}
+                  </li>
+                  {% endfor %}
+                </ol>
+                {% endif %}
+                {% if item.synonyms %}<p class="dict-aside mb-0 mt-2"><i>{{ lexicon_labels.syn }}</i> {{ item.synonyms|join:", " }}</p>{% endif %}
+                {% if item.antonyms %}<p class="dict-aside mb-0 mt-1"><i>{{ lexicon_labels.ant }}</i> {{ item.antonyms|join:", " }}</p>{% endif %}
+                {% if item.phraseology %}<p class="dict-aside mb-0 mt-1"><i>{{ lexicon_labels.phrase }}</i> {{ item.phraseology|join:" · " }}</p>{% endif %}
+                {% if item.note %}<p class="dict-aside mb-0 mt-1"><i>{{ lexicon_labels.note }}</i> {{ item.note }}</p>{% endif %}
+              </article>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <footer class="lesson-card-foot" data-pane="pane-vocab"></footer>
+      </article>
+    </div>
+
+    <div class="tab-pane fade" id="pane-grammar" role="tabpanel" aria-labelledby="tab-grammar" tabindex="0">
+      <article class="lesson-card">
+        <header class="lesson-card-head">
+          <span class="unit-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span>
+          <h2 class="unit-title">{% trans "Grammar" %}</h2>
+        </header>
+        <div class="lesson-card-body">
+          <div class="vstack gap-4 grammar-list">
+            {% for item in grammar_items %}
+            <article class="grammar-entry{% if not forloop.last %} border-bottom pb-4{% endif %}">
+              {% if item.pattern %}
+              <h3 class="h6 grammar-pattern mb-2">
+                <span class="grammar-pattern-label">{{ item.pattern }}</span>{% if item.meaning %}<span class="grammar-meaning text-body-secondary"> ：{{ item.meaning }}</span>{% endif %}
+              </h3>
+              {% endif %}
+              {% if item.overview %}<p class="mb-3">{{ item.overview }}</p>{% endif %}
+
+              {% if item.collocations %}
+              <div class="mb-3">
+                <div class="unit-label">{% trans "Typical collocations" %}</div>
+                <ul class="list-unstyled mb-0 grammar-pair-list">
+                  {% for row in item.collocations %}
+                  <li class="mb-1"><span class="gp-phrase">{{ row.phrase }}</span>{% if row.translation %}<span class="text-body-secondary"> — {{ row.translation }}</span>{% endif %}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+              {% endif %}
+
+              {% if item.forms %}
+              <div class="mb-3">
+                <div class="unit-label">{% trans "Forms" %}</div>
+                <ul class="list-unstyled mb-0">
+                  {% for line in item.forms %}<li class="mb-1">{{ line }}</li>{% endfor %}
+                </ul>
+              </div>
+              {% endif %}
+
+              {% if item.model.sentence %}
+              <div class="example-board mb-3">
+                <div class="unit-label">{% trans "Example sentence" %}</div>
+                <p class="mb-1 fst-italic">«{{ item.model.sentence }}»</p>
+                {% if item.model.translation %}<p class="mb-0 text-body-secondary small">{{ item.model.translation }}</p>{% endif %}
+              </div>
+              {% endif %}
+
+              {% if item.note %}
+              <div class="mb-3">
+                <div class="unit-label">{% trans "Note" %}</div>
+                <p class="mb-0">{{ item.note }}</p>
+              </div>
+              {% endif %}
+
+              {% if item.examples %}
+              <div class="mb-3">
+                <div class="unit-label">{% trans "More phrases" %}</div>
+                <ul class="list-unstyled mb-0">
+                  {% for ex in item.examples %}
+                  <li class="mb-1 text-body-secondary fst-italic">«{{ ex.phrase }}»{% if ex.translation %} <span>({{ ex.translation }})</span>{% endif %}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+              {% endif %}
+
+              {% if item.practice_items or item.practice_instruction or item.practice %}
+              <div class="practice-block">
+                <div class="unit-label">{% trans "Practice" %}{% if item.practice_instruction %} · {{ item.practice_instruction }}{% endif %}</div>
+                {% if item.practice_items %}
+                <ol class="mb-0">
+                  {% for p in item.practice_items %}
+                  <li class="mb-3">
+                    <p class="mb-2">{{ p.prompt }}</p>
+                    {% if p.answer %}
+                    <details class="answer-fold">
+                      <summary class="answer-toggle">{% trans "Show answer" %}</summary>
+                      <div class="answer-panel mt-2"><strong>{% trans "Answer" %}</strong> {{ p.answer }}</div>
+                    </details>
+                    {% endif %}
+                  </li>
+                  {% endfor %}
+                </ol>
+                {% elif item.practice %}
+                <p class="mb-0">{{ item.practice }}</p>
+                {% endif %}
+              </div>
+              {% endif %}
+            </article>
+            {% endfor %}
+          </div>
+        </div>
+        <footer class="lesson-card-foot" data-pane="pane-grammar"></footer>
+      </article>
+    </div>
+
+    {% if listening_items %}
+    <div class="tab-pane fade" id="pane-listening" role="tabpanel" aria-labelledby="tab-listening" tabindex="0">
+      <article class="lesson-card">
+        <header class="lesson-card-head">
+          <span class="unit-icon" aria-hidden="true"><i class="bi bi-headphones"></i></span>
+          <h2 class="unit-title">{% trans "Listening comprehension" %}</h2>
+        </header>
+        <div class="lesson-card-body">
+          <div class="vstack gap-4">
+            {% for task in listening_items %}
+            <article{% if not forloop.last %} class="border-bottom pb-4"{% endif %}>
+              {% if task.type_label %}<h3 class="h6 mb-2">{{ task.type_label }}</h3>{% endif %}
+              {% if task.instruction %}<p class="text-body-secondary mb-3">{{ task.instruction }}</p>{% endif %}
+              <ol class="mb-0 listening-task-list">
+                {% for item in task.items %}
+                <li class="mb-3 listening-item">
+                  {% if item.prompt %}<p class="mb-2 listening-prompt">{{ item.prompt }}</p>{% endif %}
+                  {% if item.options %}
+                  <ul class="mb-2 listening-options">{% for opt in item.options %}<li>{{ opt }}</li>{% endfor %}</ul>
+                  {% endif %}
+                  {% if item.answer %}
+                  <details class="answer-fold">
+                    <summary class="answer-toggle">{% trans "Show answer" %}</summary>
+                    <div class="answer-panel mt-2"><strong>{% trans "Answer" %}</strong> {{ item.answer }}</div>
+                  </details>
+                  {% endif %}
+                </li>
+                {% endfor %}
+              </ol>
+            </article>
+            {% endfor %}
+          </div>
+        </div>
+        <footer class="lesson-card-foot" data-pane="pane-listening"></footer>
+      </article>
+    </div>
+    {% endif %}
+
+    {% if comprehension_items %}
+    <div class="tab-pane fade" id="pane-comprehension" role="tabpanel" aria-labelledby="tab-comprehension" tabindex="0">
+      <article class="lesson-card">
+        <header class="lesson-card-head">
+          <span class="unit-icon" aria-hidden="true"><i class="bi bi-question-circle-fill"></i></span>
+          <h2 class="unit-title">{% trans "Comprehension questions" %}</h2>
+        </header>
+        <div class="lesson-card-body">
+          <ol class="comp-list">
+            {% for item in comprehension_items %}
+            <li>
+              {% if item.question %}<p class="mb-2">{{ item.question }}</p>{% endif %}
+              {% if item.answer %}
+              <details class="answer-fold">
+                <summary class="answer-toggle">{% trans "Show answer" %}</summary>
+                <div class="answer-panel mt-2"><strong>{% trans "Answer" %}</strong> {{ item.answer }}</div>
+              </details>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ol>
+        </div>
+        <footer class="lesson-card-foot" data-pane="pane-comprehension"></footer>
+      </article>
+    </div>
+    {% endif %}
+
+    {% if expression.has_content %}
+    <div class="tab-pane fade" id="pane-expression" role="tabpanel" aria-labelledby="tab-expression" tabindex="0">
+      <article class="lesson-card">
+        <header class="lesson-card-head">
+          <span class="unit-icon" aria-hidden="true"><i class="bi bi-mic-fill"></i></span>
+          <h2 class="unit-title">{% trans "Expression practice" %}</h2>
+        </header>
+        <div class="lesson-card-body">
+          <div class="vstack gap-4">
+            {% if expression.speaking.prompt %}
+            <article{% if expression.writing.prompt or expression.review %} class="border-bottom pb-4"{% endif %}>
+              <h3 class="h6 mb-2">{% trans "Speaking task" %}{% if expression.speaking.meta %} · {{ expression.speaking.meta }}{% endif %}</h3>
+              <p class="mb-3">{{ expression.speaking.prompt }}</p>
+              {% if expression.speaking.useful_language %}
+              <div class="mb-3">
+                <div class="unit-label">{% trans "Useful language" %}</div>
+                <div class="d-flex flex-wrap gap-2">
+                  {% for w in expression.speaking.useful_language %}<span class="chip">{{ w }}</span>{% endfor %}
+                </div>
+              </div>
+              {% endif %}
+              {% if expression.speaking.checklist %}
+              <div class="mb-3">
+                <div class="unit-label">{% trans "Checklist" %}</div>
+                <ol class="mb-0">{% for step in expression.speaking.checklist %}<li class="mb-1">{{ step }}</li>{% endfor %}</ol>
+              </div>
+              {% endif %}
+              {% if expression.speaking.sample_answer %}
+              <details class="answer-fold">
+                <summary class="answer-toggle">{% trans "Show sample answer" %}</summary>
+                <div class="answer-panel mt-2 white-space-pre">{{ expression.speaking.sample_answer }}</div>
+              </details>
+              {% endif %}
+            </article>
+            {% endif %}
+
+            {% if expression.writing.prompt %}
+            <article{% if expression.review %} class="border-bottom pb-4"{% endif %}>
+              <h3 class="h6 mb-2">{% trans "Writing task" %}{% if expression.writing.meta %} · {{ expression.writing.meta }}{% endif %}</h3>
+              <p class="mb-3">{{ expression.writing.prompt }}</p>
+              {% if expression.writing.useful_language %}
+              <div class="mb-3">
+                <div class="unit-label">{% trans "Useful language" %}</div>
+                <div class="d-flex flex-wrap gap-2">
+                  {% for w in expression.writing.useful_language %}<span class="chip">{{ w }}</span>{% endfor %}
+                </div>
+              </div>
+              {% endif %}
+              {% if expression.writing.support_phrases %}
+              <div class="mb-3">
+                <div class="unit-label">{% trans "Support phrases" %}</div>
+                <div class="d-flex flex-wrap gap-2">
+                  {% for w in expression.writing.support_phrases %}<span class="chip">{{ w }}</span>{% endfor %}
+                </div>
+              </div>
+              {% endif %}
+              {% if expression.writing.checklist %}
+              <div class="mb-3">
+                <div class="unit-label">{% trans "Checklist" %}</div>
+                <ol class="mb-0">{% for step in expression.writing.checklist %}<li class="mb-1">{{ step }}</li>{% endfor %}</ol>
+              </div>
+              {% endif %}
+              {% if expression.writing.sample_answer %}
+              <details class="answer-fold">
+                <summary class="answer-toggle">{% trans "Show sample answer" %}</summary>
+                <div class="answer-panel mt-2 white-space-pre">{{ expression.writing.sample_answer }}</div>
+              </details>
+              {% endif %}
+            </article>
+            {% endif %}
+
+            {% if expression.review %}
+            <article>
+              <h3 class="h6 mb-3">{% trans "Review" %}</h3>
+              <div class="review-table">
+                {% for row in expression.review %}
+                <div class="review-row">
+                  <span class="fw-semibold">{{ row.term }}</span>
+                  {% if row.translation %}<span class="text-body-secondary">{{ row.translation }}</span>{% endif %}
+                </div>
+                {% endfor %}
+              </div>
+            </article>
+            {% endif %}
+          </div>
+        </div>
+        <footer class="lesson-card-foot" data-pane="pane-expression"></footer>
+      </article>
+    </div>
+    {% endif %}
+
+    <div class="tab-pane fade" id="pane-translation" role="tabpanel" aria-labelledby="tab-translation" tabindex="0">
+      <article class="lesson-card">
+        <header class="lesson-card-head">
+          <span class="unit-icon" aria-hidden="true"><i class="bi bi-translate"></i></span>
+          <h2 class="unit-title">{% trans "Full translation" %}</h2>
+        </header>
+        <div class="lesson-card-body p-0">
+          <div class="list-group list-group-flush caption-list">
+            {% for key,value in reply.translation.items %}
+            <div class="list-group-item caption-row">
+              <i class="bi bi-circle-fill caption-icon" aria-hidden="true"></i>
+              <span class="badge text-bg-primary time-badge">{{ key }}</span>
+              <span class="caption-text">{{ value }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <footer class="lesson-card-foot" data-pane="pane-translation"></footer>
+      </article>
+    </div>
+  </div>
+
+  <section class="lesson-download" aria-labelledby="lessonDownloadTitle">
+    <h2 class="h5 mb-2" id="lessonDownloadTitle">{% trans "Download course" %}</h2>
+    <p class="text-secondary small mb-3">{% trans "Export a clean study handout in your browser. For PDF, choose “Save as PDF” in the print dialog." %}</p>
+    <div class="d-flex flex-wrap gap-2 lesson-download-actions">
+      <button type="button" class="btn btn-outline-secondary" id="downloadTxtBtn">
+        <i class="bi bi-filetype-txt me-1" aria-hidden="true"></i>{% trans "Download TXT" %}
+      </button>
+      <button type="button" class="btn btn-outline-secondary" id="downloadPdfNoAnsBtn">
+        <i class="bi bi-filetype-pdf me-1" aria-hidden="true"></i>{% trans "Export PDF (no answers)" %}
+      </button>
+      <button type="button" class="btn btn-primary" id="downloadPdfBtn">
+        <i class="bi bi-filetype-pdf me-1" aria-hidden="true"></i>{% trans "Export PDF" %}
+      </button>
+    </div>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}
+{% load static %}
+<script src="{% static 'main_app/lesson.js' %}"></script>
+{% endblock %}

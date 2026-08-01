@@ -1,0 +1,3 @@
+[console_scripts]
+ark = ark_cli.cli:main
+mmx = minimax_cli.cli:main
