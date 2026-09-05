@@ -67,6 +67,27 @@
     goTo(active + (e.key === 'ArrowRight' ? 1 : -1));
   });
 
+  /* ---- Progress tracking ---- */
+  (function () {
+    var progressUrl = root.dataset.progressUrl || '';
+    if (!progressUrl) return;
+    function track(tab) {
+      if (!tab) return;
+      fetch(progressUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': (document.cookie.match(/csrftoken=([^;]+)/) || [])[1] || '' },
+        body: JSON.stringify({ tab: tab.id || tab.dataset.bsTarget || '' }),
+        credentials: 'same-origin',
+      }).catch(function () {});
+    }
+    tabs.forEach(function (tab) {
+      tab.addEventListener('shown.bs.tab', function () {
+        tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        track(tab);
+      });
+    });
+  })();
+
   /* ---- PDF / TXT export ---- */
   (function () {
     var txtBtn = document.getElementById('downloadTxtBtn');

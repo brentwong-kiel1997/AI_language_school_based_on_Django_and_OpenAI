@@ -6,6 +6,7 @@
      data-prev-label="{% trans 'Previous' %}"
      data-next-label="{% trans 'Next' %}"
      data-lesson-title="{{ model.video_title|escapejs }}"
+     data-progress-url="{% url 'update_progress' video_slug=model.video_id native_language_slug=model2.native_language %}"
      data-export-meta='{"brand":"BALS","kicker":"{% trans "Your personalized learning course"|escapejs %}","targetLabel":"{% trans "Target language"|escapejs %}","nativeLabel":"{% trans "Native language"|escapejs %}","target":"{{ model.video_language|capfirst|escapejs }}","native":"{{ model2.native_language|capfirst|escapejs }}","contents":"{% trans "Contents"|escapejs %}","answer":"{% trans "Answer"|escapejs %}","sample":"{% trans "Sample answer"|escapejs %}","footer":"{% trans "Exported from BALS for personal study"|escapejs %}","generating":"{% trans "Generating PDF…"|escapejs %}","pdfError":"{% trans "Could not open the PDF preview. Please allow pop-ups, or use Download TXT."|escapejs %}","txtError":"{% trans "Could not load lesson data for export."|escapejs %}","printTip":"{% trans "In the print dialog, choose Save as PDF and turn off headers/footers if characters look cut off."|escapejs %}","practiceEdition":"{% trans "Practice edition · no answers"|escapejs %}","lang":"{{ LANGUAGE_CODE }}"}'>
   <div class="lesson-hero mb-4">
     <p class="lesson-kicker mb-2">{% trans "Your personalized learning course" %}</p>

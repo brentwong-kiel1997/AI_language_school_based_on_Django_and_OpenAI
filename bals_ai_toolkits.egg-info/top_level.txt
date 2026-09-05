@@ -1,3 +1,0 @@
-ark_cli
-minimax_cli
-prompts

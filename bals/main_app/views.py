@@ -18,6 +18,7 @@ import logging
 import re
 from urllib.parse import parse_qs, urlencode, urlparse
 
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -189,6 +190,7 @@ def home(request):
 
 
 @require_http_methods(["GET", "POST"])
+@login_required
 def url_input(request):
     if request.method == "POST":
         form = UrlInputForm(request.POST)
@@ -212,6 +214,7 @@ def url_input(request):
     return render(request, "main_app/url_input.html", {"form": form})
 
 
+@login_required
 def wait_view(request, video_id):
     """Submit a YouTube URL, kick off the download in the background, and
     immediately redirect to the polling wait page.

@@ -413,6 +413,13 @@ class MiniMaxGeneratorTests(TestCase):
 
 
 class InternationalizationTests(TestCase):
+    def setUp(self):
+        from accounts.models import User
+        self.user = User.objects.create_user(
+            email="test@bals.dev", username="test@bals.dev", password="testpass123",
+        )
+        self.client.login(email="test@bals.dev", password="testpass123")
+
     def test_prefixed_home_pages_render_in_requested_language(self):
         zh = self.client.get("/zh/")
         en = self.client.get("/en/")
