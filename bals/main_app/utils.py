@@ -32,7 +32,7 @@ MIN_MAX_TOKENS = 256
 MAX_MAX_TOKENS = 131072
 DEFAULT_CONTEXT_WINDOW_TOKENS = 1_000_000
 DEFAULT_TEXT_MODEL = "MiniMax-M3"
-DEFAULT_LLM_BASE_URL = "https://api.minimaxi.com/v1"
+DEFAULT_LLM_BASE_URL = "https://api.minimax.cn/v1"
 DEFAULT_LLM_TIMEOUT = 300.0
 
 _THINK_BLOCK_RE = re.compile(
@@ -287,7 +287,7 @@ def get_client() -> LessonChatClient:
         )
         # If someone still points at the bare MiniMax host, append /v1 for
         # the OpenAI-compatible Chat Completions root.
-        if base_url.rstrip("/").endswith(("minimaxi.com", "minimax.io")):
+        if base_url.rstrip("/").endswith(("minimax.cn", "minimaxi.com", "minimax.io")):
             base_url = base_url.rstrip("/") + "/v1"
         timeout = float(
             _env_str(

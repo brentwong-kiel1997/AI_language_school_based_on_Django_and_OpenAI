@@ -48,7 +48,7 @@ pip install -e .
 cp .env.example .env
 # 编辑 .env，至少填入：
 #   LLM_API_KEY=你的密钥
-#   LLM_BASE_URL=https://api.minimaxi.com/v1   # 或其他 OpenAI Compatible 根路径
+#   LLM_BASE_URL=https://api.minimax.cn/v1   # 或其他 OpenAI Compatible 根路径
 #   LLM_MODEL=MiniMax-M3
 #   YOUTUBE_COOKIE_FILE=cookies/youtube.txt   # 推荐，见下文
 
@@ -81,13 +81,14 @@ PYTHONPATH="$(pwd)/.." python manage.py runserver 0.0.0.0:8000
 
 | 提供商 | `LLM_BASE_URL` 示例 | `LLM_MODEL` 示例 |
 |--------|---------------------|------------------|
-| MiniMax 国区 | `https://api.minimaxi.com/v1` | `MiniMax-M3` |
+| MiniMax 国区 | `https://api.minimax.cn/v1` | `MiniMax-M3` |
 | MiniMax 国际 | `https://api.minimax.io/v1` | `MiniMax-M3` |
 | OpenAI | `https://api.openai.com/v1` | `gpt-4o-mini` |
 | DeepSeek | `https://api.deepseek.com/v1` | `deepseek-chat` |
 | 本地 vLLM / Ollama 兼容层 | `http://127.0.0.1:8000/v1` | 你的模型名 |
 
 `LLM_BASE_URL` 填到 **含 `/v1` 的根**，不要带 `/chat/completions`。  
+（旧域名 `api.minimaxi.com` 多数情况仍可用，官方国区文档现写 `api.minimax.cn`。）  
 旧的 `MINIMAX_*` 变量仍可作为回退读取，新部署请只用 `LLM_*`。
 
 可选：`LLM_JSON_MODE=prompt|response_format|off`（默认 `prompt`，兼容性最好）。

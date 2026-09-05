@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 REGION_BASE_URLS = {
-    "cn": "https://api.minimaxi.com",
+    "cn": "https://api.minimax.cn",
     "global": "https://api.minimax.io",
 }
 

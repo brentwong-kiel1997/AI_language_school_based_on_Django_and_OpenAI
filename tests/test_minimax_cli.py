@@ -26,7 +26,7 @@ class MiniMaxTests(unittest.TestCase):
             cfg = Config.load()
         self.assertEqual(cfg.text_model, "MiniMax-M3")
         self.assertEqual(cfg.region, "cn")
-        self.assertEqual(cfg.base_url, "https://api.minimaxi.com")
+        self.assertEqual(cfg.base_url, "https://api.minimax.cn")
         self.assertEqual(cfg.speech_model, "speech-2.8-hd")
         self.assertEqual(cfg.image_model, "image-01")
         self.assertEqual(cfg.video_model, "MiniMax-Hailuo-2.3")
@@ -41,7 +41,7 @@ class MiniMaxTests(unittest.TestCase):
             cfg = Config.load()
             self.assertEqual(cfg.base_url, "https://api.minimax.io")
             cfg.set_value("region", "cn")
-            self.assertEqual(cfg.base_url, "https://api.minimaxi.com")
+            self.assertEqual(cfg.base_url, "https://api.minimax.cn")
 
     def test_env_precedes_file(self):
         with tempfile.TemporaryDirectory() as d, patch.dict(

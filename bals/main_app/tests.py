@@ -1042,7 +1042,7 @@ class OpenAICompatibleClientTests(TestCase):
             "os.environ",
             {
                 "LLM_API_KEY": "k",
-                "LLM_BASE_URL": "https://api.minimaxi.com",
+                "LLM_BASE_URL": "https://api.minimax.cn",
                 "LLM_MODEL": "MiniMax-M3",
             },
             clear=False,
@@ -1050,6 +1050,6 @@ class OpenAICompatibleClientTests(TestCase):
             utils.reset_client()
             client = utils.get_client()
             try:
-                self.assertEqual(client.base_url, "https://api.minimaxi.com/v1")
+                self.assertEqual(client.base_url, "https://api.minimax.cn/v1")
             finally:
                 utils.reset_client()

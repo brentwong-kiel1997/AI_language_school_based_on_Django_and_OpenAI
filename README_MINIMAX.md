@@ -1,6 +1,6 @@
 # MiniMax CLI
 
-独立的中国区 MiniMax Token Plan 客户端与命令行工具（`mmx` / `python -m minimax_cli`）。默认区域为 `cn`（`https://api.minimaxi.com`）。
+独立的中国区 MiniMax Token Plan 客户端与命令行工具（`mmx` / `python -m minimax_cli`）。默认区域为 `cn`（`https://api.minimax.cn`）。
 
 **Django 课件生成已改为通用 OpenAI Compatible 客户端**（`.env` 里的 `LLM_*`），不再调用本包。本 README 仅描述独立的 `mmx` CLI（文本 / 图 / 语音 / 视频 / 音乐等）。
 
