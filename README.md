@@ -124,6 +124,8 @@ YOUTUBE_COOKIE_FILE=cookies/youtube.txt
 | `LLM_API_KEY` | 课件生成（必填） |
 | `LLM_BASE_URL` | OpenAI Compatible 根，默认 MiniMax 国区 `/v1` |
 | `LLM_MODEL` | 模型 ID |
+| `LLM_CONTEXT_WINDOW_TOKENS` | 输入上下文，默认 `1000000`；用于计算送进模型的字幕长度 |
+| `LLM_MAX_TOKENS` | 输出上限，默认 `131072`（拉满） |
 | `LLM_MODULE_WORKERS` | 模块并行数，默认 `6` |
 | `LLM_WORDS_BATCHES` | 词汇分批并行，默认 `2` |
 | `YOUTUBE_COOKIE_FILE` | Netscape cookie 路径 |

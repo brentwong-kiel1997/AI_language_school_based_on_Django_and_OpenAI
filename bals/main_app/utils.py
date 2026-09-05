@@ -27,12 +27,41 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_MAX_RETRIES = 2
 MAX_MAX_RETRIES = 10
-DEFAULT_MAX_TOKENS = 8192
+DEFAULT_MAX_TOKENS = 131072
 MIN_MAX_TOKENS = 256
 MAX_MAX_TOKENS = 131072
+DEFAULT_CONTEXT_WINDOW_TOKENS = 1_000_000
 DEFAULT_TEXT_MODEL = "MiniMax-M3"
 DEFAULT_LLM_BASE_URL = "https://api.minimaxi.com/v1"
 DEFAULT_LLM_TIMEOUT = 300.0
+
+_THINK_BLOCK_RE = re.compile(
+    r"<think>.*?</think>|<thinking>.*?</thinking>|<reason>.*?</reason>",
+    re.IGNORECASE | re.DOTALL,
+)
+_THINK_OPEN_RE = re.compile(
+    r"<(?:think|thinking|reason)\b[^>]*>.*",
+    re.IGNORECASE | re.DOTALL,
+)
+
+
+def _strip_llm_noise(text: str) -> str:
+    """Drop chain-of-thought wrappers; keep the JSON object when present."""
+    cleaned = _THINK_BLOCK_RE.sub("", text or "")
+    cleaned = _THINK_OPEN_RE.sub("", cleaned).strip()
+    if cleaned.startswith("```"):
+        lines = cleaned.splitlines()
+        if lines and lines[0].startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].strip() == "```":
+            lines = lines[:-1]
+        cleaned = "\n".join(lines).strip()
+        if cleaned.lower().startswith("json"):
+            cleaned = cleaned[4:].lstrip()
+    start = cleaned.find("{")
+    if start > 0:
+        cleaned = cleaned[start:]
+    return cleaned.strip()
 
 
 class APIError(Exception):
@@ -97,6 +126,45 @@ def _env_int_pref(*names: str, default: int, minimum: int, maximum: int) -> int:
         if os.environ.get(name) is not None:
             return _env_int(name, default, minimum, maximum)
     return default
+
+
+def context_window_tokens() -> int:
+    """Model input context size (MiniMax-M3 ≈ 1M). Not an API field — drives local prompt budget."""
+    return _env_int_pref(
+        "LLM_CONTEXT_WINDOW_TOKENS",
+        "MINIMAX_CONTEXT_WINDOW_TOKENS",
+        default=DEFAULT_CONTEXT_WINDOW_TOKENS,
+        minimum=8_000,
+        maximum=2_000_000,
+    )
+
+
+def agent_prompt_chars() -> int:
+    """Max lesson prompt size before we summarise the transcript.
+
+    Defaults from context window: leave room for completion tokens, then
+    convert remaining tokens → chars (~2.5 chars/token for mixed text).
+    """
+    if os.environ.get("LLM_AGENT_PROMPT_CHARS") is not None or os.environ.get(
+        "MINIMAX_AGENT_PROMPT_CHARS"
+    ) is not None:
+        return _env_int_pref(
+            "LLM_AGENT_PROMPT_CHARS",
+            "MINIMAX_AGENT_PROMPT_CHARS",
+            default=18_000,
+            minimum=4_000,
+            maximum=10_000_000,
+        )
+    ctx = context_window_tokens()
+    out = _env_int_pref(
+        "LLM_MAX_TOKENS",
+        "MINIMAX_MAX_TOKENS",
+        default=DEFAULT_MAX_TOKENS,
+        minimum=MIN_MAX_TOKENS,
+        maximum=MAX_MAX_TOKENS,
+    )
+    usable_tokens = max(ctx - out - 8_192, 50_000)
+    return max(4_000, min(10_000_000, int(usable_tokens * 2.5)))
 
 
 _load_dotenv(
@@ -198,9 +266,9 @@ class LessonChatClient:
             if content is None:
                 content = choices[0].get("text")
             if content is not None:
-                return str(content).strip()
+                return _strip_llm_noise(str(content))
         if payload.get("reply"):
-            return str(payload["reply"]).strip()
+            return _strip_llm_noise(str(payload["reply"]))
         raise APIError(f"LLM response missing content: {str(payload)[:300]}")
 
     def close(self) -> None:
@@ -845,7 +913,7 @@ class Generator:
             _env_int_pref(
                 "LLM_AGENT_CHUNK_CHARS",
                 "MINIMAX_AGENT_CHUNK_CHARS",
-                default=6000,
+                default=100_000,
                 minimum=2000,
                 maximum=1_000_000,
             ),
@@ -871,18 +939,9 @@ class Generator:
 
     @staticmethod
     def _parse_json_object(raw: str) -> tuple[dict, list[str]]:
-        text = Generator._response_text(raw).strip()
+        text = _strip_llm_noise(Generator._response_text(raw))
         if not text:
             return {}, ["response is empty"]
-        if text.startswith("```"):
-            lines = text.splitlines()
-            if lines and lines[0].startswith("```"):
-                lines = lines[1:]
-            if lines and lines[-1].strip() == "```":
-                lines = lines[:-1]
-            text = "\n".join(lines).strip()
-            if text.lower().startswith("json"):
-                text = text[4:].lstrip()
         try:
             data = json.loads(text)
         except (TypeError, json.JSONDecodeError):
@@ -1556,16 +1615,7 @@ class Generator:
         model = model or text_model()
         client = _get_client()
         total_started = time.perf_counter()
-        threshold = max(
-            4000,
-            _env_int_pref(
-                "LLM_AGENT_PROMPT_CHARS",
-                "MINIMAX_AGENT_PROMPT_CHARS",
-                default=18000,
-                minimum=4000,
-                maximum=10_000_000,
-            ),
-        )
+        threshold = max(4000, agent_prompt_chars())
         source = self.text
         if len(self.prompt) > threshold:
             source = "Structured transcript summaries:\n" + self._summarise_long_transcript(client, model)
