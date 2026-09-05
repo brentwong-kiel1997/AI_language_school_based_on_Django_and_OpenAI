@@ -352,8 +352,8 @@ msgid "Create your first course"
 msgstr "Create your first course"
 
 #: main_app/templates/main_app/home.html:18
-msgid "YouTube · under 10 min"
-msgstr "YouTube · under 10 min"
+msgid "YouTube · under 15 min"
+msgstr "YouTube · under 15 min"
 
 #: main_app/templates/main_app/home.html:23
 msgid "How it works"
@@ -401,8 +401,8 @@ msgid "Open transcript"
 msgstr "Open transcript"
 
 #: main_app/templates/main_app/home.html:91
-msgid "Start with a public video under 10 minutes."
-msgstr "Start with a public video under 10 minutes."
+msgid "Start with a public video under 15 minutes."
+msgstr "Start with a public video under 15 minutes."
 
 #: main_app/templates/main_app/home.html:100
 #, fuzzy
@@ -645,6 +645,19 @@ msgstr "Choose your native language to generate a personalized course"
 msgid "Open on YouTube"
 msgstr "Open on YouTube"
 
+#: main_app/templates/main_app/learning_material.html
+#: main_app/templates/main_app/transcript.html
+msgid "Download video"
+msgstr "Download video"
+
+#: main_app/views.py
+msgid "This video is not ready to download yet."
+msgstr "This video is not ready to download yet."
+
+#: main_app/views.py
+msgid "Could not download the video. Please try again later."
+msgstr "Could not download the video. Please try again later."
+
 #: main_app/templates/main_app/transcript.html:32
 msgid "Transcript"
 msgstr "Transcript"
@@ -723,8 +736,8 @@ msgid "What videos work best?"
 msgstr "What videos work best?"
 
 #: main_app/templates/main_app/url_input.html:51
-msgid "Under 10 minutes"
-msgstr "Under 10 minutes"
+msgid "Under 15 minutes"
+msgstr "Under 15 minutes"
 
 #: main_app/templates/main_app/url_input.html:52
 msgid "News, interviews and educational videos work well"

@@ -20,9 +20,12 @@
       <div class="ratio ratio-16x9">
         <iframe id="ytPlayer" src="{{ embedded }}" title="{% trans 'YouTube video player' %}" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
-      <div class="card-footer bg-transparent">
+      <div class="card-footer bg-transparent d-flex flex-wrap gap-2">
         <a class="btn btn-sm btn-outline-secondary" href="{{ youtube_url }}" target="_blank" rel="noopener">
           <i class="bi bi-youtube me-1"></i>{% trans "Open on YouTube" %}
+        </a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ download_video_url }}">
+          <i class="bi bi-download me-1"></i>{% trans "Download video" %}
         </a>
       </div>
     </div>

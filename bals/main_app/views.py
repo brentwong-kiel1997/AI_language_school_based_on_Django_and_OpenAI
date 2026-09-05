@@ -20,10 +20,11 @@ from urllib.parse import parse_qs, urlencode, urlparse
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import get_valid_filename
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods
 
@@ -38,7 +39,7 @@ from .models import (
     Learning_Material,
     Transcribed_Video,
 )
-from .utils import Generator, Transcribe, run_in_background
+from .utils import Generator, Transcribe, ensure_youtube_video_file, run_in_background
 
 logger = logging.getLogger(__name__)
 
@@ -314,6 +315,7 @@ def transcript(request, transcribe_slug):
             "text": text,
             "embedded": embedded,
             "youtube_url": f"https://www.youtube.com/watch?v={model.video_id}",
+            "download_video_url": reverse("download_video", kwargs={"video_id": model.video_id}),
             "model": model,
             "form": form,
             "model2": model2,
@@ -537,6 +539,9 @@ def learning_material(request, video_slug, native_language_slug):
         "video_text": data["video_text"],
         "embedded": _youtube_embed_url(request, data["model"].video_id),
         "youtube_url": f"https://www.youtube.com/watch?v={data['model'].video_id}",
+        "download_video_url": reverse(
+            "download_video", kwargs={"video_id": data["model"].video_id}
+        ),
         "reply": data["reply"],
         "word_items": data["word_items"],
         "grammar_items": data["grammar_items"],
@@ -553,6 +558,43 @@ def learning_material(request, video_slug, native_language_slug):
         "lexicon_labels": _lexicon_aside_labels(data["model"].video_language or ""),
     }
     return render(request, "main_app/learning_material.html", context=context)
+
+
+@login_required
+@require_http_methods(["GET"])
+def download_video(request, video_id):
+    """Stream a cached YouTube MP4 for personal study (login required)."""
+    if not re.fullmatch(r"[A-Za-z0-9_-]{11}", video_id or ""):
+        raise Http404("Invalid video id")
+    try:
+        row = Transcribed_Video.objects.get(video_id=video_id)
+    except Transcribed_Video.DoesNotExist as exc:
+        raise Http404("Video not found") from exc
+    if row.status != JOB_READY:
+        messages.error(request, _("This video is not ready to download yet."))
+        return redirect("wait", video_id=video_id)
+
+    try:
+        path = ensure_youtube_video_file(video_id)
+    except Exception as exc:  # noqa: BLE001 - surface a friendly message
+        logger.exception("video download failed for %s", video_id)
+        messages.error(
+            request,
+            _("Could not download the video. Please try again later."),
+        )
+        referer = request.META.get("HTTP_REFERER")
+        if referer:
+            return redirect(referer)
+        return redirect("transcript", transcribe_slug=row.slug)
+
+    title = (row.video_title or video_id).strip() or video_id
+    filename = get_valid_filename(f"{title}.mp4") or f"{video_id}.mp4"
+    return FileResponse(
+        path.open("rb"),
+        as_attachment=True,
+        filename=filename,
+        content_type="video/mp4",
+    )
 
 
 @require_http_methods(["GET"])

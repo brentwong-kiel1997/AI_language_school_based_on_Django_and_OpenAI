@@ -44,7 +44,7 @@ yt-dlp>=2026.7.0
 # * FFmpeg on PATH – required to convert downloaded audio to 16 kHz mono WAV.
 #
 # * Removed: `pytube` (unmaintained, broken against modern YouTube),
-#   `openai` and vendor SDKs. Lesson chat uses standalone `minimax_cli`;
-#   lesson prompts use standalone `prompts`.
-#   Install with `pip install -e ..` from repo root.
+#   `openai` and vendor SDKs. Lesson chat uses built-in OpenAI-compatible
+#   HTTP client (``LLM_*`` env); lesson prompts use standalone `prompts`.
+#   Install with `pip install -e ..` from repo root (optional: minimax_cli / mmx).
 

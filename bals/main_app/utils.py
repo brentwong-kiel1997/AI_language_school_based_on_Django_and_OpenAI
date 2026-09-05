@@ -1,6 +1,6 @@
 """Utility helpers for the YouTube → learning-material pipeline.
 
-Lesson generation uses standalone ``minimax_cli`` (text chat).
+Lesson generation uses any OpenAI-compatible chat API (``LLM_*`` env).
 Module prompts live in standalone ``prompts`` (per-language packs).
 Captions / yt-dlp stay here.
 """
@@ -21,17 +21,26 @@ from typing import Iterable, Optional
 
 import httpx
 import yt_dlp as youtube_dl
-from minimax_cli import APIError, Config as MiniMaxConfig, MiniMaxClient, NetworkError
 from prompts import canonical_target_language, get_language_pack
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_MAX_RETRIES = 2
 MAX_MAX_RETRIES = 10
-DEFAULT_MAX_TOKENS = 131072
+DEFAULT_MAX_TOKENS = 8192
 MIN_MAX_TOKENS = 256
 MAX_MAX_TOKENS = 131072
 DEFAULT_TEXT_MODEL = "MiniMax-M3"
+DEFAULT_LLM_BASE_URL = "https://api.minimaxi.com/v1"
+DEFAULT_LLM_TIMEOUT = 300.0
+
+
+class APIError(Exception):
+    """HTTP / API error from the LLM provider (may be retryable if overloaded)."""
+
+
+class NetworkError(Exception):
+    """Transport failure talking to the LLM provider."""
 
 
 def _load_dotenv(paths: Optional[Iterable[Path]] = None) -> None:
@@ -74,6 +83,22 @@ def _env_int(name: str, default: int, minimum: int, maximum: int) -> int:
     return value if minimum <= value <= maximum else default
 
 
+def _env_str(*names: str, default: str = "") -> str:
+    """First non-empty env value among ``names`` (for LLM_* with MINIMAX_* fallback)."""
+    for name in names:
+        raw = os.environ.get(name)
+        if raw is not None and str(raw).strip() != "":
+            return str(raw).strip()
+    return default
+
+
+def _env_int_pref(*names: str, default: int, minimum: int, maximum: int) -> int:
+    for name in names:
+        if os.environ.get(name) is not None:
+            return _env_int(name, default, minimum, maximum)
+    return default
+
+
 _load_dotenv(
     (
         Path(__file__).resolve().parents[2] / ".env",
@@ -81,16 +106,43 @@ _load_dotenv(
     )
 )
 
-TEXT_MODEL = os.environ.get("MINIMAX_TEXT_MODEL", DEFAULT_TEXT_MODEL)
+
+def text_model() -> str:
+    return _env_str("LLM_MODEL", "MINIMAX_TEXT_MODEL", default=DEFAULT_TEXT_MODEL)
+
+
+# Back-compat alias used by tests / callers
+TEXT_MODEL = text_model()
 
 _CLIENT: Optional["LessonChatClient"] = None
 
 
 class LessonChatClient:
-    """Adapter: ``chat(...) -> str`` over MiniMax ``text_chat`` (JSON mode)."""
+    """OpenAI-compatible Chat Completions client (``POST {base}/chat/completions``)."""
 
-    def __init__(self, client: MiniMaxClient):
-        self._client = client
+    def __init__(
+        self,
+        *,
+        api_key: str,
+        base_url: str,
+        timeout: float = DEFAULT_LLM_TIMEOUT,
+        transport=None,
+    ):
+        if not api_key:
+            raise RuntimeError(
+                "LLM_API_KEY is not set. Add it to .env "
+                "(OpenAI-compatible providers also accept the same Bearer key)."
+            )
+        self.base_url = base_url.rstrip("/")
+        self._http = httpx.Client(
+            base_url=self.base_url,
+            timeout=timeout,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            transport=transport,
+        )
 
     def chat(
         self,
@@ -99,22 +151,85 @@ class LessonChatClient:
         temperature: float = 0,
         max_tokens: int = DEFAULT_MAX_TOKENS,
     ) -> str:
-        return self._client.text_chat(
-            messages,
-            model=model,
-            temperature=temperature,
-            max_tokens=max_tokens,
-            json_mode=True,
-        ).text
+        outgoing = list(messages)
+        json_mode = _env_str("LLM_JSON_MODE", default="prompt").lower()
+        if json_mode == "prompt":
+            outgoing.insert(
+                0,
+                {
+                    "role": "system",
+                    "content": "Respond with valid JSON only. Do not include markdown fences.",
+                },
+            )
+        body: dict = {
+            "model": model,
+            "messages": outgoing,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+        }
+        if json_mode == "response_format":
+            body["response_format"] = {"type": "json_object"}
+
+        try:
+            response = self._http.post("/chat/completions", json=body)
+        except httpx.RequestError as exc:
+            raise NetworkError(f"LLM request failed: {exc}") from exc
+
+        if response.status_code >= 400:
+            snippet = (response.text or "")[:400]
+            raise APIError(f"LLM HTTP {response.status_code}: {snippet}")
+
+        try:
+            payload = response.json()
+        except ValueError as exc:
+            raise APIError("LLM returned non-JSON body") from exc
+
+        # OpenAI-style + a few common variants
+        choices = payload.get("choices") or []
+        if choices:
+            message = choices[0].get("message") or {}
+            content = message.get("content")
+            if isinstance(content, list):
+                # Some providers return multimodal content parts
+                content = "".join(
+                    part.get("text", "") if isinstance(part, dict) else str(part)
+                    for part in content
+                )
+            if content is None:
+                content = choices[0].get("text")
+            if content is not None:
+                return str(content).strip()
+        if payload.get("reply"):
+            return str(payload["reply"]).strip()
+        raise APIError(f"LLM response missing content: {str(payload)[:300]}")
 
     def close(self) -> None:
-        self._client.close()
+        self._http.close()
 
 
 def get_client() -> LessonChatClient:
     global _CLIENT
     if _CLIENT is None:
-        _CLIENT = LessonChatClient(MiniMaxClient(MiniMaxConfig.load()))
+        api_key = _env_str("LLM_API_KEY", "MINIMAX_API_KEY", "OPENAI_API_KEY")
+        base_url = _env_str(
+            "LLM_BASE_URL",
+            "OPENAI_BASE_URL",
+            "MINIMAX_BASE_URL",
+            default=DEFAULT_LLM_BASE_URL,
+        )
+        # If someone still points at the bare MiniMax host, append /v1 for
+        # the OpenAI-compatible Chat Completions root.
+        if base_url.rstrip("/").endswith(("minimaxi.com", "minimax.io")):
+            base_url = base_url.rstrip("/") + "/v1"
+        timeout = float(
+            _env_str(
+                "LLM_TIMEOUT_SECONDS",
+                "MINIMAX_TIMEOUT_SECONDS",
+                default=str(int(DEFAULT_LLM_TIMEOUT)),
+            )
+            or DEFAULT_LLM_TIMEOUT
+        )
+        _CLIENT = LessonChatClient(api_key=api_key, base_url=base_url, timeout=timeout)
     return _CLIENT
 
 
@@ -156,33 +271,47 @@ _YTDLP_RUNTIME_CANDIDATES = (
 )
 
 
-def _detect_yt_dlp_runtimes() -> list[str]:
-    """Return the list of JS runtime executables available on PATH.
+def _detect_yt_dlp_runtimes() -> dict[str, dict | None]:
+    """Return yt-dlp ``js_runtimes`` dict: ``{runtime: {path: ...} | None}``.
 
-    Honours the ``YTDLP_JS_RUNTIMES`` override (which accepts
-    ``RUNTIME[:PATH]`` entries, just like the ``--js-runtimes`` CLI flag).
+    Honours ``YTDLP_JS_RUNTIMES`` (comma- or colon-separated). Tokens may be
+    ``deno``, ``node=/path/to/node``, or a bare executable path.
     """
     override = os.environ.get("YTDLP_JS_RUNTIMES")
     if override:
-        resolved: list[str] = []
-        for token in override.split(":"):
+        resolved: dict[str, dict | None] = {}
+        for raw in override.replace(",", ":").split(":"):
+            token = raw.strip()
             if not token:
                 continue
-            # ``RUNTIME[:PATH]`` form: prefer the explicit PATH if given.
+            if "=" in token:
+                name, path = token.split("=", 1)
+                name, path = name.strip(), path.strip()
+                if name:
+                    resolved[name] = {"path": path} if path else None
+                continue
             if os.path.sep in token or token.startswith("."):
                 if os.path.isfile(token) and os.access(token, os.X_OK):
-                    resolved.append(token)
+                    name = Path(token).stem
+                    if name in {"nodejs", "node"}:
+                        name = "node"
+                    elif name in {"quickjs", "qjs"}:
+                        name = "quickjs"
+                    resolved[name] = {"path": token}
                 continue
             path = shutil.which(token)
-            if path:
-                resolved.append(path)
+            resolved[token] = {"path": path} if path else None
         if resolved:
             return resolved
-    return [
-        path
-        for name in _YTDLP_RUNTIME_CANDIDATES
-        if (path := shutil.which(name))
-    ]
+
+    found: dict[str, dict | None] = {}
+    for name in _YTDLP_RUNTIME_CANDIDATES:
+        path = shutil.which(name)
+        if not path:
+            continue
+        key = {"nodejs": "node", "qjs": "quickjs"}.get(name, name)
+        found.setdefault(key, {"path": path})
+    return found
 
 
 def _yt_dlp_runtime_help() -> str:
@@ -382,7 +511,7 @@ class Transcribe:
         self.duration = info_dict["duration"]
         self.title, self.id = info_dict["title"], info_dict["id"]
         if self.duration > max_duration:
-            raise ValueError("Video duration exceeds 10 minutes.")
+            raise ValueError("Video duration exceeds 15 minutes.")
         selection = _caption_selection(info_dict)
         segments = []
         if selection:
@@ -442,7 +571,7 @@ class Transcribe:
         except (ValueError, TypeError):
             self.upload_date = None
 
-    def audio2text(self, output_path: str | Path = "./download", max_duration: int = 600) -> None:
+    def audio2text(self, output_path: str | Path = "./download", max_duration: int = 900) -> None:
         output_path = Path(output_path); output_path.mkdir(parents=True, exist_ok=True)
         self.audio_file_path = None
 
@@ -512,7 +641,7 @@ _canonical_target_language = canonical_target_language
 
 
 class LearningMaterialValidationError(ValueError):
-    """Raised when MiniMax cannot produce a valid learning-material JSON."""
+    """Raised when the LLM cannot produce a valid learning-material JSON."""
 
 
 # Shared constants / helpers used by _validate_lesson_json and Generator._validate_module.
@@ -622,8 +751,8 @@ class Generator:
     """Build learning material with a Writer agent + Checker agent loop.
 
     Flow per module: Writer → local schema gate → Checker → Writer revision
-    (up to ``MINIMAX_VALIDATION_RETRIES`` rounds). Independent modules run in
-    parallel (``MINIMAX_MODULE_WORKERS``, default 6).
+    (up to ``LLM_VALIDATION_RETRIES`` rounds). Independent modules run in
+    parallel (``LLM_MODULE_WORKERS``, default 6).
     """
 
     def __init__(self, target_language: str, native_language: str, text):
@@ -651,17 +780,19 @@ class Generator:
         return response if isinstance(response, str) else str(response)
 
     def _request(self, client, prompt: str, model: str, *, label: str = "request") -> str:
-        max_retries = _env_int(
+        max_retries = _env_int_pref(
+            "LLM_MAX_RETRIES",
             "MINIMAX_MAX_RETRIES",
-            _env_int("MINIMAX_MAX_RETRIES", DEFAULT_MAX_RETRIES, 0, MAX_MAX_RETRIES),
-            0,
-            MAX_MAX_RETRIES,
+            default=DEFAULT_MAX_RETRIES,
+            minimum=0,
+            maximum=MAX_MAX_RETRIES,
         )
-        max_tokens = _env_int(
+        max_tokens = _env_int_pref(
+            "LLM_MAX_TOKENS",
             "MINIMAX_MAX_TOKENS",
-            _env_int("MINIMAX_MAX_TOKENS", DEFAULT_MAX_TOKENS, MIN_MAX_TOKENS, MAX_MAX_TOKENS),
-            MIN_MAX_TOKENS,
-            MAX_MAX_TOKENS,
+            default=DEFAULT_MAX_TOKENS,
+            minimum=MIN_MAX_TOKENS,
+            maximum=MAX_MAX_TOKENS,
         )
         for attempt in range(max_retries + 1):
             started = time.perf_counter()
@@ -674,7 +805,7 @@ class Generator:
                 )
                 text = self._response_text(response)
                 logger.warning(
-                    "MiniMax %s ok in %.1fs (prompt=%s chars, reply=%s chars, max_tokens=%s, attempt=%s)",
+                    "LLM %s ok in %.1fs (prompt=%s chars, reply=%s chars, max_tokens=%s, attempt=%s)",
                     label,
                     time.perf_counter() - started,
                     len(prompt),
@@ -685,7 +816,7 @@ class Generator:
                 return text
             except (httpx.RequestError, NetworkError, APIError) as exc:
                 logger.warning(
-                    "MiniMax %s failed in %.1fs (%s): %s",
+                    "LLM %s failed in %.1fs (%s): %s",
                     label,
                     time.perf_counter() - started,
                     type(exc).__name__,
@@ -699,7 +830,7 @@ class Generator:
                     raise
                 delay = (15 * (2 ** attempt)) if overloaded else (2 ** attempt)
                 logger.warning(
-                    "MiniMax request failed (%s); retrying in %s seconds (attempt %s/%s)",
+                    "LLM request failed (%s); retrying in %s seconds (attempt %s/%s)",
                     type(exc).__name__,
                     delay,
                     attempt + 2,
@@ -711,11 +842,12 @@ class Generator:
     def _summarise_long_transcript(self, client, model: str) -> str:
         chunk_size = max(
             2000,
-            _env_int(
+            _env_int_pref(
+                "LLM_AGENT_CHUNK_CHARS",
                 "MINIMAX_AGENT_CHUNK_CHARS",
-                _env_int("MINIMAX_AGENT_CHUNK_CHARS", 6000, 2000, 1_000_000),
-                2000,
-                1_000_000,
+                default=6000,
+                minimum=2000,
+                maximum=1_000_000,
             ),
         )
         summaries = []
@@ -1238,11 +1370,12 @@ class Generator:
         """Writer produces; local schema gate; Checker reviews; Writer revises on fail."""
         module_started = time.perf_counter()
         tag = label or name
-        retries = _env_int(
+        retries = _env_int_pref(
+            "LLM_VALIDATION_RETRIES",
             "MINIMAX_VALIDATION_RETRIES",
-            _env_int("MINIMAX_VALIDATION_RETRIES", 1, 0, 3),
-            0,
-            3,
+            default=1,
+            minimum=0,
+            maximum=3,
         )
         prompt = self._writer_prompt(name, source, extra=writer_extra)
         last_errors: list[str] = []
@@ -1300,7 +1433,7 @@ class Generator:
                 prompt = f"{prompt}\n{writer_extra.strip()}"
 
         raise LearningMaterialValidationError(
-            f"MiniMax module {tag} invalid after Writer/Checker loop: "
+            f"LLM module {tag} invalid after Writer/Checker loop: "
             + "; ".join(last_errors or ["unknown error"])
             + (f" | last_raw={last_raw[:240]}" if last_raw else "")
         )
@@ -1308,7 +1441,13 @@ class Generator:
     def _run_words_module(self, client, model: str, source: str) -> dict:
         """Generate vocabulary in parallel batches, then merge without quality loss."""
         started = time.perf_counter()
-        batches = _env_int("MINIMAX_WORDS_BATCHES", 2, 1, 4)
+        batches = _env_int_pref(
+            "LLM_WORDS_BATCHES",
+            "MINIMAX_WORDS_BATCHES",
+            default=2,
+            minimum=1,
+            maximum=4,
+        )
         if batches <= 1:
             return self._run_module(client, model, "words", source)
 
@@ -1413,16 +1552,18 @@ class Generator:
         )
         return merged
 
-    def chatbox(self, model: str = TEXT_MODEL) -> None:
+    def chatbox(self, model: str | None = None) -> None:
+        model = model or text_model()
         client = _get_client()
         total_started = time.perf_counter()
         threshold = max(
             4000,
-            _env_int(
+            _env_int_pref(
+                "LLM_AGENT_PROMPT_CHARS",
                 "MINIMAX_AGENT_PROMPT_CHARS",
-                _env_int("MINIMAX_AGENT_PROMPT_CHARS", 18000, 4000, 10_000_000),
-                4000,
-                10_000_000,
+                default=18000,
+                minimum=4000,
+                maximum=10_000_000,
             ),
         )
         source = self.text
@@ -1430,7 +1571,13 @@ class Generator:
             source = "Structured transcript summaries:\n" + self._summarise_long_transcript(client, model)
         self.message_history = []
         lesson = {}
-        workers = _env_int("MINIMAX_MODULE_WORKERS", 6, 1, len(_LESSON_MODULES))
+        workers = _env_int_pref(
+            "LLM_MODULE_WORKERS",
+            "MINIMAX_MODULE_WORKERS",
+            default=6,
+            minimum=1,
+            maximum=len(_LESSON_MODULES),
+        )
         logger.warning(
             "Lesson generation start: workers=%s model=%s source_chars=%s target=%s native=%s",
             workers,
@@ -1577,4 +1724,125 @@ def _wrapped_runner(fut: Future, runner: Callable[[], None]) -> None:
         fut.set_result(None)
     except Exception as exc:  # pragma: no cover - defensive
         fut.set_exception(exc)
+
+
+# ---------------------------------------------------------------------------
+# YouTube video file download (on-disk cache)
+# ---------------------------------------------------------------------------
+#
+# Lesson pages embed YouTube; this helper fetches a progressive MP4 once
+# and serves it from ``media/videos/<id>.mp4`` so the "Download video"
+# button does not hit YouTube on every click.
+
+_VIDEO_DOWNLOAD_LOCKS: dict[str, threading.Lock] = {}
+_VIDEO_DOWNLOAD_LOCKS_GUARD = threading.Lock()
+
+
+def youtube_video_cache_dir() -> Path:
+    """Return (and create) the directory used for cached MP4 downloads."""
+    try:
+        from django.conf import settings
+
+        root = Path(settings.BASE_DIR) / "media" / "videos"
+    except Exception:  # noqa: BLE001 - settings unavailable in some contexts
+        root = Path(__file__).resolve().parents[1] / "media" / "videos"
+    root.mkdir(parents=True, exist_ok=True)
+    return root
+
+
+def _video_download_lock(video_id: str) -> threading.Lock:
+    with _VIDEO_DOWNLOAD_LOCKS_GUARD:
+        lock = _VIDEO_DOWNLOAD_LOCKS.get(video_id)
+        if lock is None:
+            lock = threading.Lock()
+            _VIDEO_DOWNLOAD_LOCKS[video_id] = lock
+        return lock
+
+
+def ensure_youtube_video_file(video_id: str) -> Path:
+    """Download ``video_id`` to the local cache (if missing) and return its path.
+
+    Uses the same cookie-file / JS-runtime setup as caption extraction.
+    Prefers progressive MP4 (format 18) which is more reliable against
+    YouTube's SABR / 403 experiments than separate DASH streams.
+    """
+    if not re.fullmatch(r"[A-Za-z0-9_-]{11}", video_id or ""):
+        raise ValueError(f"Invalid YouTube video id: {video_id!r}")
+
+    dest = youtube_video_cache_dir() / f"{video_id}.mp4"
+    if dest.is_file() and dest.stat().st_size > 0:
+        return dest
+
+    with _video_download_lock(video_id):
+        if dest.is_file() and dest.stat().st_size > 0:
+            return dest
+
+        url = f"https://www.youtube.com/watch?v={video_id}"
+        runtimes = _detect_yt_dlp_runtimes()
+        if not runtimes:
+            raise RuntimeError(_yt_dlp_runtime_help())
+
+        with tempfile.TemporaryDirectory(prefix=f"bals-yt-{video_id}-") as tmp:
+            tmp_dir = Path(tmp)
+            outtmpl = str(tmp_dir / f"{video_id}.%(ext)s")
+            opts: dict = {
+                "format": "18/best[ext=mp4]/best",
+                "outtmpl": outtmpl,
+                "merge_output_format": "mp4",
+                "quiet": True,
+                "no_warnings": True,
+                "noprogress": True,
+                "js_runtimes": runtimes,
+                "extractor_args": {
+                    "youtube": {"player_client": ["android", "ios"]},
+                },
+                "http_headers": {
+                    "Referer": "https://www.youtube.com/",
+                    "User-Agent": (
+                        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                        "AppleWebKit/537.36 (KHTML, like Gecko) "
+                        "Chrome/131.0.0.0 Safari/537.36"
+                    ),
+                },
+            }
+            cookie_path = Transcribe._cookie_file_path()
+            if cookie_path is not None:
+                opts["cookiefile"] = str(cookie_path)
+            else:
+                browser = os.environ.get("YOUTUBE_COOKIES_FROM_BROWSER", "").strip().lower()
+                if browser:
+                    opts["cookiesfrombrowser"] = (browser,)
+
+            logger.info("Downloading YouTube video %s to cache", video_id)
+            try:
+                with youtube_dl.YoutubeDL(opts) as ydl:
+                    ydl.download([url])
+            except youtube_dl.utils.DownloadError as exc:
+                raise RuntimeError(f"Could not download YouTube video: {exc}") from exc
+
+            candidates = sorted(tmp_dir.glob(f"{video_id}.*"))
+            if not candidates:
+                raise RuntimeError("YouTube download finished but no file was written.")
+            src = candidates[0]
+            # Normalize to .mp4 for the cache key even if yt-dlp wrote .mkv briefly.
+            final = dest if src.suffix.lower() == ".mp4" else dest.with_suffix(src.suffix)
+            shutil.move(str(src), str(final))
+            if final != dest:
+                # Prefer a stable .mp4 path for the view; remux if needed later.
+                if final.suffix.lower() != ".mp4":
+                    remuxed = dest
+                    try:
+                        subprocess.run(
+                            [
+                                "ffmpeg", "-y", "-i", str(final),
+                                "-c", "copy", str(remuxed),
+                            ],
+                            check=True,
+                            capture_output=True,
+                        )
+                        final.unlink(missing_ok=True)
+                        return remuxed
+                    except (OSError, subprocess.CalledProcessError):
+                        return final
+            return dest
 

@@ -4,7 +4,7 @@
 {% block content %}
 <section class="row align-items-center g-4 g-lg-5 mb-5 pb-lg-3">
   <div class="col-lg-7">
-    <span class="badge text-bg-primary mb-3"><i class="bi bi-stars me-1"></i>MiniMax {% trans "smart courses" %}</span>
+    <span class="badge text-bg-primary mb-3"><i class="bi bi-stars me-1"></i>AI {% trans "smart courses" %}</span>
     <h1 class="display-5 fw-bold mb-3">
       {% blocktrans %}Every authentic video<br><span class="text-primary">becomes a language lesson.</span>{% endblocktrans %}
     </h1>
@@ -15,7 +15,7 @@
       <a class="btn btn-primary btn-lg" href="{% url 'url_input' %}">
         <i class="bi bi-plus-lg me-1"></i>{% trans "Create your first course" %}
       </a>
-      <span class="small text-body-secondary"><i class="bi bi-youtube me-1"></i>{% trans "YouTube · under 10 min" %}</span>
+      <span class="small text-body-secondary"><i class="bi bi-youtube me-1"></i>{% trans "YouTube · under 15 min" %}</span>
     </div>
   </div>
   <div class="col-lg-5">
@@ -88,7 +88,7 @@
         <div class="card-body text-center py-5">
           <i class="bi bi-camera-reels display-6 text-body-secondary d-block mb-3"></i>
           <h3 class="h4">{% trans "No courses yet" %}</h3>
-          <p class="text-body-secondary mb-4">{% trans "Start with a public video under 10 minutes." %}</p>
+          <p class="text-body-secondary mb-4">{% trans "Start with a public video under 15 minutes." %}</p>
           <a class="btn btn-primary" href="{% url 'url_input' %}">{% trans "Create course" %}</a>
         </div>
       </div>

@@ -180,12 +180,12 @@ def writer_then_checker(*module_names):
     return sequence
 
 
-class MiniMaxGeneratorTests(TestCase):
+class LessonGeneratorTests(TestCase):
     def setUp(self):
         # Sequential side_effect mocks require one module at a time.
         self._workers = patch.dict(
             "os.environ",
-            {"MINIMAX_MODULE_WORKERS": "1", "MINIMAX_WORDS_BATCHES": "1"},
+            {"LLM_MODULE_WORKERS": "1", "LLM_WORDS_BATCHES": "1"},
             clear=False,
         )
         self._workers.start()
@@ -202,7 +202,7 @@ class MiniMaxGeneratorTests(TestCase):
         responses += writer_then_checker(*names)
         get_client.return_value.chat.side_effect = responses
         generator = utils.Generator("German", "English", "transcript")
-        with patch.dict("os.environ", {"MINIMAX_MAX_RETRIES": "2"}, clear=False):
+        with patch.dict("os.environ", {"LLM_MAX_RETRIES": "2"}, clear=False):
             generator.chatbox()
         # 2 network failures + 6 writer + 6 checker
         self.assertEqual(get_client.return_value.chat.call_count, 14)
@@ -259,7 +259,7 @@ class MiniMaxGeneratorTests(TestCase):
             generator = utils.Generator("German", "English", "transcript")
             with patch.dict(
                 "os.environ",
-                {"MINIMAX_MODULE_WORKERS": "6", "MINIMAX_WORDS_BATCHES": "1"},
+                {"LLM_MODULE_WORKERS": "6", "LLM_WORDS_BATCHES": "1"},
                 clear=False,
             ):
                 generator.chatbox()
@@ -311,7 +311,7 @@ class MiniMaxGeneratorTests(TestCase):
 
             get_client.return_value.chat.side_effect = dispatch
             generator = utils.Generator("German", "Chinese", "transcript about housing")
-            with patch.dict("os.environ", {"MINIMAX_WORDS_BATCHES": "2"}, clear=False):
+            with patch.dict("os.environ", {"LLM_WORDS_BATCHES": "2"}, clear=False):
                 merged = generator._run_words_module(
                     get_client.return_value, utils.TEXT_MODEL, "transcript about housing"
                 )
@@ -389,7 +389,7 @@ class MiniMaxGeneratorTests(TestCase):
         generator = utils.Generator("German", "English", "x" * 9000)
         with patch.dict(
             "os.environ",
-            {"MINIMAX_AGENT_PROMPT_CHARS": "4000", "MINIMAX_AGENT_CHUNK_CHARS": "6000"},
+            {"LLM_AGENT_PROMPT_CHARS": "4000", "LLM_AGENT_CHUNK_CHARS": "6000"},
             clear=False,
         ):
             generator.chatbox()
@@ -404,7 +404,7 @@ class MiniMaxGeneratorTests(TestCase):
         error = httpx.RequestError("timeout")
         get_client.return_value.chat.side_effect = error
         generator = utils.Generator("German", "English", "transcript")
-        with patch.dict("os.environ", {"MINIMAX_MAX_RETRIES": "2"}, clear=False):
+        with patch.dict("os.environ", {"LLM_MAX_RETRIES": "2"}, clear=False):
             with self.assertRaises(httpx.RequestError) as raised:
                 generator.chatbox()
         self.assertIs(raised.exception, error)
@@ -705,8 +705,8 @@ class TranscribeFallbackTests(TestCase):
 
     @patch("main_app.utils.youtube_dl.YoutubeDL")
     def test_video_over_limit_is_rejected(self, ydl_class):
-        ydl_class.return_value = self._ydl(self._info(duration=601))
-        with self.assertRaisesRegex(ValueError, "10 minutes"):
+        ydl_class.return_value = self._ydl(self._info(duration=901))
+        with self.assertRaisesRegex(ValueError, "15 minutes"):
             utils.Transcribe("url").audio2text()
 
     def test_broadcast_embedded_timecodes_are_split_out_of_caption_text(self):
@@ -946,3 +946,110 @@ class FormatterTests(TestCase):
     def test_lexicon_aside_labels_unknown(self):
         labels = views._lexicon_aside_labels("French")
         self.assertEqual(labels["syn"], "Syn.")
+
+
+@override_settings(ALLOWED_HOSTS=["testserver"])
+class DownloadVideoTests(TestCase):
+    def setUp(self):
+        from accounts.models import User
+
+        self.user = User.objects.create_user(
+            email="dl@bals.dev", username="dl@bals.dev", password="testpass123",
+        )
+        self.video = Transcribed_Video.objects.create(
+            video_id="VX95qAiPad8",
+            video_language="English",
+            video_title="Test Download",
+            video_length=30,
+            video_text="{}",
+            status=JOB_READY,
+        )
+
+    def test_requires_login(self):
+        response = self.client.get(f"/en/download_video/{self.video.video_id}/")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("login", response.url)
+
+    def test_transcript_shows_download_button(self):
+        response = self.client.get(f"/en/transcript/{self.video.slug}")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Download video")
+        self.assertContains(response, f"/en/download_video/{self.video.video_id}/")
+
+    @patch("main_app.views.ensure_youtube_video_file")
+    def test_streams_cached_mp4(self, ensure_file):
+        with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as tmp:
+            tmp.write(b"fake-mp4-bytes")
+            path = Path(tmp.name)
+        ensure_file.return_value = path
+        self.client.login(email="dl@bals.dev", password="testpass123")
+        try:
+            response = self.client.get(f"/en/download_video/{self.video.video_id}/")
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response["Content-Type"], "video/mp4")
+            self.assertIn("attachment", response["Content-Disposition"])
+            self.assertEqual(b"".join(response.streaming_content), b"fake-mp4-bytes")
+        finally:
+            path.unlink(missing_ok=True)
+
+    def test_404_for_unknown_video(self):
+        self.client.login(email="dl@bals.dev", password="testpass123")
+        response = self.client.get("/en/download_video/xxxxxxxxxxx/")
+        self.assertEqual(response.status_code, 404)
+
+
+class OpenAICompatibleClientTests(TestCase):
+    def tearDown(self):
+        utils.reset_client()
+
+    def test_chat_completions_path_and_json_prompt(self):
+        seen = {}
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            seen["url"] = str(request.url)
+            seen["body"] = json.loads(request.content.decode())
+            return httpx.Response(
+                200,
+                json={
+                    "choices": [
+                        {"message": {"role": "assistant", "content": '{"ok": true}'}}
+                    ]
+                },
+            )
+
+        client = utils.LessonChatClient(
+            api_key="k",
+            base_url="https://example.test/v1",
+            transport=httpx.MockTransport(handler),
+        )
+        try:
+            text = client.chat(
+                [{"role": "user", "content": "hi"}],
+                model="demo-model",
+                max_tokens=128,
+            )
+        finally:
+            client.close()
+
+        self.assertEqual(text, '{"ok": true}')
+        self.assertTrue(seen["url"].endswith("/v1/chat/completions"))
+        self.assertEqual(seen["body"]["model"], "demo-model")
+        self.assertEqual(seen["body"]["messages"][0]["role"], "system")
+        self.assertIn("JSON", seen["body"]["messages"][0]["content"])
+
+    def test_get_client_appends_v1_for_bare_minimax_host(self):
+        with patch.dict(
+            "os.environ",
+            {
+                "LLM_API_KEY": "k",
+                "LLM_BASE_URL": "https://api.minimaxi.com",
+                "LLM_MODEL": "MiniMax-M3",
+            },
+            clear=False,
+        ):
+            utils.reset_client()
+            client = utils.get_client()
+            try:
+                self.assertEqual(client.base_url, "https://api.minimaxi.com/v1")
+            finally:
+                utils.reset_client()

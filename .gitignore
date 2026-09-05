@@ -13,3 +13,7 @@ cookies.txt
 bals_ai_toolkits.egg-info/
 *.egg-info/
 .cursor/
+
+# Cached YouTube MP4 downloads
+downloads/
+**/media/videos/

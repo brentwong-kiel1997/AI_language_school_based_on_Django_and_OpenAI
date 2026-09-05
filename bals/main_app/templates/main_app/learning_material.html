@@ -433,6 +433,9 @@
     <h2 class="h5 mb-2" id="lessonDownloadTitle">{% trans "Download course" %}</h2>
     <p class="text-secondary small mb-3">{% trans "Export a clean study handout in your browser. For PDF, choose “Save as PDF” in the print dialog." %}</p>
     <div class="d-flex flex-wrap gap-2 lesson-download-actions">
+      <a class="btn btn-outline-primary" href="{{ download_video_url }}">
+        <i class="bi bi-download me-1" aria-hidden="true"></i>{% trans "Download video" %}
+      </a>
       <button type="button" class="btn btn-outline-secondary" id="downloadTxtBtn">
         <i class="bi bi-filetype-txt me-1" aria-hidden="true"></i>{% trans "Download TXT" %}
       </button>

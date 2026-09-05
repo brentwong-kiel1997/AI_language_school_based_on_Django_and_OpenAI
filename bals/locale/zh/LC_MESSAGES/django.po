@@ -352,8 +352,8 @@ msgid "Create your first course"
 msgstr "创建第一节课"
 
 #: main_app/templates/main_app/home.html:18
-msgid "YouTube · under 10 min"
-msgstr "YouTube · 10 分钟以内"
+msgid "YouTube · under 15 min"
+msgstr "YouTube · 15 分钟以内"
 
 #: main_app/templates/main_app/home.html:23
 msgid "How it works"
@@ -411,8 +411,8 @@ msgid "Open transcript"
 msgstr "视频字幕"
 
 #: main_app/templates/main_app/home.html:91
-msgid "Start with a public video under 10 minutes."
-msgstr "从一段不超过 10 分钟的公开视频开始。"
+msgid "Start with a public video under 15 minutes."
+msgstr "从一段不超过 15 分钟的公开视频开始。"
 
 #: main_app/templates/main_app/home.html:100
 #, fuzzy
@@ -655,6 +655,19 @@ msgstr "选择母语后生成专属课程"
 msgid "Open on YouTube"
 msgstr "在 YouTube 打开"
 
+#: main_app/templates/main_app/learning_material.html
+#: main_app/templates/main_app/transcript.html
+msgid "Download video"
+msgstr "下载视频"
+
+#: main_app/views.py
+msgid "This video is not ready to download yet."
+msgstr "视频尚未准备好，暂时无法下载。"
+
+#: main_app/views.py
+msgid "Could not download the video. Please try again later."
+msgstr "无法下载视频，请稍后再试。"
+
 #: main_app/templates/main_app/transcript.html:32
 msgid "Transcript"
 msgstr "字幕内容"
@@ -733,8 +746,8 @@ msgid "What videos work best?"
 msgstr "适合什么视频？"
 
 #: main_app/templates/main_app/url_input.html:51
-msgid "Under 10 minutes"
-msgstr "10 分钟以内"
+msgid "Under 15 minutes"
+msgstr "15 分钟以内"
 
 #: main_app/templates/main_app/url_input.html:52
 msgid "News, interviews and educational videos work well"

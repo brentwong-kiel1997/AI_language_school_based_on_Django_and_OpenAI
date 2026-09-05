@@ -18,4 +18,9 @@ urlpatterns = [
         views.update_progress,
         name='update_progress',
     ),
+    path(
+        'download_video/<slug:video_id>/',
+        views.download_video,
+        name='download_video',
+    ),
 ]

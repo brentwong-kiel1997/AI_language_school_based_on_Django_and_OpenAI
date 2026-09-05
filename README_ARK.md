@@ -1,17 +1,17 @@
 # Ark CLI
 
-独立的火山方舟（Volcengine Ark）客户端包。当前 Django 应用**仅用其中的 Seed ASR**（无字幕时的 STT）；课件文本生成已切到 `minimax_cli`。本包仍提供独立的 `ark` CLI 供 Chat/ASR 冒烟。
+独立的火山方舟（Volcengine Ark）客户端与 `ark` 命令行。**当前 Django 主应用不再依赖本包**（课件走 `minimax_cli`，字幕走 YouTube captions）。本仓库保留本包供 Chat / Seed ASR 单独冒烟或二次集成。
 
 ## 安装
 
 ```bash
 pip install -e .
-# or: PYTHONPATH=. python -m ark_cli ...
+# 若包未打进 pyproject，可用：PYTHONPATH=. python -m ark_cli ...
 ```
 
 ## 配置
 
-键名与原先一致，可用环境变量或仓库根 / `bals/.env`（`setdefault`，不覆盖已有 OS 环境）：
+键名可用环境变量或仓库根 / `bals/.env`（`setdefault`，不覆盖已有 OS 环境）：
 
 | 变量 | 用途 |
 |------|------|
@@ -43,8 +43,8 @@ result = asr.transcribe_wav("audio.wav", language="zh-CN")
 
 ## 与 Django 的边界
 
-- **在本包**：`ArkChatClient`、`get_client` / `reset_client`、Seed ASR 协议与转写。
-- **在 Django `main_app.utils`**：`Generator`（课件 prompt / 校验 / repair）、`Transcribe`（字幕 / yt-dlp）、`run_in_background`。
+- **本包**：`ArkChatClient`、`get_client` / `reset_client`、Seed ASR。
+- **Django `main_app`**：`Generator`（OpenAI Compatible `LLM_*` + `prompts`）、`Transcribe`（字幕 / yt-dlp）、`run_in_background`。
 
 ```bash
 python -m unittest tests.test_ark_cli -v

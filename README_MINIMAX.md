@@ -1,6 +1,8 @@
 # MiniMax CLI
 
-独立的中国区 MiniMax Token Plan 客户端与命令行工具（`mmx` / `python -m minimax_cli`）。默认区域为 `cn`（`https://api.minimaxi.com`），与 Django Ark / Seed ASR 路径完全隔离。
+独立的中国区 MiniMax Token Plan 客户端与命令行工具（`mmx` / `python -m minimax_cli`）。默认区域为 `cn`（`https://api.minimaxi.com`）。
+
+**Django 课件生成已改为通用 OpenAI Compatible 客户端**（`.env` 里的 `LLM_*`），不再调用本包。本 README 仅描述独立的 `mmx` CLI（文本 / 图 / 语音 / 视频 / 音乐等）。
 
 ## 安装
 
@@ -94,7 +96,8 @@ with MiniMaxClient(Config.load()) as client:
 - 完整 OAuth Device Code 登录与 `auth refresh`（需浏览器交互）
 - `mmx update` 自更新
 - Anthropic Messages 兼容路径（文本仍走国区可用的 `/v1/text/chatcompletion_v2`）
-- Django `main_app` 集成（本包保持独立）
+
+Django 课件主路径请配置 `LLM_*`（见根目录 `README.md`），与本 CLI 无关。
 
 接口字段随 Token Plan / 模型版本可能变化；客户端保留 raw 响应，并通过可配置 endpoint 兼容。`json_mode` 仅靠 system 指令约束 JSON，不发送可能被拒绝的 `response_format`。默认 quota 为 `/v1/coding_plan/quota`（可用 `MINIMAX_QUOTA_ENDPOINT` 覆盖；官方 global CLI 常用 `/v1/token_plan/remains`）。
 
